@@ -1,6 +1,6 @@
 package test2
 
-import "github.com/peng225/silkroad/testdata/test1/test11"
+import "github.com/peng225/silkroad/tdata/t1/t11"
 
 type IF1 interface {
 	Op1(a, b int) int
@@ -9,5 +9,5 @@ type IF1 interface {
 
 type IF2 interface {
 	IF1
-	test11.ST2
+	t11.ST2
 }

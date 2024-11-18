@@ -1,11 +1,14 @@
 package test11
 
+import "time"
+
 type ST1 struct {
 	a int
 }
 
 type ST2 struct {
 	st3 ST3
+	t   time.Duration
 }
 
 type ST3 struct {

@@ -76,6 +76,8 @@ func (tg *TypeGraph) handleExpr(expr ast.Expr) []string {
 	case *ast.MapType:
 		ret = append(ret, tg.handleExpr(v.Key)...)
 		ret = append(ret, tg.handleExpr(v.Value)...)
+	case *ast.SelectorExpr:
+		ret = append(ret, types.ExprString(v))
 	default:
 	}
 	return ret
