@@ -3,13 +3,12 @@ package parser
 import (
 	"fmt"
 	"go/ast"
-	"go/importer"
-	"go/parser"
-	"go/token"
 	"go/types"
 	"io/fs"
-	"log"
+	"os"
 	"path/filepath"
+
+	"golang.org/x/tools/go/packages"
 )
 
 // TODO: need package info
@@ -33,16 +32,6 @@ type edge struct {
 	kind edgeKind
 }
 
-var info types.Info
-
-func init() {
-	info = types.Info{
-		Types: make(map[ast.Expr]types.TypeAndValue),
-		Defs:  make(map[*ast.Ident]types.Object),
-		Uses:  make(map[*ast.Ident]types.Object),
-	}
-}
-
 func NewTypeGraph() *TypeGraph {
 	return &TypeGraph{
 		structs:    map[string]types.Object{},
@@ -51,8 +40,10 @@ func NewTypeGraph() *TypeGraph {
 	}
 }
 
-func (tg *TypeGraph) handleExpr(expr ast.Expr) []string {
+func (tg *TypeGraph) handleExpr(expr ast.Expr, info *types.Info) []string {
 	ret := []string{}
+
+	fmt.Printf("expr: %s\n", types.ExprString(expr))
 
 	t := info.TypeOf(expr)
 	if t == nil {
@@ -70,15 +61,16 @@ func (tg *TypeGraph) handleExpr(expr ast.Expr) []string {
 
 	switch v := expr.(type) {
 	case *ast.StarExpr:
-		ret = append(ret, tg.handleExpr(v.X)...)
+		ret = append(ret, tg.handleExpr(v.X, info)...)
 	case *ast.ArrayType:
-		ret = append(ret, tg.handleExpr(v.Elt)...)
+		ret = append(ret, tg.handleExpr(v.Elt, info)...)
 	case *ast.MapType:
-		ret = append(ret, tg.handleExpr(v.Key)...)
-		ret = append(ret, tg.handleExpr(v.Value)...)
+		ret = append(ret, tg.handleExpr(v.Key, info)...)
+		ret = append(ret, tg.handleExpr(v.Value, info)...)
 	case *ast.SelectorExpr:
 		ret = append(ret, types.ExprString(v))
 	default:
+		fmt.Printf("type: %T\n", expr)
 	}
 	return ret
 }
@@ -93,57 +85,57 @@ func (tg *TypeGraph) Build(dir string) {
 		}
 
 		fmt.Printf("walk path %s\n", path)
-		fset := token.NewFileSet()
-		pkgs, err := parser.ParseDir(fset, path, nil, parser.SkipObjectResolution)
-		if err != nil {
-			panic(err)
+
+		// TODO: LoadAllSyntax is deprecated.
+		cfg := &packages.Config{Mode: packages.LoadAllSyntax,
+			Dir: path,
 		}
+		pkgs, err := packages.Load(cfg)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "load: %v\n", err)
+			os.Exit(1)
+		}
+		packages.PrintErrors(pkgs)
 
-		for name, pkg := range pkgs {
-			var files []*ast.File
-			for _, f := range pkg.Files {
-				files = append(files, f)
-			}
-			conf := types.Config{Importer: importer.Default()}
-			fmt.Printf("check int name: %s\n", name)
-			_, err = conf.Check(path, fset, files, &info)
-			if err != nil {
-				log.Fatal(err)
-			}
-
-			var parent types.Object
-			ast.Inspect(pkg, func(n ast.Node) bool {
-				switch x := n.(type) {
-				case *ast.StructType:
-					for _, field := range x.Fields.List {
-						// ST2 -> ST3 という組が2つできてしまう。
-						// Map じゃないが、どうにか重複排除したい。
-						strOrInterfaceNames := tg.handleExpr(field.Type)
-						for _, name := range strOrInterfaceNames {
-							tg.edges = append(tg.edges, &edge{
-								from: parent.Name(),
-								to:   name,
-								kind: Has,
-							})
+		for _, pkg := range pkgs {
+			fmt.Printf("pkg: %s\n", pkg.Name)
+			for _, syntax := range pkg.Syntax {
+				fmt.Printf("file: %s\n", syntax.Name.Name)
+				var parent types.Object
+				ast.Inspect(syntax, func(n ast.Node) bool {
+					switch x := n.(type) {
+					case *ast.TypeSpec:
+						obj := pkg.TypesInfo.ObjectOf(x.Name)
+						if obj == nil {
+							return true
+						}
+						if _, ok := obj.Type().Underlying().(*types.Struct); ok {
+							fmt.Printf("%s is struct.\n", obj.Name())
+							tg.structs[obj.Name()] = obj
+							parent = obj
+						} else if _, ok := obj.Type().Underlying().(*types.Interface); ok {
+							fmt.Printf("%s is interface.\n", obj.Name())
+							tg.interfaces[obj.Name()] = obj
+							parent = obj
+						}
+						// TODO: x.TypeがStructTypeになっていて、そこから情報が取れそう。
+					case *ast.StructType:
+						for _, field := range x.Fields.List {
+							// ST2 -> ST3 という組が2つできてしまう。
+							// Map じゃないが、どうにか重複排除したい。
+							strOrInterfaceNames := tg.handleExpr(field.Type, pkg.TypesInfo)
+							for _, name := range strOrInterfaceNames {
+								tg.edges = append(tg.edges, &edge{
+									from: parent.Name(),
+									to:   name,
+									kind: Has,
+								})
+							}
 						}
 					}
-				case *ast.TypeSpec:
-					obj := info.ObjectOf(x.Name)
-					if obj == nil {
-						return true
-					}
-					if _, ok := obj.Type().Underlying().(*types.Struct); ok {
-						fmt.Printf("%s is struct.\n", obj.Name())
-						tg.structs[obj.Name()] = obj
-						parent = obj
-					} else if _, ok := obj.Type().Underlying().(*types.Interface); ok {
-						fmt.Printf("%s is interface.\n", obj.Name())
-						tg.interfaces[obj.Name()] = obj
-						parent = obj
-					}
-				}
-				return true
-			})
+					return true
+				})
+			}
 		}
 		return nil
 	})
