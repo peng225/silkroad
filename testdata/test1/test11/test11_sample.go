@@ -9,7 +9,8 @@ type ST2 struct {
 }
 
 type ST3 struct {
-	st4 []*ST4
+	st4   []*ST4
+	st4_2 []ST4
 }
 
 type ST4 struct {
@@ -26,13 +27,18 @@ type ST6 struct {
 }
 
 type ST7 struct {
-	a uint8
+	a   uint8
+	st8 *ST8
 }
 
-func (st3 *ST3) Op1(a, b int) int {
+type ST8 struct {
+	v uint8
+}
+
+func (s *ST3) Op1(a, b int) int {
 	return a + b
 }
 
-func (st3 *ST3) Op2(a int) int {
+func (s *ST3) Op2(a int) int {
 	return -a
 }

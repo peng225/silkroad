@@ -5,7 +5,7 @@ import (
 )
 
 func main() {
-	oc := parser.NewObjectCollections()
-	oc.GetCollections("testdata")
-	oc.Dump()
+	tg := parser.NewTypeGraph()
+	tg.Build("testdata/test1/test11")
+	tg.Dump()
 }

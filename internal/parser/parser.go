@@ -12,19 +12,76 @@ import (
 	"path/filepath"
 )
 
-type ObjectCollection struct {
-	structs    map[string]*types.Struct
-	interfaces map[string]*types.Interface
+// TODO: need package info
+type TypeGraph struct {
+	structs    map[string]types.Object
+	interfaces map[string]types.Object
+	edges      []*edge
 }
 
-func NewObjectCollections() *ObjectCollection {
-	return &ObjectCollection{
-		structs:    map[string]*types.Struct{},
-		interfaces: map[string]*types.Interface{},
+type edgeKind int
+
+const (
+	Has edgeKind = iota
+	Implements
+	Embeds
+)
+
+type edge struct {
+	from string
+	to   string
+	kind edgeKind
+}
+
+var info types.Info
+
+func init() {
+	info = types.Info{
+		Types: make(map[ast.Expr]types.TypeAndValue),
+		Defs:  make(map[*ast.Ident]types.Object),
+		Uses:  make(map[*ast.Ident]types.Object),
 	}
 }
 
-func (oc *ObjectCollection) GetCollections(dir string) {
+func NewTypeGraph() *TypeGraph {
+	return &TypeGraph{
+		structs:    map[string]types.Object{},
+		interfaces: map[string]types.Object{},
+		edges:      []*edge{},
+	}
+}
+
+func (tg *TypeGraph) handleExpr(expr ast.Expr) []string {
+	ret := []string{}
+
+	t := info.TypeOf(expr)
+	if t == nil {
+		return nil
+	}
+	switch t.Underlying().(type) {
+	case *types.Struct:
+		ret = append(ret, types.ExprString(expr))
+		return ret
+	case *types.Interface:
+		ret = append(ret, types.ExprString(expr))
+		return ret
+
+	}
+
+	switch v := expr.(type) {
+	case *ast.StarExpr:
+		ret = append(ret, tg.handleExpr(v.X)...)
+	case *ast.ArrayType:
+		ret = append(ret, tg.handleExpr(v.Elt)...)
+	case *ast.MapType:
+		ret = append(ret, tg.handleExpr(v.Key)...)
+		ret = append(ret, tg.handleExpr(v.Value)...)
+	default:
+	}
+	return ret
+}
+
+func (tg *TypeGraph) Build(dir string) {
 	err := filepath.WalkDir(dir, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
@@ -40,12 +97,6 @@ func (oc *ObjectCollection) GetCollections(dir string) {
 			panic(err)
 		}
 
-		info := types.Info{
-			Types: make(map[ast.Expr]types.TypeAndValue),
-			Defs:  make(map[*ast.Ident]types.Object),
-			Uses:  make(map[*ast.Ident]types.Object),
-		}
-
 		for name, pkg := range pkgs {
 			var files []*ast.File
 			for _, f := range pkg.Files {
@@ -53,23 +104,40 @@ func (oc *ObjectCollection) GetCollections(dir string) {
 			}
 			conf := types.Config{Importer: importer.Default()}
 			fmt.Printf("check int name: %s\n", name)
-			_, err = conf.Check(name, fset, files, &info)
+			_, err = conf.Check(path, fset, files, &info)
 			if err != nil {
 				log.Fatal(err)
 			}
+
+			var parent types.Object
 			ast.Inspect(pkg, func(n ast.Node) bool {
 				switch x := n.(type) {
-				case *ast.Ident:
-					t := info.TypeOf(x)
-					if t == nil {
+				case *ast.StructType:
+					for _, field := range x.Fields.List {
+						// ST2 -> ST3 という組が2つできてしまう。
+						// Map じゃないが、どうにか重複排除したい。
+						strOrInterfaceNames := tg.handleExpr(field.Type)
+						for _, name := range strOrInterfaceNames {
+							tg.edges = append(tg.edges, &edge{
+								from: parent.Name(),
+								to:   name,
+								kind: Has,
+							})
+						}
+					}
+				case *ast.TypeSpec:
+					obj := info.ObjectOf(x.Name)
+					if obj == nil {
 						return true
 					}
-					if v, ok := t.Underlying().(*types.Struct); ok {
-						fmt.Printf("%s is struct.\n", x.Name)
-						oc.structs[x.Name] = v
-					} else if v, ok := t.Underlying().(*types.Interface); ok {
-						fmt.Printf("%s is interface.\n", x.Name)
-						oc.interfaces[x.Name] = v
+					if _, ok := obj.Type().Underlying().(*types.Struct); ok {
+						fmt.Printf("%s is struct.\n", obj.Name())
+						tg.structs[obj.Name()] = obj
+						parent = obj
+					} else if _, ok := obj.Type().Underlying().(*types.Interface); ok {
+						fmt.Printf("%s is interface.\n", obj.Name())
+						tg.interfaces[obj.Name()] = obj
+						parent = obj
 					}
 				}
 				return true
@@ -82,7 +150,10 @@ func (oc *ObjectCollection) GetCollections(dir string) {
 	}
 }
 
-func (oc *ObjectCollection) Dump() {
-	fmt.Println(oc.structs)
-	fmt.Println(oc.interfaces)
+func (tg *TypeGraph) Dump() {
+	fmt.Println(tg.structs)
+	fmt.Println(tg.interfaces)
+	for _, edge := range tg.edges {
+		fmt.Println(*edge)
+	}
 }
