@@ -1,4 +1,4 @@
-package test11
+package t11
 
 import "time"
 

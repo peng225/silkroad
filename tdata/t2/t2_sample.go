@@ -1,4 +1,4 @@
-package test2
+package t2
 
 import "github.com/peng225/silkroad/tdata/t1/t11"
 
