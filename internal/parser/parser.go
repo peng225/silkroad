@@ -4,14 +4,15 @@ import (
 	"fmt"
 	"go/ast"
 	"go/types"
+	"strings"
 
 	"golang.org/x/tools/go/packages"
 )
 
 // TODO: need package info
 type TypeGraph struct {
-	structs    map[string]types.Object
-	interfaces map[string]types.Object
+	structs    map[string](map[string]string)
+	interfaces map[string](map[string]string)
 	edges      []*edge
 }
 
@@ -29,10 +30,15 @@ type edge struct {
 	kind edgeKind
 }
 
+type importInfo struct {
+	alias string
+	path  string
+}
+
 func NewTypeGraph() *TypeGraph {
 	return &TypeGraph{
-		structs:    map[string]types.Object{},
-		interfaces: map[string]types.Object{},
+		structs:    map[string](map[string]string){},
+		interfaces: map[string](map[string]string){},
 		edges:      []*edge{},
 	}
 }
@@ -71,6 +77,35 @@ func (tg *TypeGraph) handleExpr(expr ast.Expr, info *types.Info) []string {
 	return ret
 }
 
+func (tg *TypeGraph) buildEdge(fields []*ast.Field, info *types.Info, parent types.Object, ii []importInfo) {
+	for _, field := range fields {
+		// TODO: ST2 -> ST3 という組が2つできてしまう。
+		// Map じゃないが、どうにか重複排除したい。
+		strOrInterfaceNames := tg.handleExpr(field.Type, info)
+		for _, name := range strOrInterfaceNames {
+			if name == "struct{}" {
+				continue
+			}
+			fullName := parent.Pkg().Path() + "." + name
+			for _, v := range ii {
+				tokens := strings.Split(name, ".")
+				if len(tokens) == 2 && v.alias == tokens[0] {
+					fullName = v.path + "." + tokens[1]
+					break
+				} else if len(tokens) == 2 && strings.HasSuffix(v.path, tokens[0]) {
+					fullName = v.path + "." + tokens[1]
+					break
+				}
+			}
+			tg.edges = append(tg.edges, &edge{
+				from: parent.Pkg().Path() + "." + parent.Name(),
+				to:   fullName,
+				kind: Has,
+			})
+		}
+	}
+}
+
 func (tg *TypeGraph) Build(path string) error {
 	cfg := &packages.Config{
 		Mode: packages.NeedName | packages.NeedFiles | packages.NeedCompiledGoFiles |
@@ -89,8 +124,17 @@ func (tg *TypeGraph) Build(path string) error {
 		for _, syntax := range pkg.Syntax {
 			fmt.Printf("file: %s\n", syntax.Name.Name)
 			var parent types.Object
+			ii := []importInfo{}
 			ast.Inspect(syntax, func(n ast.Node) bool {
 				switch x := n.(type) {
+				case *ast.ImportSpec:
+					iiEntry := importInfo{
+						path: strings.Trim(x.Path.Value, `"`),
+					}
+					if x.Name != nil {
+						iiEntry.alias = x.Name.Name
+					}
+					ii = append(ii, iiEntry)
 				case *ast.TypeSpec:
 					obj := pkg.TypesInfo.ObjectOf(x.Name)
 					if obj == nil {
@@ -98,40 +142,24 @@ func (tg *TypeGraph) Build(path string) error {
 					}
 					if _, ok := obj.Type().Underlying().(*types.Struct); ok {
 						fmt.Printf("%s is struct.\n", obj.Name())
-						tg.structs[obj.Name()] = obj
+						if tg.structs[obj.Pkg().Path()] == nil {
+							tg.structs[obj.Pkg().Path()] = map[string]string{}
+						}
+						tg.structs[obj.Pkg().Path()][obj.Name()] = obj.Name()
 						parent = obj
 					} else if _, ok := obj.Type().Underlying().(*types.Interface); ok {
 						fmt.Printf("%s is interface.\n", obj.Name())
-						tg.interfaces[obj.Name()] = obj
+						if tg.interfaces[obj.Pkg().Path()] == nil {
+							tg.interfaces[obj.Pkg().Path()] = map[string]string{}
+						}
+						tg.interfaces[obj.Pkg().Path()][obj.Name()] = obj.Name()
 						parent = obj
 					}
 					// TODO: x.TypeがStructTypeになっていて、そこから情報が取れそう。
 				case *ast.StructType:
-					for _, field := range x.Fields.List {
-						// TODO: ST2 -> ST3 という組が2つできてしまう。
-						// Map じゃないが、どうにか重複排除したい。
-						strOrInterfaceNames := tg.handleExpr(field.Type, pkg.TypesInfo)
-						for _, name := range strOrInterfaceNames {
-							tg.edges = append(tg.edges, &edge{
-								from: parent.Name(),
-								to:   name,
-								kind: Has,
-							})
-						}
-					}
+					tg.buildEdge(x.Fields.List, pkg.TypesInfo, parent, ii)
 				case *ast.InterfaceType:
-					for _, field := range x.Methods.List {
-						// TODO: ST2 -> ST3 という組が2つできてしまう。
-						// Map じゃないが、どうにか重複排除したい。
-						strOrInterfaceNames := tg.handleExpr(field.Type, pkg.TypesInfo)
-						for _, name := range strOrInterfaceNames {
-							tg.edges = append(tg.edges, &edge{
-								from: parent.Name(),
-								to:   name,
-								kind: Has,
-							})
-						}
-					}
+					tg.buildEdge(x.Methods.List, pkg.TypesInfo, parent, ii)
 				}
 				return true
 			})
@@ -141,8 +169,24 @@ func (tg *TypeGraph) Build(path string) error {
 }
 
 func (tg *TypeGraph) Dump() {
-	fmt.Println(tg.structs)
-	fmt.Println(tg.interfaces)
+	fmt.Println("structs:")
+	for pkg, str := range tg.structs {
+		fmt.Printf("  pkg: %s\n", pkg)
+		for _, s := range str {
+			fmt.Print("    ")
+			fmt.Println(s)
+		}
+	}
+
+	fmt.Println("interfaces:")
+	for pkg, ifc := range tg.interfaces {
+		fmt.Printf("  pkg: %s\n", pkg)
+		for _, s := range ifc {
+			fmt.Print("    ")
+			fmt.Println(s)
+		}
+	}
+
 	for _, edge := range tg.edges {
 		fmt.Println(*edge)
 	}

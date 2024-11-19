@@ -1,6 +1,10 @@
 package t11
 
-import "time"
+import (
+	"time"
+
+	ioalias "io"
+)
 
 type ST1 struct {
 	a int
@@ -36,6 +40,7 @@ type ST7 struct {
 
 type ST8 struct {
 	v uint8
+	w ioalias.Reader
 }
 
 func (s *ST3) Op1(a, b int) int {
