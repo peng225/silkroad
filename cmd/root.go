@@ -24,7 +24,10 @@ to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 
 		tg := parser.NewTypeGraph()
-		tg.Build(rootPath)
+		err := tg.Build(rootPath)
+		if err != nil {
+			panic(err)
+		}
 		tg.Dump()
 	},
 }

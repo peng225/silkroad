@@ -4,9 +4,6 @@ import (
 	"fmt"
 	"go/ast"
 	"go/types"
-	"io/fs"
-	"os"
-	"path/filepath"
 
 	"golang.org/x/tools/go/packages"
 )
@@ -56,7 +53,6 @@ func (tg *TypeGraph) handleExpr(expr ast.Expr, info *types.Info) []string {
 	case *types.Interface:
 		ret = append(ret, types.ExprString(expr))
 		return ret
-
 	}
 
 	switch v := expr.(type) {
@@ -69,79 +65,79 @@ func (tg *TypeGraph) handleExpr(expr ast.Expr, info *types.Info) []string {
 		ret = append(ret, tg.handleExpr(v.Value, info)...)
 	case *ast.SelectorExpr:
 		ret = append(ret, types.ExprString(v))
-	default:
-		fmt.Printf("type: %T\n", expr)
+		// default:
+		// 	fmt.Printf("type: %T\n", expr)
 	}
 	return ret
 }
 
-func (tg *TypeGraph) Build(dir string) {
-	err := filepath.WalkDir(dir, func(path string, d fs.DirEntry, err error) error {
-		if err != nil {
-			return err
-		}
-		if !d.IsDir() {
-			return nil
-		}
+func (tg *TypeGraph) Build(path string) error {
+	cfg := &packages.Config{
+		Mode: packages.NeedName | packages.NeedFiles | packages.NeedCompiledGoFiles |
+			packages.NeedImports | packages.NeedTypes | packages.NeedTypesSizes |
+			packages.NeedSyntax | packages.NeedTypesInfo | packages.NeedDeps,
+		Dir: path,
+	}
+	pkgs, err := packages.Load(cfg, "./...")
+	if err != nil {
+		return err
+	}
+	packages.PrintErrors(pkgs)
 
-		fmt.Printf("walk path %s\n", path)
-
-		// TODO: LoadAllSyntax is deprecated.
-		cfg := &packages.Config{Mode: packages.LoadAllSyntax,
-			Dir: path,
-		}
-		pkgs, err := packages.Load(cfg)
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "load: %v\n", err)
-			os.Exit(1)
-		}
-		packages.PrintErrors(pkgs)
-
-		for _, pkg := range pkgs {
-			fmt.Printf("pkg: %s\n", pkg.Name)
-			for _, syntax := range pkg.Syntax {
-				fmt.Printf("file: %s\n", syntax.Name.Name)
-				var parent types.Object
-				ast.Inspect(syntax, func(n ast.Node) bool {
-					switch x := n.(type) {
-					case *ast.TypeSpec:
-						obj := pkg.TypesInfo.ObjectOf(x.Name)
-						if obj == nil {
-							return true
-						}
-						if _, ok := obj.Type().Underlying().(*types.Struct); ok {
-							fmt.Printf("%s is struct.\n", obj.Name())
-							tg.structs[obj.Name()] = obj
-							parent = obj
-						} else if _, ok := obj.Type().Underlying().(*types.Interface); ok {
-							fmt.Printf("%s is interface.\n", obj.Name())
-							tg.interfaces[obj.Name()] = obj
-							parent = obj
-						}
-						// TODO: x.TypeがStructTypeになっていて、そこから情報が取れそう。
-					case *ast.StructType:
-						for _, field := range x.Fields.List {
-							// ST2 -> ST3 という組が2つできてしまう。
-							// Map じゃないが、どうにか重複排除したい。
-							strOrInterfaceNames := tg.handleExpr(field.Type, pkg.TypesInfo)
-							for _, name := range strOrInterfaceNames {
-								tg.edges = append(tg.edges, &edge{
-									from: parent.Name(),
-									to:   name,
-									kind: Has,
-								})
-							}
+	for _, pkg := range pkgs {
+		fmt.Printf("pkg: %s\n", pkg.Name)
+		for _, syntax := range pkg.Syntax {
+			fmt.Printf("file: %s\n", syntax.Name.Name)
+			var parent types.Object
+			ast.Inspect(syntax, func(n ast.Node) bool {
+				switch x := n.(type) {
+				case *ast.TypeSpec:
+					obj := pkg.TypesInfo.ObjectOf(x.Name)
+					if obj == nil {
+						return true
+					}
+					if _, ok := obj.Type().Underlying().(*types.Struct); ok {
+						fmt.Printf("%s is struct.\n", obj.Name())
+						tg.structs[obj.Name()] = obj
+						parent = obj
+					} else if _, ok := obj.Type().Underlying().(*types.Interface); ok {
+						fmt.Printf("%s is interface.\n", obj.Name())
+						tg.interfaces[obj.Name()] = obj
+						parent = obj
+					}
+					// TODO: x.TypeがStructTypeになっていて、そこから情報が取れそう。
+				case *ast.StructType:
+					for _, field := range x.Fields.List {
+						// TODO: ST2 -> ST3 という組が2つできてしまう。
+						// Map じゃないが、どうにか重複排除したい。
+						strOrInterfaceNames := tg.handleExpr(field.Type, pkg.TypesInfo)
+						for _, name := range strOrInterfaceNames {
+							tg.edges = append(tg.edges, &edge{
+								from: parent.Name(),
+								to:   name,
+								kind: Has,
+							})
 						}
 					}
-					return true
-				})
-			}
+				case *ast.InterfaceType:
+					for _, field := range x.Methods.List {
+						// TODO: ST2 -> ST3 という組が2つできてしまう。
+						// Map じゃないが、どうにか重複排除したい。
+						strOrInterfaceNames := tg.handleExpr(field.Type, pkg.TypesInfo)
+						for _, name := range strOrInterfaceNames {
+							tg.edges = append(tg.edges, &edge{
+								from: parent.Name(),
+								to:   name,
+								kind: Has,
+							})
+						}
+					}
+				}
+				return true
+			})
 		}
-		return nil
-	})
-	if err != nil {
-		panic(err)
 	}
+	return nil
 }
 
 func (tg *TypeGraph) Dump() {
