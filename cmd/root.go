@@ -3,7 +3,7 @@ package cmd
 import (
 	"os"
 
-	"github.com/peng225/silkroad/internal/parser"
+	"github.com/peng225/silkroad/internal/graph"
 	"github.com/spf13/cobra"
 )
 
@@ -23,7 +23,7 @@ to quickly create a Cobra application.`,
 	// has an action associated with it:
 	Run: func(cmd *cobra.Command, args []string) {
 
-		tg := parser.NewTypeGraph()
+		tg := graph.NewTypeGraph()
 		err := tg.Build(rootPath)
 		if err != nil {
 			panic(err)
