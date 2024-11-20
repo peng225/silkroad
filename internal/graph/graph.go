@@ -12,21 +12,21 @@ import (
 type TypeGraph struct {
 	pkgToStructs    map[string](map[string]types.Object)
 	pkgToInterfaces map[string](map[string]types.Object)
-	edges           []*edge
+	edges           []*Edge
 }
 
-type edgeKind int
+type EdgeKind int
 
 const (
-	Has edgeKind = iota
+	Has EdgeKind = iota
 	Implements
 	Embeds
 )
 
-type edge struct {
-	from string
-	to   string
-	kind edgeKind
+type Edge struct {
+	From string
+	To   string
+	Kind EdgeKind
 }
 
 type importInfo struct {
@@ -38,7 +38,7 @@ func NewTypeGraph() *TypeGraph {
 	return &TypeGraph{
 		pkgToStructs:    map[string](map[string]types.Object){},
 		pkgToInterfaces: map[string](map[string]types.Object){},
-		edges:           []*edge{},
+		edges:           []*Edge{},
 	}
 }
 
@@ -97,10 +97,10 @@ func (tg *TypeGraph) buildHasEdge(fields []*ast.Field, info *types.Info, parent 
 					break
 				}
 			}
-			tg.edges = append(tg.edges, &edge{
-				from: parent.Pkg().Path() + "." + parent.Name(),
-				to:   fullName,
-				kind: kind,
+			tg.edges = append(tg.edges, &Edge{
+				From: parent.Pkg().Path() + "." + parent.Name(),
+				To:   fullName,
+				Kind: kind,
 			})
 		}
 	}
@@ -118,10 +118,10 @@ func (tg *TypeGraph) buildImplementsEdge() {
 				for _, s := range structs {
 					ptr := types.NewPointer(s.Type())
 					if types.Implements(ptr, typedI) {
-						tg.edges = append(tg.edges, &edge{
-							from: spkg + "." + s.Name(),
-							to:   ipkg + "." + i.Name(),
-							kind: Implements,
+						tg.edges = append(tg.edges, &Edge{
+							From: spkg + "." + s.Name(),
+							To:   ipkg + "." + i.Name(),
+							Kind: Implements,
 						})
 					}
 				}
@@ -191,6 +191,32 @@ func (tg *TypeGraph) Build(path string) error {
 	tg.buildImplementsEdge()
 
 	return nil
+}
+
+func (tg *TypeGraph) Nodes() map[string]([]string) {
+	nodes := map[string]([]string){}
+
+	for pkg, structs := range tg.pkgToStructs {
+		nodes[pkg] = []string{}
+		for _, s := range structs {
+			nodes[pkg] = append(nodes[pkg], s.Name())
+		}
+	}
+
+	for pkg, interfaces := range tg.pkgToInterfaces {
+		nodes[pkg] = []string{}
+		for _, i := range interfaces {
+			nodes[pkg] = append(nodes[pkg], i.Name())
+		}
+	}
+
+	return nodes
+}
+
+func (tg *TypeGraph) Edges() []*Edge {
+	ret := make([]*Edge, len(tg.edges))
+	copy(ret, tg.edges)
+	return ret
 }
 
 func (tg *TypeGraph) Dump() {

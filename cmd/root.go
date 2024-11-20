@@ -1,13 +1,16 @@
 package cmd
 
 import (
+	"log/slog"
 	"os"
 
+	"github.com/peng225/silkroad/internal/dot"
 	"github.com/peng225/silkroad/internal/graph"
 	"github.com/spf13/cobra"
 )
 
 var rootPath string
+var outputFileName string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -22,13 +25,16 @@ to quickly create a Cobra application.`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	Run: func(cmd *cobra.Command, args []string) {
-
 		tg := graph.NewTypeGraph()
 		err := tg.Build(rootPath)
 		if err != nil {
 			panic(err)
 		}
 		tg.Dump()
+		err = dot.OutputDotFile(tg, outputFileName)
+		if err != nil {
+			slog.Error("Failed to output a dot file.", "err", err.Error())
+		}
 	},
 }
 
@@ -51,4 +57,5 @@ func init() {
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
 	rootCmd.Flags().StringVarP(&rootPath, "path", "p", ".", "The path to the root directory for which the analysis runs.")
+	rootCmd.Flags().StringVarP(&outputFileName, "output", "o", ".", "The output dot file name.")
 }
