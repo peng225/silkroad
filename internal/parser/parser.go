@@ -77,6 +77,11 @@ func (tg *TypeGraph) buildHasEdge(fields []*ast.Field, info *types.Info, parent 
 		// TODO: ST2 -> ST3 という組が2つできてしまう。
 		// Map じゃないが、どうにか重複排除したい。
 		strOrInterfaceNames := tg.handleExpr(field.Type, info)
+		embedded := field.Names == nil
+		kind := Has
+		if embedded {
+			kind = Embeds
+		}
 		for _, name := range strOrInterfaceNames {
 			if name == "struct{}" {
 				continue
@@ -95,7 +100,7 @@ func (tg *TypeGraph) buildHasEdge(fields []*ast.Field, info *types.Info, parent 
 			tg.edges = append(tg.edges, &edge{
 				from: parent.Pkg().Path() + "." + parent.Name(),
 				to:   fullName,
-				kind: Has,
+				kind: kind,
 			})
 		}
 	}
