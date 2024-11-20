@@ -9,11 +9,10 @@ import (
 	"golang.org/x/tools/go/packages"
 )
 
-// TODO: need package info
 type TypeGraph struct {
-	structs    map[string](map[string]string)
-	interfaces map[string](map[string]string)
-	edges      []*edge
+	pkgToStructs    map[string](map[string]types.Object)
+	pkgToInterfaces map[string](map[string]types.Object)
+	edges           []*edge
 }
 
 type edgeKind int
@@ -37,16 +36,14 @@ type importInfo struct {
 
 func NewTypeGraph() *TypeGraph {
 	return &TypeGraph{
-		structs:    map[string](map[string]string){},
-		interfaces: map[string](map[string]string){},
-		edges:      []*edge{},
+		pkgToStructs:    map[string](map[string]types.Object){},
+		pkgToInterfaces: map[string](map[string]types.Object){},
+		edges:           []*edge{},
 	}
 }
 
 func (tg *TypeGraph) handleExpr(expr ast.Expr, info *types.Info) []string {
 	ret := []string{}
-
-	fmt.Printf("expr: %s\n", types.ExprString(expr))
 
 	t := info.TypeOf(expr)
 	if t == nil {
@@ -71,13 +68,11 @@ func (tg *TypeGraph) handleExpr(expr ast.Expr, info *types.Info) []string {
 		ret = append(ret, tg.handleExpr(v.Value, info)...)
 	case *ast.SelectorExpr:
 		ret = append(ret, types.ExprString(v))
-		// default:
-		// 	fmt.Printf("type: %T\n", expr)
 	}
 	return ret
 }
 
-func (tg *TypeGraph) buildEdge(fields []*ast.Field, info *types.Info, parent types.Object, ii []importInfo) {
+func (tg *TypeGraph) buildHasEdge(fields []*ast.Field, info *types.Info, parent types.Object, ii []importInfo) {
 	for _, field := range fields {
 		// TODO: ST2 -> ST3 という組が2つできてしまう。
 		// Map じゃないが、どうにか重複排除したい。
@@ -106,6 +101,30 @@ func (tg *TypeGraph) buildEdge(fields []*ast.Field, info *types.Info, parent typ
 	}
 }
 
+func (tg *TypeGraph) buildImplementsEdge() {
+	for ipkg, interfaces := range tg.pkgToInterfaces {
+		for _, i := range interfaces {
+			fmt.Printf("i: %s\n", i.Name())
+			typedI, ok := i.Type().Underlying().(*types.Interface)
+			if !ok {
+				panic("should be interface type")
+			}
+			for spkg, structs := range tg.pkgToStructs {
+				for _, s := range structs {
+					ptr := types.NewPointer(s.Type())
+					if types.Implements(ptr, typedI) {
+						tg.edges = append(tg.edges, &edge{
+							from: spkg + "." + s.Name(),
+							to:   ipkg + "." + i.Name(),
+							kind: Implements,
+						})
+					}
+				}
+			}
+		}
+	}
+}
+
 func (tg *TypeGraph) Build(path string) error {
 	cfg := &packages.Config{
 		Mode: packages.NeedName | packages.NeedFiles | packages.NeedCompiledGoFiles |
@@ -123,7 +142,6 @@ func (tg *TypeGraph) Build(path string) error {
 		fmt.Printf("pkg: %s\n", pkg.Name)
 		for _, syntax := range pkg.Syntax {
 			fmt.Printf("file: %s\n", syntax.Name.Name)
-			var parent types.Object
 			ii := []importInfo{}
 			ast.Inspect(syntax, func(n ast.Node) bool {
 				switch x := n.(type) {
@@ -141,49 +159,51 @@ func (tg *TypeGraph) Build(path string) error {
 						return true
 					}
 					if _, ok := obj.Type().Underlying().(*types.Struct); ok {
-						fmt.Printf("%s is struct.\n", obj.Name())
-						if tg.structs[obj.Pkg().Path()] == nil {
-							tg.structs[obj.Pkg().Path()] = map[string]string{}
+						if tg.pkgToStructs[obj.Pkg().Path()] == nil {
+							tg.pkgToStructs[obj.Pkg().Path()] = map[string]types.Object{}
 						}
-						tg.structs[obj.Pkg().Path()][obj.Name()] = obj.Name()
-						parent = obj
+						tg.pkgToStructs[obj.Pkg().Path()][obj.Name()] = obj
 					} else if _, ok := obj.Type().Underlying().(*types.Interface); ok {
-						fmt.Printf("%s is interface.\n", obj.Name())
-						if tg.interfaces[obj.Pkg().Path()] == nil {
-							tg.interfaces[obj.Pkg().Path()] = map[string]string{}
+						if tg.pkgToInterfaces[obj.Pkg().Path()] == nil {
+							tg.pkgToInterfaces[obj.Pkg().Path()] = map[string]types.Object{}
 						}
-						tg.interfaces[obj.Pkg().Path()][obj.Name()] = obj.Name()
-						parent = obj
+						tg.pkgToInterfaces[obj.Pkg().Path()][obj.Name()] = obj
+					} else {
+						break
 					}
-					// TODO: x.TypeがStructTypeになっていて、そこから情報が取れそう。
-				case *ast.StructType:
-					tg.buildEdge(x.Fields.List, pkg.TypesInfo, parent, ii)
-				case *ast.InterfaceType:
-					tg.buildEdge(x.Methods.List, pkg.TypesInfo, parent, ii)
+					switch t := x.Type.(type) {
+					case *ast.StructType:
+						tg.buildHasEdge(t.Fields.List, pkg.TypesInfo, obj, ii)
+					case *ast.InterfaceType:
+						tg.buildHasEdge(t.Methods.List, pkg.TypesInfo, obj, ii)
+					}
 				}
 				return true
 			})
 		}
 	}
+
+	tg.buildImplementsEdge()
+
 	return nil
 }
 
 func (tg *TypeGraph) Dump() {
 	fmt.Println("structs:")
-	for pkg, str := range tg.structs {
+	for pkg, str := range tg.pkgToStructs {
 		fmt.Printf("  pkg: %s\n", pkg)
 		for _, s := range str {
 			fmt.Print("    ")
-			fmt.Println(s)
+			fmt.Println(s.Name())
 		}
 	}
 
 	fmt.Println("interfaces:")
-	for pkg, ifc := range tg.interfaces {
+	for pkg, ifc := range tg.pkgToInterfaces {
 		fmt.Printf("  pkg: %s\n", pkg)
 		for _, s := range ifc {
 			fmt.Print("    ")
-			fmt.Println(s)
+			fmt.Println(s.Name())
 		}
 	}
 

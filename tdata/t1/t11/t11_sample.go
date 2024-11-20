@@ -4,7 +4,11 @@ import (
 	"time"
 
 	ioalias "io"
+
+	"github.com/peng225/silkroad/tdata/t2"
 )
+
+var _ t2.IF1 = (*ST3)(nil)
 
 type ST1 struct {
 	a int
