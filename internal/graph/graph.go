@@ -42,7 +42,7 @@ func NewTypeGraph() *TypeGraph {
 	}
 }
 
-func (tg *TypeGraph) handleExpr(expr ast.Expr, info *types.Info) []string {
+func (tg *TypeGraph) handleExpr(expr ast.Expr, info *types.Info, tps map[string]struct{}) []string {
 	ret := []string{}
 
 	t := info.TypeOf(expr)
@@ -51,32 +51,39 @@ func (tg *TypeGraph) handleExpr(expr ast.Expr, info *types.Info) []string {
 	}
 	switch t.Underlying().(type) {
 	case *types.Struct:
+		if _, ok := tps[types.ExprString(expr)]; ok {
+			return nil
+		}
 		ret = append(ret, types.ExprString(expr))
 		return ret
 	case *types.Interface:
+		if _, ok := tps[types.ExprString(expr)]; ok {
+			return nil
+		}
 		ret = append(ret, types.ExprString(expr))
 		return ret
 	}
 
 	switch v := expr.(type) {
 	case *ast.StarExpr:
-		ret = append(ret, tg.handleExpr(v.X, info)...)
+		ret = append(ret, tg.handleExpr(v.X, info, tps)...)
 	case *ast.ArrayType:
-		ret = append(ret, tg.handleExpr(v.Elt, info)...)
+		ret = append(ret, tg.handleExpr(v.Elt, info, tps)...)
 	case *ast.MapType:
-		ret = append(ret, tg.handleExpr(v.Key, info)...)
-		ret = append(ret, tg.handleExpr(v.Value, info)...)
+		ret = append(ret, tg.handleExpr(v.Key, info, tps)...)
+		ret = append(ret, tg.handleExpr(v.Value, info, tps)...)
 	case *ast.SelectorExpr:
 		ret = append(ret, types.ExprString(v))
 	}
 	return ret
 }
 
-func (tg *TypeGraph) buildHasEdge(fields []*ast.Field, info *types.Info, parent types.Object, ii []importInfo) {
+func (tg *TypeGraph) buildHasEdge(fields []*ast.Field, info *types.Info, parent types.Object,
+	ii []importInfo, tps map[string]struct{}) {
 	for _, field := range fields {
 		// TODO: ST2 -> ST3 という組が2つできてしまう。
 		// Map じゃないが、どうにか重複排除したい。
-		strOrInterfaceNames := tg.handleExpr(field.Type, info)
+		strOrInterfaceNames := tg.handleExpr(field.Type, info, tps)
 		embedded := field.Names == nil
 		kind := Has
 		if embedded {
@@ -176,11 +183,20 @@ func (tg *TypeGraph) Build(path string) error {
 					} else {
 						break
 					}
+
+					tps := map[string]struct{}{}
+					if x.TypeParams != nil {
+						for _, tp := range x.TypeParams.List {
+							for _, name := range tp.Names {
+								tps[name.Name] = struct{}{}
+							}
+						}
+					}
 					switch t := x.Type.(type) {
 					case *ast.StructType:
-						tg.buildHasEdge(t.Fields.List, pkg.TypesInfo, obj, ii)
+						tg.buildHasEdge(t.Fields.List, pkg.TypesInfo, obj, ii, tps)
 					case *ast.InterfaceType:
-						tg.buildHasEdge(t.Methods.List, pkg.TypesInfo, obj, ii)
+						tg.buildHasEdge(t.Methods.List, pkg.TypesInfo, obj, ii, tps)
 					}
 				}
 				return true
