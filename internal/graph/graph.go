@@ -49,7 +49,7 @@ func (tg *TypeGraph) handleExpr(expr ast.Expr, info *types.Info, tps map[string]
 	if t == nil {
 		return nil
 	}
-	switch t.Underlying().(type) {
+	switch v := t.Underlying().(type) {
 	case *types.Struct:
 		if _, ok := tps[types.ExprString(expr)]; ok {
 			return nil
@@ -57,6 +57,9 @@ func (tg *TypeGraph) handleExpr(expr ast.Expr, info *types.Info, tps map[string]
 		ret = append(ret, types.ExprString(expr))
 		return ret
 	case *types.Interface:
+		if v.Empty() {
+			return nil
+		}
 		if _, ok := tps[types.ExprString(expr)]; ok {
 			return nil
 		}
