@@ -175,7 +175,10 @@ func (tg *TypeGraph) Build(path string) error {
 							tg.pkgToStructs[obj.Pkg().Path()] = map[string]types.Object{}
 						}
 						tg.pkgToStructs[obj.Pkg().Path()][obj.Name()] = obj
-					} else if _, ok := obj.Type().Underlying().(*types.Interface); ok {
+					} else if v, ok := obj.Type().Underlying().(*types.Interface); ok {
+						if v.Empty() {
+							break
+						}
 						if tg.pkgToInterfaces[obj.Pkg().Path()] == nil {
 							tg.pkgToInterfaces[obj.Pkg().Path()] = map[string]types.Object{}
 						}
