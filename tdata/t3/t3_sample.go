@@ -3,6 +3,7 @@ package t3
 type AliasForST100 ST100
 type AliasForMapST100 map[string]ST100
 type AliasForInt int
+type AliasForAny any
 
 type ST100 struct {
 	a any
@@ -18,4 +19,5 @@ type ST101[T any] struct {
 
 type ST102 struct {
 	p AliasForMapST100
+	q AliasForAny
 }
