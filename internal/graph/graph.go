@@ -12,6 +12,7 @@ import (
 type TypeGraph struct {
 	pkgToStructs    map[string](map[string]types.Object)
 	pkgToInterfaces map[string](map[string]types.Object)
+	pkgToOthers     map[string](map[string]types.Object)
 	edges           []*Edge
 }
 
@@ -21,6 +22,7 @@ const (
 	Has EdgeKind = iota
 	Implements
 	Embeds
+	UsesAsAlias
 )
 
 type Edge struct {
@@ -38,18 +40,19 @@ func NewTypeGraph() *TypeGraph {
 	return &TypeGraph{
 		pkgToStructs:    map[string](map[string]types.Object){},
 		pkgToInterfaces: map[string](map[string]types.Object){},
+		pkgToOthers:     map[string](map[string]types.Object){},
 		edges:           []*Edge{},
 	}
 }
 
-func (tg *TypeGraph) handleExpr(expr ast.Expr, info *types.Info, tps map[string]struct{}) []string {
+func (tg *TypeGraph) findTypeStringsFromExpr(expr ast.Expr, info *types.Info, tps map[string]struct{}) []string {
 	ret := []string{}
 
 	t := info.TypeOf(expr)
 	if t == nil {
 		return nil
 	}
-	switch t.Underlying().(type) {
+	switch ut := t.Underlying().(type) {
 	case *types.Struct:
 		ret = append(ret, types.ExprString(expr))
 		return ret
@@ -59,16 +62,44 @@ func (tg *TypeGraph) handleExpr(expr ast.Expr, info *types.Info, tps map[string]
 		}
 		ret = append(ret, types.ExprString(expr))
 		return ret
+	case *types.Basic:
+		// Not aliased? (e.g. int, uint8, string)
+		if t.String() == ut.String() {
+			return nil
+		}
+		ret = append(ret, types.ExprString(expr))
+		return ret
+	case *types.Map:
+		// Aliased?
+		if t.String() != ut.String() {
+			ret = append(ret, types.ExprString(expr))
+		}
+	case *types.Slice:
+		// Aliased?
+		if t.String() != ut.String() {
+			ret = append(ret, types.ExprString(expr))
+		}
+	case *types.Array:
+		// Aliased?
+		if t.String() != ut.String() {
+			ret = append(ret, types.ExprString(expr))
+		}
+	case *types.Pointer:
+		// Aliased?
+		fmt.Printf("pointer, underlying: %s, %s\n", t.String(), ut.String())
+		if t.String() != ut.String() {
+			ret = append(ret, types.ExprString(expr))
+		}
 	}
 
 	switch v := expr.(type) {
 	case *ast.StarExpr:
-		ret = append(ret, tg.handleExpr(v.X, info, tps)...)
+		ret = append(ret, tg.findTypeStringsFromExpr(v.X, info, tps)...)
 	case *ast.ArrayType:
-		ret = append(ret, tg.handleExpr(v.Elt, info, tps)...)
+		ret = append(ret, tg.findTypeStringsFromExpr(v.Elt, info, tps)...)
 	case *ast.MapType:
-		ret = append(ret, tg.handleExpr(v.Key, info, tps)...)
-		ret = append(ret, tg.handleExpr(v.Value, info, tps)...)
+		ret = append(ret, tg.findTypeStringsFromExpr(v.Key, info, tps)...)
+		ret = append(ret, tg.findTypeStringsFromExpr(v.Value, info, tps)...)
 	case *ast.SelectorExpr:
 		ret = append(ret, types.ExprString(v))
 	}
@@ -80,13 +111,13 @@ func (tg *TypeGraph) buildHasEdge(fields []*ast.Field, info *types.Info, parent 
 	for _, field := range fields {
 		// TODO: ST2 -> ST3 という組が2つできてしまう。
 		// Map じゃないが、どうにか重複排除したい。
-		strOrInterfaceNames := tg.handleExpr(field.Type, info, tps)
+		typeNames := tg.findTypeStringsFromExpr(field.Type, info, tps)
 		embedded := field.Names == nil
 		kind := Has
 		if embedded {
 			kind = Embeds
 		}
-		for _, name := range strOrInterfaceNames {
+		for _, name := range typeNames {
 			if name == "struct{}" || name == "interface{}" || name == "any" {
 				continue
 			}
@@ -133,6 +164,14 @@ func (tg *TypeGraph) buildImplementsEdge() {
 	}
 }
 
+func (tg *TypeGraph) buildAliasEdge(pkg, from, to string) {
+	tg.edges = append(tg.edges, &Edge{
+		From: pkg + "." + from,
+		To:   pkg + "." + to,
+		Kind: UsesAsAlias,
+	})
+}
+
 func (tg *TypeGraph) Build(path string) error {
 	cfg := &packages.Config{
 		Mode: packages.NeedName | packages.NeedFiles | packages.NeedCompiledGoFiles |
@@ -166,7 +205,7 @@ func (tg *TypeGraph) Build(path string) error {
 					if obj == nil {
 						return true
 					}
-					switch obj.Type().Underlying().(type) {
+					switch ut := obj.Type().Underlying().(type) {
 					case *types.Struct:
 						if tg.pkgToStructs[obj.Pkg().Path()] == nil {
 							tg.pkgToStructs[obj.Pkg().Path()] = map[string]types.Object{}
@@ -177,6 +216,35 @@ func (tg *TypeGraph) Build(path string) error {
 							tg.pkgToInterfaces[obj.Pkg().Path()] = map[string]types.Object{}
 						}
 						tg.pkgToInterfaces[obj.Pkg().Path()][obj.Name()] = obj
+					case *types.Basic:
+						// Basic type and not aliased? (e.g. int, uint8, string)
+						if obj.Type().String() == ut.String() {
+							return true
+						}
+						if tg.pkgToOthers[obj.Pkg().Path()] == nil {
+							tg.pkgToOthers[obj.Pkg().Path()] = map[string]types.Object{}
+						}
+						tg.pkgToOthers[obj.Pkg().Path()][obj.Name()] = obj
+					case *types.Map:
+						if tg.pkgToOthers[obj.Pkg().Path()] == nil {
+							tg.pkgToOthers[obj.Pkg().Path()] = map[string]types.Object{}
+						}
+						tg.pkgToOthers[obj.Pkg().Path()][obj.Name()] = obj
+					case *types.Slice:
+						if tg.pkgToOthers[obj.Pkg().Path()] == nil {
+							tg.pkgToOthers[obj.Pkg().Path()] = map[string]types.Object{}
+						}
+						tg.pkgToOthers[obj.Pkg().Path()][obj.Name()] = obj
+					case *types.Array:
+						if tg.pkgToOthers[obj.Pkg().Path()] == nil {
+							tg.pkgToOthers[obj.Pkg().Path()] = map[string]types.Object{}
+						}
+						tg.pkgToOthers[obj.Pkg().Path()][obj.Name()] = obj
+					case *types.Pointer:
+						if tg.pkgToOthers[obj.Pkg().Path()] == nil {
+							tg.pkgToOthers[obj.Pkg().Path()] = map[string]types.Object{}
+						}
+						tg.pkgToOthers[obj.Pkg().Path()][obj.Name()] = obj
 					default:
 						return true
 					}
@@ -194,6 +262,34 @@ func (tg *TypeGraph) Build(path string) error {
 						tg.buildHasEdge(t.Fields.List, pkg.TypesInfo, obj, ii, tps)
 					case *ast.InterfaceType:
 						tg.buildHasEdge(t.Methods.List, pkg.TypesInfo, obj, ii, tps)
+					case *ast.Ident:
+						childObj := pkg.TypesInfo.ObjectOf(t)
+						if childObj == nil {
+							return true
+						}
+						switch childObj.Type().Underlying().(type) {
+						case *types.Struct:
+							tg.buildAliasEdge(obj.Pkg().Path(), obj.Name(), childObj.Name())
+						}
+					case *ast.MapType:
+						typs := tg.findTypeStringsFromExpr(t.Key, pkg.TypesInfo, tps)
+						for _, typ := range typs {
+							tg.buildAliasEdge(obj.Pkg().Path(), obj.Name(), typ)
+						}
+						typs = tg.findTypeStringsFromExpr(t.Value, pkg.TypesInfo, tps)
+						for _, typ := range typs {
+							tg.buildAliasEdge(obj.Pkg().Path(), obj.Name(), typ)
+						}
+					case *ast.ArrayType:
+						typs := tg.findTypeStringsFromExpr(t.Elt, pkg.TypesInfo, tps)
+						for _, typ := range typs {
+							tg.buildAliasEdge(obj.Pkg().Path(), obj.Name(), typ)
+						}
+					case *ast.StarExpr:
+						typs := tg.findTypeStringsFromExpr(t.X, pkg.TypesInfo, tps)
+						for _, typ := range typs {
+							tg.buildAliasEdge(obj.Pkg().Path(), obj.Name(), typ)
+						}
 					}
 				}
 				return true
@@ -217,8 +313,19 @@ func (tg *TypeGraph) Nodes() map[string]([]string) {
 	}
 
 	for pkg, interfaces := range tg.pkgToInterfaces {
-		nodes[pkg] = []string{}
+		if _, ok := nodes[pkg]; !ok {
+			nodes[pkg] = []string{}
+		}
 		for _, i := range interfaces {
+			nodes[pkg] = append(nodes[pkg], i.Name())
+		}
+	}
+
+	for pkg, others := range tg.pkgToOthers {
+		if _, ok := nodes[pkg]; !ok {
+			nodes[pkg] = []string{}
+		}
+		for _, i := range others {
 			nodes[pkg] = append(nodes[pkg], i.Name())
 		}
 	}
@@ -248,6 +355,15 @@ func (tg *TypeGraph) Dump() {
 		for _, s := range ifc {
 			fmt.Print("    ")
 			fmt.Println(s.Name())
+		}
+	}
+
+	fmt.Println("others:")
+	for pkg, others := range tg.pkgToOthers {
+		fmt.Printf("  pkg: %s\n", pkg)
+		for _, o := range others {
+			fmt.Print("    ")
+			fmt.Println(o.Name())
 		}
 	}
 

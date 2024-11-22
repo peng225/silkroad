@@ -62,6 +62,8 @@ func OutputDotFile(tg *graph.TypeGraph, fileName string) error {
 			label = "Implements"
 		case graph.Embeds:
 			label = "Embeds"
+		case graph.UsesAsAlias:
+			label = "UsesAsAlias"
 		default:
 			panic(fmt.Sprintf("Unknown edge kind %d. found", edge.Kind))
 		}
