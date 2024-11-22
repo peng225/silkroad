@@ -1,16 +1,23 @@
 package cmd
 
 import (
+	"bufio"
 	"log/slog"
 	"os"
+	"path"
+	"strings"
 
 	"github.com/peng225/silkroad/internal/dot"
 	"github.com/peng225/silkroad/internal/graph"
 	"github.com/spf13/cobra"
 )
 
-var rootPath string
-var outputFileName string
+var (
+	rootPath       string
+	outputFileName string
+	ignoreExternal bool
+	goModPath      string
+)
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -25,8 +32,16 @@ to quickly create a Cobra application.`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	Run: func(cmd *cobra.Command, args []string) {
-		tg := graph.NewTypeGraph()
-		err := tg.Build(rootPath)
+		moduleName := ""
+		var err error
+		if ignoreExternal {
+			moduleName, err = getModuleName(path.Join(goModPath, "go.mod"))
+			if err != nil {
+				panic(err)
+			}
+		}
+		tg := graph.NewTypeGraph(ignoreExternal, moduleName)
+		err = tg.Build(rootPath)
 		if err != nil {
 			panic(err)
 		}
@@ -36,6 +51,25 @@ to quickly create a Cobra application.`,
 			slog.Error("Failed to output a dot file.", "err", err.Error())
 		}
 	},
+}
+
+func getModuleName(goModFilePath string) (string, error) {
+	f, err := os.Open(goModFilePath)
+	if err != nil {
+		panic(err)
+	}
+	defer f.Close()
+
+	scanner := bufio.NewScanner(f)
+	for scanner.Scan() {
+		line := scanner.Text()
+		line = strings.TrimSpace(line)
+		if strings.HasPrefix(line, "module ") {
+			tokens := strings.Split(line, " ")
+			return tokens[len(tokens)-1], nil
+		}
+	}
+	return "", nil
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -58,4 +92,8 @@ func init() {
 	// when this action is called directly.
 	rootCmd.Flags().StringVarP(&rootPath, "path", "p", ".", "The path to the root directory for which the analysis runs.")
 	rootCmd.Flags().StringVarP(&outputFileName, "output", "o", ".", "The output dot file name.")
+	rootCmd.Flags().BoolVar(&ignoreExternal, "ignore-external", false, "Ignore types imported from the external modules.")
+	rootCmd.Flags().StringVar(&goModPath, "go-mod-path", "", "The path to the directory where go.mod file exists.")
+
+	rootCmd.MarkFlagsRequiredTogether("ignore-external", "go-mod-path")
 }

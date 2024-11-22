@@ -14,6 +14,8 @@ type TypeGraph struct {
 	pkgToInterfaces map[string](map[string]types.Object)
 	pkgToOthers     map[string](map[string]types.Object)
 	edges           []*Edge
+	ignoreExternal  bool
+	moduleName      string
 }
 
 type EdgeKind int
@@ -36,12 +38,14 @@ type importInfo struct {
 	path  string
 }
 
-func NewTypeGraph() *TypeGraph {
+func NewTypeGraph(ignoreExternal bool, moduleName string) *TypeGraph {
 	return &TypeGraph{
 		pkgToStructs:    map[string](map[string]types.Object){},
 		pkgToInterfaces: map[string](map[string]types.Object){},
 		pkgToOthers:     map[string](map[string]types.Object){},
 		edges:           []*Edge{},
+		ignoreExternal:  ignoreExternal,
+		moduleName:      moduleName,
 	}
 }
 
@@ -117,6 +121,7 @@ func (tg *TypeGraph) buildHasEdge(fields []*ast.Field, info *types.Info, parent 
 		if embedded {
 			kind = Embeds
 		}
+	TYPES_LOOP:
 		for _, name := range typeNames {
 			if name == "struct{}" || name == "interface{}" || name == "any" {
 				continue
@@ -127,6 +132,9 @@ func (tg *TypeGraph) buildHasEdge(fields []*ast.Field, info *types.Info, parent 
 				if len(tokens) == 2 {
 					if v.alias == tokens[0] || strings.HasSuffix(v.path, tokens[0]) {
 						fullName = v.path + "." + tokens[1]
+						if tg.ignoreExternal && !strings.HasPrefix(fullName, tg.moduleName) {
+							continue TYPES_LOOP
+						}
 						break
 					}
 				}
