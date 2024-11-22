@@ -120,7 +120,7 @@ func (tg *TypeGraph) buildImplementsEdge() {
 			for spkg, structs := range tg.pkgToStructs {
 				for _, s := range structs {
 					ptr := types.NewPointer(s.Type())
-					if types.Implements(ptr, typedI) {
+					if types.Implements(ptr, typedI) && !typedI.Empty() {
 						tg.edges = append(tg.edges, &Edge{
 							From: spkg + "." + s.Name(),
 							To:   ipkg + "." + i.Name(),
