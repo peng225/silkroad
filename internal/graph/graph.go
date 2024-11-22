@@ -51,9 +51,6 @@ func (tg *TypeGraph) handleExpr(expr ast.Expr, info *types.Info, tps map[string]
 	}
 	switch v := t.Underlying().(type) {
 	case *types.Struct:
-		if _, ok := tps[types.ExprString(expr)]; ok {
-			return nil
-		}
 		ret = append(ret, types.ExprString(expr))
 		return ret
 	case *types.Interface:
@@ -99,12 +96,11 @@ func (tg *TypeGraph) buildHasEdge(fields []*ast.Field, info *types.Info, parent 
 			fullName := parent.Pkg().Path() + "." + name
 			for _, v := range ii {
 				tokens := strings.Split(name, ".")
-				if len(tokens) == 2 && v.alias == tokens[0] {
-					fullName = v.path + "." + tokens[1]
-					break
-				} else if len(tokens) == 2 && strings.HasSuffix(v.path, tokens[0]) {
-					fullName = v.path + "." + tokens[1]
-					break
+				if len(tokens) == 2 {
+					if v.alias == tokens[0] || strings.HasSuffix(v.path, tokens[0]) {
+						fullName = v.path + "." + tokens[1]
+						break
+					}
 				}
 			}
 			tg.edges = append(tg.edges, &Edge{
@@ -173,12 +169,13 @@ func (tg *TypeGraph) Build(path string) error {
 					if obj == nil {
 						return true
 					}
-					if _, ok := obj.Type().Underlying().(*types.Struct); ok {
+					switch v := obj.Type().Underlying().(type) {
+					case *types.Struct:
 						if tg.pkgToStructs[obj.Pkg().Path()] == nil {
 							tg.pkgToStructs[obj.Pkg().Path()] = map[string]types.Object{}
 						}
 						tg.pkgToStructs[obj.Pkg().Path()][obj.Name()] = obj
-					} else if v, ok := obj.Type().Underlying().(*types.Interface); ok {
+					case *types.Interface:
 						if v.Empty() {
 							break
 						}
@@ -186,8 +183,8 @@ func (tg *TypeGraph) Build(path string) error {
 							tg.pkgToInterfaces[obj.Pkg().Path()] = map[string]types.Object{}
 						}
 						tg.pkgToInterfaces[obj.Pkg().Path()][obj.Name()] = obj
-					} else {
-						break
+					default:
+						return true
 					}
 
 					tps := map[string]struct{}{}
