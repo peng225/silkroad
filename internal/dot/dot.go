@@ -23,8 +23,10 @@ func OutputDotFile(tg *graph.TypeGraph, fileName string) error {
 	nodes := tg.Nodes()
 	for pkg, objs := range nodes {
 		sanitizedPkg := strings.Replace(
-			strings.Replace(pkg, ".", "_", -1),
-			"/", "_", -1)
+			strings.Replace(
+				strings.Replace(pkg, ".", "_", -1),
+				"/", "_", -1),
+			"-", "_", -1)
 		err := writeAll(f, []byte(fmt.Sprintf("subgraph cluster_%s {\n", sanitizedPkg)))
 		if err != nil {
 			return err
