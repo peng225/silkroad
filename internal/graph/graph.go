@@ -151,7 +151,6 @@ func (tg *TypeGraph) buildHasEdge(fields []*ast.Field, info *types.Info, parent 
 func (tg *TypeGraph) buildImplementsEdge() {
 	for ipkg, interfaces := range tg.pkgToInterfaces {
 		for _, i := range interfaces {
-			fmt.Printf("i: %s\n", i.Name())
 			typedI, ok := i.Type().Underlying().(*types.Interface)
 			if !ok {
 				panic("should be interface type")
