@@ -14,6 +14,7 @@ func OutputDotFile(tg *graph.TypeGraph, fileName string) error {
 	if err != nil {
 		return err
 	}
+	defer f.Close()
 
 	err = writeAll(f, []byte("digraph G {\n"))
 	if err != nil {
