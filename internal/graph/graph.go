@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"go/ast"
 	"go/types"
+	"log/slog"
 	"strings"
 
 	"golang.org/x/tools/go/packages"
@@ -185,6 +186,115 @@ func (tg *TypeGraph) buildAliasEdge(pkg, from, to string) {
 	})
 }
 
+// When obj is added to the node list, return true.
+func (tg *TypeGraph) addToNodes(obj types.Object) bool {
+	switch ut := obj.Type().Underlying().(type) {
+	case *types.Struct:
+		if tg.pkgToStructs[obj.Pkg().Path()] == nil {
+			tg.pkgToStructs[obj.Pkg().Path()] = map[string]types.Object{}
+		}
+		tg.pkgToStructs[obj.Pkg().Path()][obj.Name()] = obj
+	case *types.Interface:
+		if tg.pkgToInterfaces[obj.Pkg().Path()] == nil {
+			tg.pkgToInterfaces[obj.Pkg().Path()] = map[string]types.Object{}
+		}
+		tg.pkgToInterfaces[obj.Pkg().Path()][obj.Name()] = obj
+	case *types.Basic:
+		// Basic type and not aliased? (e.g. int, uint8, string)
+		if obj.Type().String() == ut.String() {
+			return false
+		}
+		if tg.pkgToOthers[obj.Pkg().Path()] == nil {
+			tg.pkgToOthers[obj.Pkg().Path()] = map[string]types.Object{}
+		}
+		tg.pkgToOthers[obj.Pkg().Path()][obj.Name()] = obj
+	case *types.Map:
+		if tg.pkgToOthers[obj.Pkg().Path()] == nil {
+			tg.pkgToOthers[obj.Pkg().Path()] = map[string]types.Object{}
+		}
+		tg.pkgToOthers[obj.Pkg().Path()][obj.Name()] = obj
+	case *types.Slice:
+		if tg.pkgToOthers[obj.Pkg().Path()] == nil {
+			tg.pkgToOthers[obj.Pkg().Path()] = map[string]types.Object{}
+		}
+		tg.pkgToOthers[obj.Pkg().Path()][obj.Name()] = obj
+	case *types.Array:
+		if tg.pkgToOthers[obj.Pkg().Path()] == nil {
+			tg.pkgToOthers[obj.Pkg().Path()] = map[string]types.Object{}
+		}
+		tg.pkgToOthers[obj.Pkg().Path()][obj.Name()] = obj
+	case *types.Pointer:
+		if tg.pkgToOthers[obj.Pkg().Path()] == nil {
+			tg.pkgToOthers[obj.Pkg().Path()] = map[string]types.Object{}
+		}
+		tg.pkgToOthers[obj.Pkg().Path()][obj.Name()] = obj
+	case *types.Chan:
+		if tg.pkgToOthers[obj.Pkg().Path()] == nil {
+			tg.pkgToOthers[obj.Pkg().Path()] = map[string]types.Object{}
+		}
+		tg.pkgToOthers[obj.Pkg().Path()][obj.Name()] = obj
+	default:
+		return false
+	}
+
+	return true
+}
+
+func (tg *TypeGraph) buildEdge(x *ast.TypeSpec, info *types.Info,
+	parent types.Object, ii []importInfo) {
+	// Get a type parameter list
+	tps := map[string]struct{}{}
+	if x.TypeParams != nil {
+		for _, tp := range x.TypeParams.List {
+			for _, name := range tp.Names {
+				tps[name.Name] = struct{}{}
+			}
+		}
+	}
+
+	switch t := x.Type.(type) {
+	case *ast.StructType:
+		tg.buildHasEdge(t.Fields.List, info, parent, ii, tps)
+	case *ast.InterfaceType:
+		tg.buildHasEdge(t.Methods.List, info, parent, ii, tps)
+	case *ast.Ident:
+		childObj := info.ObjectOf(t)
+		if childObj == nil {
+			return
+		}
+		switch childObj.Type().Underlying().(type) {
+		case *types.Struct:
+			tg.buildAliasEdge(parent.Pkg().Path(), parent.Name(), childObj.Name())
+		}
+	case *ast.MapType:
+		typs := tg.findTypeStringsFromExpr(t.Key, info, tps)
+		for _, typ := range typs {
+			tg.buildAliasEdge(parent.Pkg().Path(), parent.Name(), typ)
+		}
+		typs = tg.findTypeStringsFromExpr(t.Value, info, tps)
+		for _, typ := range typs {
+			tg.buildAliasEdge(parent.Pkg().Path(), parent.Name(), typ)
+		}
+	case *ast.ArrayType:
+		typs := tg.findTypeStringsFromExpr(t.Elt, info, tps)
+		for _, typ := range typs {
+			tg.buildAliasEdge(parent.Pkg().Path(), parent.Name(), typ)
+		}
+	case *ast.StarExpr:
+		typs := tg.findTypeStringsFromExpr(t.X, info, tps)
+		for _, typ := range typs {
+			tg.buildAliasEdge(parent.Pkg().Path(), parent.Name(), typ)
+		}
+	case *ast.ChanType:
+		typs := tg.findTypeStringsFromExpr(t.Value, info, tps)
+		for _, typ := range typs {
+			tg.buildAliasEdge(parent.Pkg().Path(), parent.Name(), typ)
+		}
+	default:
+		slog.Error("Failed to build edge for type: %T", t)
+	}
+}
+
 func (tg *TypeGraph) Build(path string) error {
 	cfg := &packages.Config{
 		Mode: packages.NeedName | packages.NeedFiles | packages.NeedCompiledGoFiles |
@@ -218,102 +328,12 @@ func (tg *TypeGraph) Build(path string) error {
 					if obj == nil {
 						return true
 					}
-					switch ut := obj.Type().Underlying().(type) {
-					case *types.Struct:
-						if tg.pkgToStructs[obj.Pkg().Path()] == nil {
-							tg.pkgToStructs[obj.Pkg().Path()] = map[string]types.Object{}
-						}
-						tg.pkgToStructs[obj.Pkg().Path()][obj.Name()] = obj
-					case *types.Interface:
-						if tg.pkgToInterfaces[obj.Pkg().Path()] == nil {
-							tg.pkgToInterfaces[obj.Pkg().Path()] = map[string]types.Object{}
-						}
-						tg.pkgToInterfaces[obj.Pkg().Path()][obj.Name()] = obj
-					case *types.Basic:
-						// Basic type and not aliased? (e.g. int, uint8, string)
-						if obj.Type().String() == ut.String() {
-							return true
-						}
-						if tg.pkgToOthers[obj.Pkg().Path()] == nil {
-							tg.pkgToOthers[obj.Pkg().Path()] = map[string]types.Object{}
-						}
-						tg.pkgToOthers[obj.Pkg().Path()][obj.Name()] = obj
-					case *types.Map:
-						if tg.pkgToOthers[obj.Pkg().Path()] == nil {
-							tg.pkgToOthers[obj.Pkg().Path()] = map[string]types.Object{}
-						}
-						tg.pkgToOthers[obj.Pkg().Path()][obj.Name()] = obj
-					case *types.Slice:
-						if tg.pkgToOthers[obj.Pkg().Path()] == nil {
-							tg.pkgToOthers[obj.Pkg().Path()] = map[string]types.Object{}
-						}
-						tg.pkgToOthers[obj.Pkg().Path()][obj.Name()] = obj
-					case *types.Array:
-						if tg.pkgToOthers[obj.Pkg().Path()] == nil {
-							tg.pkgToOthers[obj.Pkg().Path()] = map[string]types.Object{}
-						}
-						tg.pkgToOthers[obj.Pkg().Path()][obj.Name()] = obj
-					case *types.Pointer:
-						if tg.pkgToOthers[obj.Pkg().Path()] == nil {
-							tg.pkgToOthers[obj.Pkg().Path()] = map[string]types.Object{}
-						}
-						tg.pkgToOthers[obj.Pkg().Path()][obj.Name()] = obj
-					case *types.Chan:
-						if tg.pkgToOthers[obj.Pkg().Path()] == nil {
-							tg.pkgToOthers[obj.Pkg().Path()] = map[string]types.Object{}
-						}
-						tg.pkgToOthers[obj.Pkg().Path()][obj.Name()] = obj
-					default:
+					added := tg.addToNodes(obj)
+					if !added {
 						return true
 					}
 
-					tps := map[string]struct{}{}
-					if x.TypeParams != nil {
-						for _, tp := range x.TypeParams.List {
-							for _, name := range tp.Names {
-								tps[name.Name] = struct{}{}
-							}
-						}
-					}
-					switch t := x.Type.(type) {
-					case *ast.StructType:
-						tg.buildHasEdge(t.Fields.List, pkg.TypesInfo, obj, ii, tps)
-					case *ast.InterfaceType:
-						tg.buildHasEdge(t.Methods.List, pkg.TypesInfo, obj, ii, tps)
-					case *ast.Ident:
-						childObj := pkg.TypesInfo.ObjectOf(t)
-						if childObj == nil {
-							return true
-						}
-						switch childObj.Type().Underlying().(type) {
-						case *types.Struct:
-							tg.buildAliasEdge(obj.Pkg().Path(), obj.Name(), childObj.Name())
-						}
-					case *ast.MapType:
-						typs := tg.findTypeStringsFromExpr(t.Key, pkg.TypesInfo, tps)
-						for _, typ := range typs {
-							tg.buildAliasEdge(obj.Pkg().Path(), obj.Name(), typ)
-						}
-						typs = tg.findTypeStringsFromExpr(t.Value, pkg.TypesInfo, tps)
-						for _, typ := range typs {
-							tg.buildAliasEdge(obj.Pkg().Path(), obj.Name(), typ)
-						}
-					case *ast.ArrayType:
-						typs := tg.findTypeStringsFromExpr(t.Elt, pkg.TypesInfo, tps)
-						for _, typ := range typs {
-							tg.buildAliasEdge(obj.Pkg().Path(), obj.Name(), typ)
-						}
-					case *ast.StarExpr:
-						typs := tg.findTypeStringsFromExpr(t.X, pkg.TypesInfo, tps)
-						for _, typ := range typs {
-							tg.buildAliasEdge(obj.Pkg().Path(), obj.Name(), typ)
-						}
-					case *ast.ChanType:
-						typs := tg.findTypeStringsFromExpr(t.Value, pkg.TypesInfo, tps)
-						for _, typ := range typs {
-							tg.buildAliasEdge(obj.Pkg().Path(), obj.Name(), typ)
-						}
-					}
+					tg.buildEdge(x, pkg.TypesInfo, obj, ii)
 				}
 				return true
 			})
