@@ -56,23 +56,25 @@ func OutputDotFile(tg *graph.TypeGraph, fileName string) error {
 		}
 	}
 
-	for _, edge := range tg.Edges() {
-		label := ""
-		switch edge.Kind {
-		case graph.Has:
-			label = "Has"
-		case graph.Implements:
-			label = "Implements"
-		case graph.Embeds:
-			label = "Embeds"
-		case graph.UsesAsAlias:
-			label = "UsesAsAlias"
-		default:
-			panic(fmt.Sprintf("Unknown edge kind %d. found", edge.Kind))
-		}
-		err := writeAll(f, []byte(fmt.Sprintf("\"%s\" -> \"%s\" [label = \"%s\"];\n", edge.From, edge.To, label)))
-		if err != nil {
-			return err
+	for from, edges := range tg.Edges() {
+		for edge, _ := range edges {
+			label := ""
+			switch edge.Kind {
+			case graph.Has:
+				label = "Has"
+			case graph.Implements:
+				label = "Implements"
+			case graph.Embeds:
+				label = "Embeds"
+			case graph.UsesAsAlias:
+				label = "UsesAsAlias"
+			default:
+				panic(fmt.Sprintf("Unknown edge kind %d. found", edge.Kind))
+			}
+			err := writeAll(f, []byte(fmt.Sprintf("\"%s\" -> \"%s\" [label = \"%s\"];\n", from, edge.To, label)))
+			if err != nil {
+				return err
+			}
 		}
 	}
 

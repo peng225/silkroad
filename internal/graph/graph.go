@@ -14,7 +14,7 @@ type TypeGraph struct {
 	pkgToStructs    map[string](map[string]types.Object)
 	pkgToInterfaces map[string](map[string]types.Object)
 	pkgToOthers     map[string](map[string]types.Object)
-	edges           []*Edge
+	edges           map[string](map[Edge]struct{})
 	ignoreExternal  bool
 	moduleName      string
 }
@@ -29,7 +29,6 @@ const (
 )
 
 type Edge struct {
-	From string
 	To   string
 	Kind EdgeKind
 }
@@ -44,7 +43,7 @@ func NewTypeGraph(ignoreExternal bool, moduleName string) *TypeGraph {
 		pkgToStructs:    map[string](map[string]types.Object){},
 		pkgToInterfaces: map[string](map[string]types.Object){},
 		pkgToOthers:     map[string](map[string]types.Object){},
-		edges:           []*Edge{},
+		edges:           map[string](map[Edge]struct{}){},
 		ignoreExternal:  ignoreExternal,
 		moduleName:      moduleName,
 	}
@@ -117,11 +116,19 @@ func (tg *TypeGraph) findTypeStringsFromExpr(expr ast.Expr, info *types.Info, tp
 	return ret
 }
 
+func (tg *TypeGraph) addToEdges(from, to string, kind EdgeKind) {
+	if _, ok := tg.edges[from]; !ok {
+		tg.edges[from] = map[Edge]struct{}{}
+	}
+	tg.edges[from][Edge{
+		To:   to,
+		Kind: kind,
+	}] = struct{}{}
+}
+
 func (tg *TypeGraph) buildHasEdge(fields []*ast.Field, info *types.Info, parent types.Object,
 	ii []importInfo, tps map[string]struct{}) {
 	for _, field := range fields {
-		// TODO: ST2 -> ST3 という組が2つできてしまう。
-		// Map じゃないが、どうにか重複排除したい。
 		typeNames := tg.findTypeStringsFromExpr(field.Type, info, tps)
 		embedded := field.Names == nil
 		kind := Has
@@ -146,11 +153,7 @@ func (tg *TypeGraph) buildHasEdge(fields []*ast.Field, info *types.Info, parent 
 					}
 				}
 			}
-			tg.edges = append(tg.edges, &Edge{
-				From: parent.Pkg().Path() + "." + parent.Name(),
-				To:   fullName,
-				Kind: kind,
-			})
+			tg.addToEdges(parent.Pkg().Path()+"."+parent.Name(), fullName, kind)
 		}
 	}
 }
@@ -166,24 +169,12 @@ func (tg *TypeGraph) buildImplementsEdge() {
 				for _, s := range structs {
 					ptr := types.NewPointer(s.Type())
 					if types.Implements(ptr, typedI) && !typedI.Empty() {
-						tg.edges = append(tg.edges, &Edge{
-							From: spkg + "." + s.Name(),
-							To:   ipkg + "." + i.Name(),
-							Kind: Implements,
-						})
+						tg.addToEdges(spkg+"."+s.Name(), ipkg+"."+i.Name(), Implements)
 					}
 				}
 			}
 		}
 	}
-}
-
-func (tg *TypeGraph) buildAliasEdge(pkg, from, to string) {
-	tg.edges = append(tg.edges, &Edge{
-		From: pkg + "." + from,
-		To:   pkg + "." + to,
-		Kind: UsesAsAlias,
-	})
 }
 
 // When obj is added to the node list, return true.
@@ -264,31 +255,38 @@ func (tg *TypeGraph) buildEdge(x *ast.TypeSpec, info *types.Info,
 		}
 		switch childObj.Type().Underlying().(type) {
 		case *types.Struct:
-			tg.buildAliasEdge(parent.Pkg().Path(), parent.Name(), childObj.Name())
+			tg.addToEdges(parent.Pkg().Path()+"."+parent.Name(),
+				parent.Pkg().Path()+"."+childObj.Name(),
+				UsesAsAlias)
 		}
 	case *ast.MapType:
 		typs := tg.findTypeStringsFromExpr(t.Key, info, tps)
 		for _, typ := range typs {
-			tg.buildAliasEdge(parent.Pkg().Path(), parent.Name(), typ)
+			tg.addToEdges(parent.Pkg().Path()+"."+parent.Name(),
+				parent.Pkg().Path()+"."+typ, UsesAsAlias)
 		}
 		typs = tg.findTypeStringsFromExpr(t.Value, info, tps)
 		for _, typ := range typs {
-			tg.buildAliasEdge(parent.Pkg().Path(), parent.Name(), typ)
+			tg.addToEdges(parent.Pkg().Path()+"."+parent.Name(),
+				parent.Pkg().Path()+"."+typ, UsesAsAlias)
 		}
 	case *ast.ArrayType:
 		typs := tg.findTypeStringsFromExpr(t.Elt, info, tps)
 		for _, typ := range typs {
-			tg.buildAliasEdge(parent.Pkg().Path(), parent.Name(), typ)
+			tg.addToEdges(parent.Pkg().Path()+"."+parent.Name(),
+				parent.Pkg().Path()+"."+typ, UsesAsAlias)
 		}
 	case *ast.StarExpr:
 		typs := tg.findTypeStringsFromExpr(t.X, info, tps)
 		for _, typ := range typs {
-			tg.buildAliasEdge(parent.Pkg().Path(), parent.Name(), typ)
+			tg.addToEdges(parent.Pkg().Path()+"."+parent.Name(),
+				parent.Pkg().Path()+"."+typ, UsesAsAlias)
 		}
 	case *ast.ChanType:
 		typs := tg.findTypeStringsFromExpr(t.Value, info, tps)
 		for _, typ := range typs {
-			tg.buildAliasEdge(parent.Pkg().Path(), parent.Name(), typ)
+			tg.addToEdges(parent.Pkg().Path()+"."+parent.Name(),
+				parent.Pkg().Path()+"."+typ, UsesAsAlias)
 		}
 	default:
 		slog.Error("Failed to build edge for type: %T", t)
@@ -376,14 +374,19 @@ func (tg *TypeGraph) Nodes() map[string]([]string) {
 	return nodes
 }
 
-func (tg *TypeGraph) Edges() []*Edge {
-	ret := make([]*Edge, len(tg.edges))
-	copy(ret, tg.edges)
+func (tg *TypeGraph) Edges() map[string](map[Edge]struct{}) {
+	ret := map[string](map[Edge]struct{}){}
+	for from, edges := range tg.edges {
+		ret[from] = map[Edge]struct{}{}
+		for edge, _ := range edges {
+			ret[from][edge] = struct{}{}
+		}
+	}
 	return ret
 }
 
 func (tg *TypeGraph) Dump() {
-	fmt.Println("structs:")
+	fmt.Println("struct nodes:")
 	for pkg, str := range tg.pkgToStructs {
 		fmt.Printf("  pkg: %s\n", pkg)
 		for _, s := range str {
@@ -392,7 +395,7 @@ func (tg *TypeGraph) Dump() {
 		}
 	}
 
-	fmt.Println("interfaces:")
+	fmt.Println("interface nodes:")
 	for pkg, ifc := range tg.pkgToInterfaces {
 		fmt.Printf("  pkg: %s\n", pkg)
 		for _, s := range ifc {
@@ -401,7 +404,7 @@ func (tg *TypeGraph) Dump() {
 		}
 	}
 
-	fmt.Println("others:")
+	fmt.Println("other nodes:")
 	for pkg, others := range tg.pkgToOthers {
 		fmt.Printf("  pkg: %s\n", pkg)
 		for _, o := range others {
@@ -410,7 +413,12 @@ func (tg *TypeGraph) Dump() {
 		}
 	}
 
-	for _, edge := range tg.edges {
-		fmt.Println(*edge)
+	fmt.Println("edges:")
+	for from, edges := range tg.edges {
+		fmt.Printf("  from: %s\n", from)
+		fmt.Println("  to, kind:")
+		for edge, _ := range edges {
+			fmt.Printf("    %s, %d\n", edge.To, edge.Kind)
+		}
 	}
 }
