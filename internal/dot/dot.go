@@ -10,16 +10,7 @@ import (
 )
 
 func OutputDotFile(tg *graph.TypeGraph, fileName string) error {
-	f, err := os.OpenFile(fileName, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0664)
-	if err != nil {
-		return err
-	}
-	defer f.Close()
-
-	err = writeAll(f, []byte("digraph G {\n"))
-	if err != nil {
-		return err
-	}
+	data := "digraph G {\n"
 
 	nodes := tg.Nodes()
 	for pkg, objs := range nodes {
@@ -28,32 +19,14 @@ func OutputDotFile(tg *graph.TypeGraph, fileName string) error {
 				strings.Replace(pkg, ".", "_", -1),
 				"/", "_", -1),
 			"-", "_", -1)
-		err := writeAll(f, []byte(fmt.Sprintf("subgraph cluster_%s {\n", sanitizedPkg)))
-		if err != nil {
-			return err
-		}
-		err = writeAll(f, []byte(fmt.Sprintf("label = \"%s\";\n", pkg)))
-		if err != nil {
-			return err
-		}
-		err = writeAll(f, []byte("style = \"solid\";\n"))
-		if err != nil {
-			return err
-		}
-		err = writeAll(f, []byte("color = \"black\";\n"))
-		if err != nil {
-			return err
-		}
+		data += fmt.Sprintf("subgraph cluster_%s {\n", sanitizedPkg)
+		data += fmt.Sprintf("label = \"%s\";\n", pkg)
+		data += "style = \"solid\";\n"
+		data += "color = \"black\";\n"
 		for _, obj := range objs {
-			err := writeAll(f, []byte(fmt.Sprintf("\"%s.%s\" [label = \"%s\"];\n", pkg, obj, obj)))
-			if err != nil {
-				return err
-			}
+			data += fmt.Sprintf("\"%s.%s\" [label = \"%s\"];\n", pkg, obj, obj)
 		}
-		err = writeAll(f, []byte("}\n"))
-		if err != nil {
-			return err
-		}
+		data += "}\n"
 	}
 
 	for from, edges := range tg.Edges() {
@@ -71,14 +44,18 @@ func OutputDotFile(tg *graph.TypeGraph, fileName string) error {
 			default:
 				panic(fmt.Sprintf("Unknown edge kind %d. found", edge.Kind))
 			}
-			err := writeAll(f, []byte(fmt.Sprintf("\"%s\" -> \"%s\" [label = \"%s\"];\n", from, edge.To, label)))
-			if err != nil {
-				return err
-			}
+			data += fmt.Sprintf("\"%s\" -> \"%s\" [label = \"%s\"];\n", from, edge.To, label)
 		}
 	}
+	data += "}\n"
 
-	err = writeAll(f, []byte("}\n"))
+	f, err := os.OpenFile(fileName, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0664)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	err = writeAll(f, []byte(data))
 	if err != nil {
 		return err
 	}
