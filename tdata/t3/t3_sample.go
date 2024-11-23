@@ -5,6 +5,7 @@ type AliasForMapST100 map[string]ST100
 type AliasForSliceST100 []ST100
 type AliasForArrayST100 [2]ST100
 type AliasForStarST100 *ST100
+type AliasForChanInt chan AliasForInt
 type AliasForInt int
 type AliasForAny any
 type AliasForEmptyStruct struct{}
@@ -28,4 +29,12 @@ type ST102 struct {
 	s AliasForStarST100
 	t AliasForArrayST100
 	u AliasForSliceST100
+}
+
+type ST103 struct {
+	h chan AliasForInt
+	i <-chan AliasForInt
+	j chan<- AliasForInt
+	k chan int
+	l AliasForChanInt
 }

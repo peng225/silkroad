@@ -90,7 +90,11 @@ func (tg *TypeGraph) findTypeStringsFromExpr(expr ast.Expr, info *types.Info, tp
 		}
 	case *types.Pointer:
 		// Aliased?
-		fmt.Printf("pointer, underlying: %s, %s\n", t.String(), ut.String())
+		if t.String() != ut.String() {
+			ret = append(ret, types.ExprString(expr))
+		}
+	case *types.Chan:
+		// Aliased?
 		if t.String() != ut.String() {
 			ret = append(ret, types.ExprString(expr))
 		}
@@ -106,6 +110,8 @@ func (tg *TypeGraph) findTypeStringsFromExpr(expr ast.Expr, info *types.Info, tp
 		ret = append(ret, tg.findTypeStringsFromExpr(v.Value, info, tps)...)
 	case *ast.SelectorExpr:
 		ret = append(ret, types.ExprString(v))
+	case *ast.ChanType:
+		ret = append(ret, tg.findTypeStringsFromExpr(v.Value, info, tps)...)
 	}
 	return ret
 }
@@ -252,6 +258,11 @@ func (tg *TypeGraph) Build(path string) error {
 							tg.pkgToOthers[obj.Pkg().Path()] = map[string]types.Object{}
 						}
 						tg.pkgToOthers[obj.Pkg().Path()][obj.Name()] = obj
+					case *types.Chan:
+						if tg.pkgToOthers[obj.Pkg().Path()] == nil {
+							tg.pkgToOthers[obj.Pkg().Path()] = map[string]types.Object{}
+						}
+						tg.pkgToOthers[obj.Pkg().Path()][obj.Name()] = obj
 					default:
 						return true
 					}
@@ -294,6 +305,11 @@ func (tg *TypeGraph) Build(path string) error {
 						}
 					case *ast.StarExpr:
 						typs := tg.findTypeStringsFromExpr(t.X, pkg.TypesInfo, tps)
+						for _, typ := range typs {
+							tg.buildAliasEdge(obj.Pkg().Path(), obj.Name(), typ)
+						}
+					case *ast.ChanType:
+						typs := tg.findTypeStringsFromExpr(t.Value, pkg.TypesInfo, tps)
 						for _, typ := range typs {
 							tg.buildAliasEdge(obj.Pkg().Path(), obj.Name(), typ)
 						}
