@@ -122,11 +122,15 @@ func (tg *TypeGraph) findTypeStringsFromExpr(expr ast.Expr, info *types.Info, tp
 		ret = append(ret, tg.findTypeStringsFromExpr(v.Value, info, tps)...)
 	case *ast.FuncType:
 		// FIXME: May need the consideration for TypeParams.
-		for _, param := range v.Params.List {
-			ret = append(ret, tg.findTypeStringsFromExpr(param.Type, info, tps)...)
+		if v.Params != nil {
+			for _, param := range v.Params.List {
+				ret = append(ret, tg.findTypeStringsFromExpr(param.Type, info, tps)...)
+			}
 		}
-		for _, param := range v.Results.List {
-			ret = append(ret, tg.findTypeStringsFromExpr(param.Type, info, tps)...)
+		if v.Results != nil {
+			for _, param := range v.Results.List {
+				ret = append(ret, tg.findTypeStringsFromExpr(param.Type, info, tps)...)
+			}
 		}
 	case *ast.IndexExpr:
 		ret = append(ret, tg.findTypeStringsFromExpr(v.Index, info, tps)...)
@@ -327,11 +331,15 @@ func (tg *TypeGraph) buildEdge(x *ast.TypeSpec, info *types.Info,
 	case *ast.FuncType:
 		// FIXME: May need the consideration for TypeParams.
 		typs := []string{}
-		for _, param := range t.Params.List {
-			typs = append(typs, tg.findTypeStringsFromExpr(param.Type, info, tps)...)
+		if t.Params != nil {
+			for _, param := range t.Params.List {
+				typs = append(typs, tg.findTypeStringsFromExpr(param.Type, info, tps)...)
+			}
 		}
-		for _, param := range t.Results.List {
-			typs = append(typs, tg.findTypeStringsFromExpr(param.Type, info, tps)...)
+		if t.Results != nil {
+			for _, param := range t.Results.List {
+				typs = append(typs, tg.findTypeStringsFromExpr(param.Type, info, tps)...)
+			}
 		}
 		for _, typ := range typs {
 			tg.addToEdges(parent.Pkg().Path()+"."+parent.Name(),
