@@ -69,12 +69,11 @@ func (tg *TypeGraph) findTypeStringsFromExpr(expr ast.Expr, info *types.Info, tp
 			}
 			ret = append(ret, types.ExprString(expr))
 		case *types.Basic:
-			// Not aliased? (e.g. int, uint8, string)
-			if t.String() == ut.String() {
-				return nil
+			// Aliased?
+			// Examples of non-aliased type: int, uint8, string
+			if t.String() != ut.String() {
+				ret = append(ret, types.ExprString(expr))
 			}
-			ret = append(ret, types.ExprString(expr))
-			return ret
 		case *types.Map:
 			// Aliased?
 			if t.String() != ut.String() {
