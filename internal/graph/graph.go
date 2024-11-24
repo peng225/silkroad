@@ -354,7 +354,7 @@ func (tg *TypeGraph) buildEdge(x *ast.TypeSpec, info *types.Info,
 				tg.findFullTypeName(typ, parent, ii), UsesAsAlias)
 		}
 	default:
-		slog.Error("Failed to build edge for type: %T", t)
+		slog.Error("Failed to build edge", "type", fmt.Sprintf("%T", t))
 	}
 }
 
