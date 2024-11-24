@@ -148,6 +148,11 @@ func (tg *TypeGraph) addToEdges(from, to string, kind EdgeKind) {
 	}] = struct{}{}
 }
 
+func containedInBlacklist(name string) bool {
+	return name == "struct{}" || name == "interface{}" ||
+		name == "any" || name == "error" || name == "comparable"
+}
+
 func (tg *TypeGraph) buildHasEdge(fields []*ast.Field, info *types.Info, parent types.Object,
 	ii []importInfo, tps map[string]struct{}) {
 	for _, field := range fields {
@@ -159,7 +164,7 @@ func (tg *TypeGraph) buildHasEdge(fields []*ast.Field, info *types.Info, parent 
 		}
 	TYPES_LOOP:
 		for _, name := range typeNames {
-			if name == "struct{}" || name == "interface{}" || name == "any" {
+			if containedInBlacklist(name) {
 				continue
 			}
 			fullName := parent.Pkg().Path() + "." + name
