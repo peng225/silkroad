@@ -54,3 +54,7 @@ func (s *ST3) Op1(a, b int) int {
 func (s *ST3) Op2(a int) int {
 	return -a
 }
+
+func (s *ST3) Op3(o ...t2.ST200) {
+	return
+}

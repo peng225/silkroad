@@ -135,6 +135,8 @@ func (tg *TypeGraph) findTypeStringsFromExpr(expr ast.Expr, info *types.Info, tp
 	case *ast.IndexExpr:
 		ret = append(ret, tg.findTypeStringsFromExpr(v.Index, info, tps)...)
 		ret = append(ret, tg.findTypeStringsFromExpr(v.X, info, tps)...)
+	case *ast.Ellipsis:
+		ret = append(ret, tg.findTypeStringsFromExpr(v.Elt, info, tps)...)
 	default:
 		slog.Warn("expr did not match any types.", "expr", types.ExprString(expr),
 			"type", fmt.Sprintf("%T", v))
@@ -341,6 +343,12 @@ func (tg *TypeGraph) buildEdge(x *ast.TypeSpec, info *types.Info,
 				typs = append(typs, tg.findTypeStringsFromExpr(param.Type, info, tps)...)
 			}
 		}
+		for _, typ := range typs {
+			tg.addToEdges(parent.Pkg().Path()+"."+parent.Name(),
+				tg.findFullTypeName(typ, parent, ii), UsesAsAlias)
+		}
+	case *ast.Ellipsis:
+		typs := tg.findTypeStringsFromExpr(t.Elt, info, tps)
 		for _, typ := range typs {
 			tg.addToEdges(parent.Pkg().Path()+"."+parent.Name(),
 				tg.findFullTypeName(typ, parent, ii), UsesAsAlias)
