@@ -52,55 +52,64 @@ func NewTypeGraph(ignoreExternal bool, moduleName string) *TypeGraph {
 func (tg *TypeGraph) findTypeStringsFromExpr(expr ast.Expr, info *types.Info, tps map[string]struct{}) []string {
 	ret := []string{}
 
-	t := info.TypeOf(expr)
-	if t == nil {
-		return nil
-	}
-	switch ut := t.Underlying().(type) {
-	case *types.Struct:
-		ret = append(ret, types.ExprString(expr))
-		return ret
-	case *types.Interface:
-		if _, ok := tps[types.ExprString(expr)]; ok {
-			return nil
-		}
-		ret = append(ret, types.ExprString(expr))
-		return ret
-	case *types.Basic:
-		// Not aliased? (e.g. int, uint8, string)
-		if t.String() == ut.String() {
-			return nil
-		}
-		ret = append(ret, types.ExprString(expr))
-		return ret
-	case *types.Map:
-		// Aliased?
-		if t.String() != ut.String() {
-			ret = append(ret, types.ExprString(expr))
-		}
-	case *types.Slice:
-		// Aliased?
-		if t.String() != ut.String() {
-			ret = append(ret, types.ExprString(expr))
-		}
-	case *types.Array:
-		// Aliased?
-		if t.String() != ut.String() {
-			ret = append(ret, types.ExprString(expr))
-		}
-	case *types.Pointer:
-		// Aliased?
-		if t.String() != ut.String() {
-			ret = append(ret, types.ExprString(expr))
-		}
-	case *types.Chan:
-		// Aliased?
-		if t.String() != ut.String() {
-			ret = append(ret, types.ExprString(expr))
-		}
-	}
-
 	switch v := expr.(type) {
+	case *ast.Ident:
+		obj := info.ObjectOf(v)
+		if obj == nil {
+			slog.Error("Obj is nil.", "name", v.Name)
+			return nil
+		}
+		t := obj.Type()
+		switch ut := t.Underlying().(type) {
+		case *types.Struct:
+			ret = append(ret, types.ExprString(expr))
+		case *types.Interface:
+			if _, ok := tps[types.ExprString(expr)]; ok {
+				return nil
+			}
+			ret = append(ret, types.ExprString(expr))
+		case *types.Basic:
+			// Not aliased? (e.g. int, uint8, string)
+			if t.String() == ut.String() {
+				return nil
+			}
+			ret = append(ret, types.ExprString(expr))
+			return ret
+		case *types.Map:
+			// Aliased?
+			if t.String() != ut.String() {
+				ret = append(ret, types.ExprString(expr))
+			}
+		case *types.Slice:
+			// Aliased?
+			if t.String() != ut.String() {
+				ret = append(ret, types.ExprString(expr))
+			}
+		case *types.Array:
+			// Aliased?
+			if t.String() != ut.String() {
+				ret = append(ret, types.ExprString(expr))
+			}
+		case *types.Pointer:
+			// Aliased?
+			if t.String() != ut.String() {
+				ret = append(ret, types.ExprString(expr))
+			}
+		case *types.Chan:
+			// Aliased?
+			if t.String() != ut.String() {
+				ret = append(ret, types.ExprString(expr))
+			}
+		case *types.Signature:
+			// Aliased?
+			if t.String() != ut.String() {
+				ret = append(ret, types.ExprString(expr))
+			}
+		default:
+			slog.Warn("ut did not match any types.", "ut", ut.String(),
+				"t", t.String(),
+				"type", fmt.Sprintf("%T", ut))
+		}
 	case *ast.StarExpr:
 		ret = append(ret, tg.findTypeStringsFromExpr(v.X, info, tps)...)
 	case *ast.ArrayType:
@@ -112,6 +121,20 @@ func (tg *TypeGraph) findTypeStringsFromExpr(expr ast.Expr, info *types.Info, tp
 		ret = append(ret, types.ExprString(v))
 	case *ast.ChanType:
 		ret = append(ret, tg.findTypeStringsFromExpr(v.Value, info, tps)...)
+	case *ast.FuncType:
+		// FIXME: May need the consideration for TypeParams.
+		for _, param := range v.Params.List {
+			ret = append(ret, tg.findTypeStringsFromExpr(param.Type, info, tps)...)
+		}
+		for _, param := range v.Results.List {
+			ret = append(ret, tg.findTypeStringsFromExpr(param.Type, info, tps)...)
+		}
+	case *ast.IndexExpr:
+		ret = append(ret, tg.findTypeStringsFromExpr(v.Index, info, tps)...)
+		ret = append(ret, tg.findTypeStringsFromExpr(v.X, info, tps)...)
+	default:
+		slog.Warn("expr did not match any types.", "expr", types.ExprString(expr),
+			"type", fmt.Sprintf("%T", v))
 	}
 	return ret
 }
