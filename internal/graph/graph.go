@@ -153,6 +153,20 @@ func containedInBlacklist(name string) bool {
 		name == "any" || name == "error" || name == "comparable"
 }
 
+func (tg *TypeGraph) findFullTypeName(name string, parent types.Object, ii []importInfo) string {
+	fullName := parent.Pkg().Path() + "." + name
+	for _, v := range ii {
+		tokens := strings.Split(name, ".")
+		if len(tokens) == 2 {
+			if v.alias == tokens[0] || strings.HasSuffix(v.path, tokens[0]) {
+				fullName = v.path + "." + tokens[1]
+				break
+			}
+		}
+	}
+	return fullName
+}
+
 func (tg *TypeGraph) buildHasEdge(fields []*ast.Field, info *types.Info, parent types.Object,
 	ii []importInfo, tps map[string]struct{}) {
 	for _, field := range fields {
@@ -162,23 +176,13 @@ func (tg *TypeGraph) buildHasEdge(fields []*ast.Field, info *types.Info, parent 
 		if embedded {
 			kind = Embeds
 		}
-	TYPES_LOOP:
 		for _, name := range typeNames {
 			if containedInBlacklist(name) {
 				continue
 			}
-			fullName := parent.Pkg().Path() + "." + name
-			for _, v := range ii {
-				tokens := strings.Split(name, ".")
-				if len(tokens) == 2 {
-					if v.alias == tokens[0] || strings.HasSuffix(v.path, tokens[0]) {
-						fullName = v.path + "." + tokens[1]
-						if tg.ignoreExternal && !strings.HasPrefix(fullName, tg.moduleName) {
-							continue TYPES_LOOP
-						}
-						break
-					}
-				}
+			fullName := tg.findFullTypeName(name, parent, ii)
+			if tg.ignoreExternal && !strings.HasPrefix(fullName, tg.moduleName) {
+				continue
 			}
 			tg.addToEdges(parent.Pkg().Path()+"."+parent.Name(), fullName, kind)
 		}
@@ -251,6 +255,11 @@ func (tg *TypeGraph) addToNodes(obj types.Object) bool {
 			tg.pkgToOthers[obj.Pkg().Path()] = map[string]types.Object{}
 		}
 		tg.pkgToOthers[obj.Pkg().Path()][obj.Name()] = obj
+	case *types.Signature:
+		if tg.pkgToOthers[obj.Pkg().Path()] == nil {
+			tg.pkgToOthers[obj.Pkg().Path()] = map[string]types.Object{}
+		}
+		tg.pkgToOthers[obj.Pkg().Path()][obj.Name()] = obj
 	default:
 		return false
 	}
@@ -283,37 +292,50 @@ func (tg *TypeGraph) buildEdge(x *ast.TypeSpec, info *types.Info,
 		switch childObj.Type().Underlying().(type) {
 		case *types.Struct:
 			tg.addToEdges(parent.Pkg().Path()+"."+parent.Name(),
-				parent.Pkg().Path()+"."+childObj.Name(),
+				tg.findFullTypeName(childObj.Name(), parent, ii),
 				UsesAsAlias)
 		}
 	case *ast.MapType:
 		typs := tg.findTypeStringsFromExpr(t.Key, info, tps)
 		for _, typ := range typs {
 			tg.addToEdges(parent.Pkg().Path()+"."+parent.Name(),
-				parent.Pkg().Path()+"."+typ, UsesAsAlias)
+				tg.findFullTypeName(typ, parent, ii), UsesAsAlias)
 		}
 		typs = tg.findTypeStringsFromExpr(t.Value, info, tps)
 		for _, typ := range typs {
 			tg.addToEdges(parent.Pkg().Path()+"."+parent.Name(),
-				parent.Pkg().Path()+"."+typ, UsesAsAlias)
+				tg.findFullTypeName(typ, parent, ii), UsesAsAlias)
 		}
 	case *ast.ArrayType:
 		typs := tg.findTypeStringsFromExpr(t.Elt, info, tps)
 		for _, typ := range typs {
 			tg.addToEdges(parent.Pkg().Path()+"."+parent.Name(),
-				parent.Pkg().Path()+"."+typ, UsesAsAlias)
+				tg.findFullTypeName(typ, parent, ii), UsesAsAlias)
 		}
 	case *ast.StarExpr:
 		typs := tg.findTypeStringsFromExpr(t.X, info, tps)
 		for _, typ := range typs {
 			tg.addToEdges(parent.Pkg().Path()+"."+parent.Name(),
-				parent.Pkg().Path()+"."+typ, UsesAsAlias)
+				tg.findFullTypeName(typ, parent, ii), UsesAsAlias)
 		}
 	case *ast.ChanType:
 		typs := tg.findTypeStringsFromExpr(t.Value, info, tps)
 		for _, typ := range typs {
 			tg.addToEdges(parent.Pkg().Path()+"."+parent.Name(),
-				parent.Pkg().Path()+"."+typ, UsesAsAlias)
+				tg.findFullTypeName(typ, parent, ii), UsesAsAlias)
+		}
+	case *ast.FuncType:
+		// FIXME: May need the consideration for TypeParams.
+		typs := []string{}
+		for _, param := range t.Params.List {
+			typs = append(typs, tg.findTypeStringsFromExpr(param.Type, info, tps)...)
+		}
+		for _, param := range t.Results.List {
+			typs = append(typs, tg.findTypeStringsFromExpr(param.Type, info, tps)...)
+		}
+		for _, typ := range typs {
+			tg.addToEdges(parent.Pkg().Path()+"."+parent.Name(),
+				tg.findFullTypeName(typ, parent, ii), UsesAsAlias)
 		}
 	default:
 		slog.Error("Failed to build edge for type: %T", t)
