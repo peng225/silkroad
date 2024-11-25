@@ -137,6 +137,12 @@ func (tg *TypeGraph) findTypeStringsFromExpr(expr ast.Expr, info *types.Info, tp
 		ret = append(ret, tg.findTypeStringsFromExpr(v.X, info, tps)...)
 	case *ast.Ellipsis:
 		ret = append(ret, tg.findTypeStringsFromExpr(v.Elt, info, tps)...)
+	case *ast.StructType:
+		// Ignore.
+		// e.g. struct{}
+	case *ast.InterfaceType:
+		// Ignore.
+		// e.g. interface{}
 	default:
 		slog.Warn("expr did not match any types.", "expr", types.ExprString(expr),
 			"type", fmt.Sprintf("%T", v))
@@ -155,8 +161,7 @@ func (tg *TypeGraph) addToEdges(from, to string, kind EdgeKind) {
 }
 
 func containedInBlacklist(name string) bool {
-	return name == "struct{}" || name == "interface{}" ||
-		name == "any" || name == "error" || name == "comparable"
+	return name == "any" || name == "error" || name == "comparable"
 }
 
 func (tg *TypeGraph) findFullTypeName(name string, parent types.Object, ii []importInfo) string {
