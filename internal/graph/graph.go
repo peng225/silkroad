@@ -299,59 +299,41 @@ func (tg *TypeGraph) buildEdge(x *ast.TypeSpec, info *types.Info,
 	}
 }
 
+func addToNodesHelper(dest map[string](map[string]types.Object), obj types.Object) {
+
+	if dest[obj.Pkg().Path()] == nil {
+		dest[obj.Pkg().Path()] = map[string]types.Object{}
+	}
+	dest[obj.Pkg().Path()][obj.Name()] = obj
+}
+
 // When obj is added to the node list, return true.
 func (tg *TypeGraph) addToNodes(obj types.Object) bool {
 	switch ut := obj.Type().Underlying().(type) {
 	case *types.Struct:
-		if tg.pkgToStructs[obj.Pkg().Path()] == nil {
-			tg.pkgToStructs[obj.Pkg().Path()] = map[string]types.Object{}
-		}
-		tg.pkgToStructs[obj.Pkg().Path()][obj.Name()] = obj
+		addToNodesHelper(tg.pkgToStructs, obj)
 	case *types.Interface:
-		if tg.pkgToInterfaces[obj.Pkg().Path()] == nil {
-			tg.pkgToInterfaces[obj.Pkg().Path()] = map[string]types.Object{}
-		}
-		tg.pkgToInterfaces[obj.Pkg().Path()][obj.Name()] = obj
+		addToNodesHelper(tg.pkgToInterfaces, obj)
 	case *types.Basic:
 		// Basic type and not aliased? (e.g. int, uint8, string)
 		if obj.Type().String() == ut.String() {
 			return false
 		}
-		if tg.pkgToOthers[obj.Pkg().Path()] == nil {
-			tg.pkgToOthers[obj.Pkg().Path()] = map[string]types.Object{}
-		}
-		tg.pkgToOthers[obj.Pkg().Path()][obj.Name()] = obj
+		addToNodesHelper(tg.pkgToOthers, obj)
 	case *types.Map:
-		if tg.pkgToOthers[obj.Pkg().Path()] == nil {
-			tg.pkgToOthers[obj.Pkg().Path()] = map[string]types.Object{}
-		}
-		tg.pkgToOthers[obj.Pkg().Path()][obj.Name()] = obj
+		addToNodesHelper(tg.pkgToOthers, obj)
 	case *types.Slice:
-		if tg.pkgToOthers[obj.Pkg().Path()] == nil {
-			tg.pkgToOthers[obj.Pkg().Path()] = map[string]types.Object{}
-		}
-		tg.pkgToOthers[obj.Pkg().Path()][obj.Name()] = obj
+		addToNodesHelper(tg.pkgToOthers, obj)
 	case *types.Array:
-		if tg.pkgToOthers[obj.Pkg().Path()] == nil {
-			tg.pkgToOthers[obj.Pkg().Path()] = map[string]types.Object{}
-		}
-		tg.pkgToOthers[obj.Pkg().Path()][obj.Name()] = obj
+		addToNodesHelper(tg.pkgToOthers, obj)
 	case *types.Pointer:
-		if tg.pkgToOthers[obj.Pkg().Path()] == nil {
-			tg.pkgToOthers[obj.Pkg().Path()] = map[string]types.Object{}
-		}
-		tg.pkgToOthers[obj.Pkg().Path()][obj.Name()] = obj
+		addToNodesHelper(tg.pkgToOthers, obj)
 	case *types.Chan:
-		if tg.pkgToOthers[obj.Pkg().Path()] == nil {
-			tg.pkgToOthers[obj.Pkg().Path()] = map[string]types.Object{}
-		}
-		tg.pkgToOthers[obj.Pkg().Path()][obj.Name()] = obj
+		addToNodesHelper(tg.pkgToOthers, obj)
 	case *types.Signature:
-		if tg.pkgToOthers[obj.Pkg().Path()] == nil {
-			tg.pkgToOthers[obj.Pkg().Path()] = map[string]types.Object{}
-		}
-		tg.pkgToOthers[obj.Pkg().Path()][obj.Name()] = obj
+		addToNodesHelper(tg.pkgToOthers, obj)
 	default:
+		slog.Info("obj was not added to the node list.", "name", obj.Name())
 		return false
 	}
 
