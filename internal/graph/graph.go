@@ -214,65 +214,6 @@ func (tg *TypeGraph) buildImplementsEdge() {
 	}
 }
 
-// When obj is added to the node list, return true.
-func (tg *TypeGraph) addToNodes(obj types.Object) bool {
-	switch ut := obj.Type().Underlying().(type) {
-	case *types.Struct:
-		if tg.pkgToStructs[obj.Pkg().Path()] == nil {
-			tg.pkgToStructs[obj.Pkg().Path()] = map[string]types.Object{}
-		}
-		tg.pkgToStructs[obj.Pkg().Path()][obj.Name()] = obj
-	case *types.Interface:
-		if tg.pkgToInterfaces[obj.Pkg().Path()] == nil {
-			tg.pkgToInterfaces[obj.Pkg().Path()] = map[string]types.Object{}
-		}
-		tg.pkgToInterfaces[obj.Pkg().Path()][obj.Name()] = obj
-	case *types.Basic:
-		// Basic type and not aliased? (e.g. int, uint8, string)
-		if obj.Type().String() == ut.String() {
-			return false
-		}
-		if tg.pkgToOthers[obj.Pkg().Path()] == nil {
-			tg.pkgToOthers[obj.Pkg().Path()] = map[string]types.Object{}
-		}
-		tg.pkgToOthers[obj.Pkg().Path()][obj.Name()] = obj
-	case *types.Map:
-		if tg.pkgToOthers[obj.Pkg().Path()] == nil {
-			tg.pkgToOthers[obj.Pkg().Path()] = map[string]types.Object{}
-		}
-		tg.pkgToOthers[obj.Pkg().Path()][obj.Name()] = obj
-	case *types.Slice:
-		if tg.pkgToOthers[obj.Pkg().Path()] == nil {
-			tg.pkgToOthers[obj.Pkg().Path()] = map[string]types.Object{}
-		}
-		tg.pkgToOthers[obj.Pkg().Path()][obj.Name()] = obj
-	case *types.Array:
-		if tg.pkgToOthers[obj.Pkg().Path()] == nil {
-			tg.pkgToOthers[obj.Pkg().Path()] = map[string]types.Object{}
-		}
-		tg.pkgToOthers[obj.Pkg().Path()][obj.Name()] = obj
-	case *types.Pointer:
-		if tg.pkgToOthers[obj.Pkg().Path()] == nil {
-			tg.pkgToOthers[obj.Pkg().Path()] = map[string]types.Object{}
-		}
-		tg.pkgToOthers[obj.Pkg().Path()][obj.Name()] = obj
-	case *types.Chan:
-		if tg.pkgToOthers[obj.Pkg().Path()] == nil {
-			tg.pkgToOthers[obj.Pkg().Path()] = map[string]types.Object{}
-		}
-		tg.pkgToOthers[obj.Pkg().Path()][obj.Name()] = obj
-	case *types.Signature:
-		if tg.pkgToOthers[obj.Pkg().Path()] == nil {
-			tg.pkgToOthers[obj.Pkg().Path()] = map[string]types.Object{}
-		}
-		tg.pkgToOthers[obj.Pkg().Path()][obj.Name()] = obj
-	default:
-		return false
-	}
-
-	return true
-}
-
 func (tg *TypeGraph) buildEdge(x *ast.TypeSpec, info *types.Info,
 	parent types.Object, ii []importInfo) {
 	// Get a type parameter list
@@ -356,6 +297,65 @@ func (tg *TypeGraph) buildEdge(x *ast.TypeSpec, info *types.Info,
 	default:
 		slog.Error("Failed to build edge", "type", fmt.Sprintf("%T", t))
 	}
+}
+
+// When obj is added to the node list, return true.
+func (tg *TypeGraph) addToNodes(obj types.Object) bool {
+	switch ut := obj.Type().Underlying().(type) {
+	case *types.Struct:
+		if tg.pkgToStructs[obj.Pkg().Path()] == nil {
+			tg.pkgToStructs[obj.Pkg().Path()] = map[string]types.Object{}
+		}
+		tg.pkgToStructs[obj.Pkg().Path()][obj.Name()] = obj
+	case *types.Interface:
+		if tg.pkgToInterfaces[obj.Pkg().Path()] == nil {
+			tg.pkgToInterfaces[obj.Pkg().Path()] = map[string]types.Object{}
+		}
+		tg.pkgToInterfaces[obj.Pkg().Path()][obj.Name()] = obj
+	case *types.Basic:
+		// Basic type and not aliased? (e.g. int, uint8, string)
+		if obj.Type().String() == ut.String() {
+			return false
+		}
+		if tg.pkgToOthers[obj.Pkg().Path()] == nil {
+			tg.pkgToOthers[obj.Pkg().Path()] = map[string]types.Object{}
+		}
+		tg.pkgToOthers[obj.Pkg().Path()][obj.Name()] = obj
+	case *types.Map:
+		if tg.pkgToOthers[obj.Pkg().Path()] == nil {
+			tg.pkgToOthers[obj.Pkg().Path()] = map[string]types.Object{}
+		}
+		tg.pkgToOthers[obj.Pkg().Path()][obj.Name()] = obj
+	case *types.Slice:
+		if tg.pkgToOthers[obj.Pkg().Path()] == nil {
+			tg.pkgToOthers[obj.Pkg().Path()] = map[string]types.Object{}
+		}
+		tg.pkgToOthers[obj.Pkg().Path()][obj.Name()] = obj
+	case *types.Array:
+		if tg.pkgToOthers[obj.Pkg().Path()] == nil {
+			tg.pkgToOthers[obj.Pkg().Path()] = map[string]types.Object{}
+		}
+		tg.pkgToOthers[obj.Pkg().Path()][obj.Name()] = obj
+	case *types.Pointer:
+		if tg.pkgToOthers[obj.Pkg().Path()] == nil {
+			tg.pkgToOthers[obj.Pkg().Path()] = map[string]types.Object{}
+		}
+		tg.pkgToOthers[obj.Pkg().Path()][obj.Name()] = obj
+	case *types.Chan:
+		if tg.pkgToOthers[obj.Pkg().Path()] == nil {
+			tg.pkgToOthers[obj.Pkg().Path()] = map[string]types.Object{}
+		}
+		tg.pkgToOthers[obj.Pkg().Path()][obj.Name()] = obj
+	case *types.Signature:
+		if tg.pkgToOthers[obj.Pkg().Path()] == nil {
+			tg.pkgToOthers[obj.Pkg().Path()] = map[string]types.Object{}
+		}
+		tg.pkgToOthers[obj.Pkg().Path()][obj.Name()] = obj
+	default:
+		return false
+	}
+
+	return true
 }
 
 func (tg *TypeGraph) Build(path string) error {
