@@ -3,6 +3,7 @@ package dot
 import (
 	"fmt"
 	"io"
+	"log/slog"
 	"os"
 	"strings"
 
@@ -11,6 +12,7 @@ import (
 
 func WriteToFile(tg *graph.TypeGraph, fileName string) error {
 	data := "digraph G {\n"
+	data += "node[style=\"filled\" fillcolor=\"whitesmoke\"]\n"
 
 	nodes := tg.Nodes()
 	for pkg, objs := range nodes {
@@ -22,9 +24,9 @@ func WriteToFile(tg *graph.TypeGraph, fileName string) error {
 		data += fmt.Sprintf("subgraph cluster_%s {\n", sanitizedPkg)
 		data += fmt.Sprintf("label = \"%s\";\n", pkg)
 		data += "style = \"solid\";\n"
-		data += "color = \"black\";\n"
+		data += "bgcolor = \"cornsilk\";\n"
 		for _, obj := range objs {
-			data += fmt.Sprintf("\"%s.%s\" [label = \"%s\"];\n", pkg, obj, obj)
+			data += fmt.Sprintf("\"%s.%s\" [label=\"%s\"];\n", pkg, obj, obj)
 		}
 		data += "}\n"
 	}
@@ -32,19 +34,26 @@ func WriteToFile(tg *graph.TypeGraph, fileName string) error {
 	for from, edges := range tg.Edges() {
 		for edge, _ := range edges {
 			label := ""
+			arrowHead := "normal"
+			style := "solid"
 			switch edge.Kind {
 			case graph.Has:
 				label = "Has"
 			case graph.Implements:
 				label = "Implements"
+				arrowHead = "empty"
+				style = "dashed"
 			case graph.Embeds:
 				label = "Embeds"
+				arrowHead = "empty"
 			case graph.UsesAsAlias:
 				label = "UsesAsAlias"
+				style = "dashed"
 			default:
-				panic(fmt.Sprintf("Unknown edge kind %d. found", edge.Kind))
+				slog.Warn("Unknown edge kind found", "kind", edge.Kind)
 			}
-			data += fmt.Sprintf("\"%s\" -> \"%s\" [label = \"%s\"];\n", from, edge.To, label)
+			data += fmt.Sprintf("\"%s\" -> \"%s\" [label=\"%s\" arrowhead=\"%s\" style=\"%s\"];\n",
+				from, edge.To, label, arrowHead, style)
 		}
 	}
 	data += "}\n"
