@@ -1,7 +1,7 @@
 # Silkroad
 
 Silkroad is a tool to analyze dependencies between Go packages.
-Silkroad output the result as a dot file for Graphviz.
+Silkroad outputs the result as a dot file for Graphviz.
 
 ## How to build
 
