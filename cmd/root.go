@@ -46,7 +46,7 @@ to quickly create a Cobra application.`,
 			panic(err)
 		}
 		tg.Dump()
-		err = dot.OutputDotFile(tg, outputFileName)
+		err = dot.WriteToFile(tg, outputFileName)
 		if err != nil {
 			slog.Error("Failed to output a dot file.", "err", err.Error())
 		}

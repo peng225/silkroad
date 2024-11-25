@@ -9,7 +9,7 @@ import (
 	"github.com/peng225/silkroad/internal/graph"
 )
 
-func OutputDotFile(tg *graph.TypeGraph, fileName string) error {
+func WriteToFile(tg *graph.TypeGraph, fileName string) error {
 	data := "digraph G {\n"
 
 	nodes := tg.Nodes()
