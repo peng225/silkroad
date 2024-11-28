@@ -5,7 +5,7 @@ import (
 
 	ioalias "io"
 
-	"github.com/peng225/silkroad/tdata/t2"
+	"github.com/peng225/silkroad/testdata/t2"
 )
 
 var _ t2.IF1 = (*ST3)(nil)

@@ -1,6 +1,6 @@
 package t3
 
-import "github.com/peng225/silkroad/tdata/t1/t11"
+import "github.com/peng225/silkroad/testdata/t1/t11"
 
 type AliasForST100 ST100
 type AliasForMapST100 map[string]ST100
