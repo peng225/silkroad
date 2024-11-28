@@ -347,10 +347,8 @@ func (tg *TypeGraph) addToNodes(obj types.Object) bool {
 
 func (tg *TypeGraph) Build(path string) error {
 	cfg := &packages.Config{
-		Mode: packages.NeedName | packages.NeedFiles | packages.NeedCompiledGoFiles |
-			packages.NeedImports | packages.NeedTypes | packages.NeedTypesSizes |
-			packages.NeedSyntax | packages.NeedTypesInfo | packages.NeedDeps,
-		Dir: path,
+		Mode: packages.NeedSyntax | packages.NeedTypesInfo,
+		Dir:  path,
 	}
 	pkgs, err := packages.Load(cfg, "./...")
 	if err != nil {
