@@ -14,22 +14,30 @@ func WriteToFile(tg *graph.TypeGraph, fileName string) error {
 	data := "digraph G {\n"
 	data += "node[style=\"filled\" fillcolor=\"whitesmoke\"]\n"
 
-	nodes := tg.Nodes()
-	for pkg, objs := range nodes {
-		sanitizedPkg := strings.Replace(
-			strings.Replace(
-				strings.Replace(pkg, ".", "_", -1),
-				"/", "_", -1),
-			"-", "_", -1)
-		data += fmt.Sprintf("subgraph cluster_%s {\n", sanitizedPkg)
-		data += fmt.Sprintf("label = \"%s\";\n", pkg)
-		data += "style = \"solid\";\n"
-		data += "bgcolor = \"cornsilk\";\n"
-		for _, obj := range objs {
-			data += fmt.Sprintf("\"%s.%s\" [label=\"%s\"];\n", pkg, obj, obj)
+	writeNodes := func(shape string, nodes map[string]([]string)) {
+		for pkg, objs := range nodes {
+			sanitizedPkg := strings.Replace(
+				strings.Replace(
+					strings.Replace(pkg, ".", "_", -1),
+					"/", "_", -1),
+				"-", "_", -1)
+			data += fmt.Sprintf("subgraph cluster_%s {\n", sanitizedPkg)
+			data += fmt.Sprintf("label = \"%s\";\n", pkg)
+			data += "style = \"solid\";\n"
+			data += "bgcolor = \"cornsilk\";\n"
+			for _, obj := range objs {
+				data += fmt.Sprintf("\"%s.%s\" [label=\"%s\" shape=\"%s\"];\n",
+					pkg, obj, obj, shape)
+			}
+			data += "}\n"
 		}
-		data += "}\n"
 	}
+	nodes := tg.StructNodes()
+	writeNodes("rect", nodes)
+	nodes = tg.InterfaceNodes()
+	writeNodes("hexagon", nodes)
+	nodes = tg.OtherNodes()
+	writeNodes("ellipse", nodes)
 
 	for from, edges := range tg.Edges() {
 		for edge, _ := range edges {

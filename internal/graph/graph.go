@@ -391,7 +391,7 @@ func (tg *TypeGraph) Build(path string) error {
 	return nil
 }
 
-func (tg *TypeGraph) Nodes() map[string]([]string) {
+func (tg *TypeGraph) StructNodes() map[string]([]string) {
 	nodes := map[string]([]string){}
 
 	for pkg, structs := range tg.pkgToStructs {
@@ -401,6 +401,12 @@ func (tg *TypeGraph) Nodes() map[string]([]string) {
 		}
 	}
 
+	return nodes
+}
+
+func (tg *TypeGraph) InterfaceNodes() map[string]([]string) {
+	nodes := map[string]([]string){}
+
 	for pkg, interfaces := range tg.pkgToInterfaces {
 		if _, ok := nodes[pkg]; !ok {
 			nodes[pkg] = []string{}
@@ -409,6 +415,12 @@ func (tg *TypeGraph) Nodes() map[string]([]string) {
 			nodes[pkg] = append(nodes[pkg], i.Name())
 		}
 	}
+
+	return nodes
+}
+
+func (tg *TypeGraph) OtherNodes() map[string]([]string) {
+	nodes := map[string]([]string){}
 
 	for pkg, others := range tg.pkgToOthers {
 		if _, ok := nodes[pkg]; !ok {
