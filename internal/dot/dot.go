@@ -14,7 +14,7 @@ func WriteToFile(tg *graph.TypeGraph, fileName string) error {
 	data := "digraph G {\n"
 	data += "node[style=\"filled\" fillcolor=\"whitesmoke\"]\n"
 
-	writeNodes := func(shape string, nodes map[string]([]string)) {
+	writeNodes := func(shape, fillColor string, nodes map[string]([]string)) {
 		for pkg, objs := range nodes {
 			sanitizedPkg := strings.Replace(
 				strings.Replace(
@@ -26,18 +26,18 @@ func WriteToFile(tg *graph.TypeGraph, fileName string) error {
 			data += "style = \"solid\";\n"
 			data += "bgcolor = \"cornsilk\";\n"
 			for _, obj := range objs {
-				data += fmt.Sprintf("\"%s.%s\" [label=\"%s\" shape=\"%s\"];\n",
-					pkg, obj, obj, shape)
+				data += fmt.Sprintf("\"%s.%s\" [label=\"%s\" shape=\"%s\" fillcolor=\"%s\"];\n",
+					pkg, obj, obj, shape, fillColor)
 			}
 			data += "}\n"
 		}
 	}
 	nodes := tg.StructNodes()
-	writeNodes("rect", nodes)
+	writeNodes("rect", "paleturquoise1", nodes)
 	nodes = tg.InterfaceNodes()
-	writeNodes("hexagon", nodes)
+	writeNodes("hexagon", "plum1", nodes)
 	nodes = tg.OtherNodes()
-	writeNodes("ellipse", nodes)
+	writeNodes("ellipse", "whitesmoke", nodes)
 
 	for from, edges := range tg.Edges() {
 		for edge, _ := range edges {
