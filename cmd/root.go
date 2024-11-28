@@ -17,6 +17,7 @@ var (
 	outputFileName string
 	ignoreExternal bool
 	goModPath      string
+	verbose        bool
 )
 
 // rootCmd represents the base command when called without any subcommands
@@ -45,7 +46,9 @@ to quickly create a Cobra application.`,
 		if err != nil {
 			panic(err)
 		}
-		tg.Dump()
+		if verbose {
+			tg.Dump()
+		}
 		err = dot.WriteToFile(tg, outputFileName)
 		if err != nil {
 			slog.Error("Failed to output a dot file.", "err", err.Error())
@@ -94,6 +97,7 @@ func init() {
 	rootCmd.Flags().StringVarP(&outputFileName, "output", "o", ".", "The output dot file name.")
 	rootCmd.Flags().BoolVar(&ignoreExternal, "ignore-external", false, "Ignore types imported from the external modules.")
 	rootCmd.Flags().StringVar(&goModPath, "go-mod-path", "", "The path to the directory where go.mod file exists.")
+	rootCmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "Enable verbose mode.")
 
 	rootCmd.MarkFlagsRequiredTogether("ignore-external", "go-mod-path")
 }

@@ -359,9 +359,7 @@ func (tg *TypeGraph) Build(path string) error {
 	packages.PrintErrors(pkgs)
 
 	for _, pkg := range pkgs {
-		fmt.Printf("pkg: %s\n", pkg.Name)
 		for _, syntax := range pkg.Syntax {
-			fmt.Printf("file: %s\n", syntax.Name.Name)
 			ii := []importInfo{}
 			ast.Inspect(syntax, func(n ast.Node) bool {
 				switch x := n.(type) {
