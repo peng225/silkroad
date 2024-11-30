@@ -121,7 +121,6 @@ func (tg *TypeGraph) findTypeStringsFromExpr(expr ast.Expr, info *types.Info, tp
 	case *ast.ChanType:
 		ret = append(ret, tg.findTypeStringsFromExpr(v.Value, info, tps)...)
 	case *ast.FuncType:
-		// FIXME: May need the consideration for TypeParams.
 		if v.Params != nil {
 			for _, param := range v.Params.List {
 				ret = append(ret, tg.findTypeStringsFromExpr(param.Type, info, tps)...)
@@ -289,7 +288,6 @@ func (tg *TypeGraph) buildEdge(x *ast.TypeSpec, info *types.Info,
 				tg.findFullTypeName(typ, parent, ii), UsesAsAlias)
 		}
 	case *ast.FuncType:
-		// FIXME: May need the consideration for TypeParams.
 		typs := []string{}
 		if t.Params != nil {
 			for _, param := range t.Params.List {
