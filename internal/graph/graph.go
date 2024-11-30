@@ -241,11 +241,23 @@ func (tg *TypeGraph) buildEdge(x *ast.TypeSpec, info *types.Info,
 		if childObj == nil {
 			return
 		}
+		if containedInBlacklist(childObj.Name()) {
+			break
+		}
 		switch childObj.Type().Underlying().(type) {
 		case *types.Struct:
 			tg.addToEdges(parent.Pkg().Path()+"."+parent.Name(),
 				tg.findFullTypeName(childObj.Name(), parent, ii),
 				UsesAsAlias)
+		case *types.Interface:
+			tg.addToEdges(parent.Pkg().Path()+"."+parent.Name(),
+				tg.findFullTypeName(childObj.Name(), parent, ii),
+				UsesAsAlias)
+		case *types.Basic:
+			// Ignore.
+		default:
+			slog.Error("Failed to build edge", "type", fmt.Sprintf("%T", t),
+				"childObjType", childObj.Type().Underlying())
 		}
 	case *ast.MapType:
 		typs := tg.findTypeStringsFromExpr(t.Key, info, tps)

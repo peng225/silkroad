@@ -3,6 +3,7 @@ package t3
 import "github.com/peng225/silkroad/testdata/t1/t11"
 
 type AliasForST100 ST100
+type AliasForIF100 IF100
 type AliasForMapST100 map[string]ST100
 type AliasForSliceST100 []ST100
 type AliasForArrayST100 [2]ST100
@@ -12,6 +13,10 @@ type AliasForInt int
 type AliasForAny any
 type AliasForEmptyStruct struct{}
 type AliasForFunc func(*t11.ST1) *t11.ST2
+
+type IF100 interface {
+	Op1(int) bool
+}
 
 type ST100 struct {
 	a any
