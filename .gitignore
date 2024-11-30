@@ -17,6 +17,7 @@ silkroad
 *.dot
 *.svg
 !test.svg
+!test2.svg
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
