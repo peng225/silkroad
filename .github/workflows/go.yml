@@ -31,4 +31,4 @@ jobs:
         ${RUNNER_TEMP}/silkroad -p testdata -o tmptest.dot
         diff <(sort test.dot) <(sort tmptest.dot)
         ${RUNNER_TEMP}/silkroad -p testdata -o tmptest2.dot --ignore-external --go-mod-path .
-        diff <(sort test2.dot) <(sort tmptest2.dot)
+        diff <(sort test.dot) <(sort tmptest2.dot)
