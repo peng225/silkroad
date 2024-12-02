@@ -30,417 +30,417 @@
 <polygon fill="#bbffff" stroke="black" points="1616,-52 1554,-52 1554,-16 1616,-16 1616,-52"/>
 <text text-anchor="middle" x="1585" y="-30.3" font-family="Times,serif" font-size="14.00">ST200</text>
 </g>
-<!-- github.com/peng225/silkroad/testdata/t1/t11.ST8 -->
-<g id="node2" class="node">
-<title>github.com/peng225/silkroad/testdata/t1/t11.ST8</title>
-<polygon fill="#bbffff" stroke="black" points="1708,-226 1654,-226 1654,-190 1708,-190 1708,-226"/>
-<text text-anchor="middle" x="1681" y="-204.3" font-family="Times,serif" font-size="14.00">ST8</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t1/t11.ST1 -->
-<g id="node3" class="node">
-<title>github.com/peng225/silkroad/testdata/t1/t11.ST1</title>
-<polygon fill="#bbffff" stroke="black" points="1780,-334 1726,-334 1726,-298 1780,-298 1780,-334"/>
-<text text-anchor="middle" x="1753" y="-312.3" font-family="Times,serif" font-size="14.00">ST1</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t1/t11.ST2 -->
-<g id="node4" class="node">
-<title>github.com/peng225/silkroad/testdata/t1/t11.ST2</title>
-<polygon fill="#bbffff" stroke="black" points="1852,-421 1798,-421 1798,-385 1852,-385 1852,-421"/>
-<text text-anchor="middle" x="1825" y="-399.3" font-family="Times,serif" font-size="14.00">ST2</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t1/t11.ST3 -->
-<g id="node5" class="node">
-<title>github.com/peng225/silkroad/testdata/t1/t11.ST3</title>
-<polygon fill="#bbffff" stroke="black" points="1856,-334 1802,-334 1802,-298 1856,-298 1856,-334"/>
-<text text-anchor="middle" x="1829" y="-312.3" font-family="Times,serif" font-size="14.00">ST3</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t1/t11.ST2&#45;&gt;github.com/peng225/silkroad/testdata/t1/t11.ST3 -->
-<g id="edge2" class="edge">
-<title>github.com/peng225/silkroad/testdata/t1/t11.ST2&#45;&gt;github.com/peng225/silkroad/testdata/t1/t11.ST3</title>
-<path fill="none" stroke="black" d="M1825.81,-384.8C1826.36,-373.16 1827.09,-357.55 1827.72,-344.24"/>
-<polygon fill="black" stroke="black" points="1831.22,-344.33 1828.19,-334.18 1824.23,-344 1831.22,-344.33"/>
-<text text-anchor="middle" x="1841" y="-355.8" font-family="Times,serif" font-size="14.00">Has</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t1/t11.ST4 -->
-<g id="node6" class="node">
-<title>github.com/peng225/silkroad/testdata/t1/t11.ST4</title>
-<polygon fill="#bbffff" stroke="black" points="1793,-226 1739,-226 1739,-190 1793,-190 1793,-226"/>
-<text text-anchor="middle" x="1766" y="-204.3" font-family="Times,serif" font-size="14.00">ST4</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t1/t11.ST3&#45;&gt;github.com/peng225/silkroad/testdata/t1/t11.ST4 -->
-<g id="edge3" class="edge">
-<title>github.com/peng225/silkroad/testdata/t1/t11.ST3&#45;&gt;github.com/peng225/silkroad/testdata/t1/t11.ST4</title>
-<path fill="none" stroke="black" d="M1803.53,-297.85C1797.41,-292.72 1791.38,-286.66 1787,-280 1778.39,-266.91 1773.22,-250.18 1770.16,-236.25"/>
-<polygon fill="black" stroke="black" points="1773.56,-235.4 1768.21,-226.25 1766.69,-236.74 1773.56,-235.4"/>
-<text text-anchor="middle" x="1801" y="-268.8" font-family="Times,serif" font-size="14.00">Has</text>
-</g>
 <!-- github.com/peng225/silkroad/testdata/t2.IF1 -->
-<g id="node19" class="node">
+<g id="node2" class="node">
 <title>github.com/peng225/silkroad/testdata/t2.IF1</title>
 <polygon fill="#ffbbff" stroke="black" points="1615.54,-121 1600.27,-139 1569.73,-139 1554.46,-121 1569.73,-103 1600.27,-103 1615.54,-121"/>
 <text text-anchor="middle" x="1585" y="-117.3" font-family="Times,serif" font-size="14.00">IF1</text>
 </g>
-<!-- github.com/peng225/silkroad/testdata/t1/t11.ST3&#45;&gt;github.com/peng225/silkroad/testdata/t2.IF1 -->
-<g id="edge5" class="edge">
-<title>github.com/peng225/silkroad/testdata/t1/t11.ST3&#45;&gt;github.com/peng225/silkroad/testdata/t2.IF1</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M1830.75,-297.79C1832.6,-269.73 1831.89,-214.05 1802,-182 1756.42,-133.14 1674.94,-122.78 1625.84,-121.29"/>
-<polygon fill="none" stroke="black" points="1625.65,-117.78 1615.58,-121.09 1625.51,-124.78 1625.65,-117.78"/>
-<text text-anchor="middle" x="1872.5" y="-204.3" font-family="Times,serif" font-size="14.00">Implements</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t2.IF2 -->
-<g id="node20" class="node">
-<title>github.com/peng225/silkroad/testdata/t2.IF2</title>
-<polygon fill="#ffbbff" stroke="black" points="1602.54,-208 1587.27,-226 1556.73,-226 1541.46,-208 1556.73,-190 1587.27,-190 1602.54,-208"/>
-<text text-anchor="middle" x="1572" y="-204.3" font-family="Times,serif" font-size="14.00">IF2</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t1/t11.ST3&#45;&gt;github.com/peng225/silkroad/testdata/t2.IF2 -->
-<g id="edge4" class="edge">
-<title>github.com/peng225/silkroad/testdata/t1/t11.ST3&#45;&gt;github.com/peng225/silkroad/testdata/t2.IF2</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M1805.86,-297.82C1800.56,-294.67 1794.78,-291.82 1789,-290 1768.09,-283.43 1609.13,-293.67 1592,-280 1578.99,-269.62 1574.03,-251.47 1572.31,-236.12"/>
-<polygon fill="none" stroke="black" points="1575.79,-235.79 1571.57,-226.07 1568.81,-236.3 1575.79,-235.79"/>
-<text text-anchor="middle" x="1634.5" y="-268.8" font-family="Times,serif" font-size="14.00">Implements</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t1/t11.ST5 -->
-<g id="node7" class="node">
-<title>github.com/peng225/silkroad/testdata/t1/t11.ST5</title>
-<polygon fill="#bbffff" stroke="black" points="1780,-421 1726,-421 1726,-385 1780,-385 1780,-421"/>
-<text text-anchor="middle" x="1753" y="-399.3" font-family="Times,serif" font-size="14.00">ST5</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t1/t11.ST5&#45;&gt;github.com/peng225/silkroad/testdata/t1/t11.ST1 -->
-<g id="edge27" class="edge">
-<title>github.com/peng225/silkroad/testdata/t1/t11.ST5&#45;&gt;github.com/peng225/silkroad/testdata/t1/t11.ST1</title>
-<path fill="none" stroke="black" d="M1751.73,-384.88C1751.17,-375.23 1750.69,-362.94 1751,-352 1751.07,-349.44 1751.18,-346.79 1751.3,-344.13"/>
-<polygon fill="none" stroke="black" points="1754.79,-344.25 1751.83,-334.08 1747.8,-343.88 1754.79,-344.25"/>
-<text text-anchor="middle" x="1780" y="-355.8" font-family="Times,serif" font-size="14.00">Embeds</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t1/t11.ST6 -->
-<g id="node8" class="node">
-<title>github.com/peng225/silkroad/testdata/t1/t11.ST6</title>
-<polygon fill="#bbffff" stroke="black" points="1708,-421 1654,-421 1654,-385 1708,-385 1708,-421"/>
-<text text-anchor="middle" x="1681" y="-399.3" font-family="Times,serif" font-size="14.00">ST6</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t1/t11.ST7 -->
-<g id="node9" class="node">
-<title>github.com/peng225/silkroad/testdata/t1/t11.ST7</title>
-<polygon fill="#bbffff" stroke="black" points="1708,-334 1654,-334 1654,-298 1708,-298 1708,-334"/>
-<text text-anchor="middle" x="1681" y="-312.3" font-family="Times,serif" font-size="14.00">ST7</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t1/t11.ST6&#45;&gt;github.com/peng225/silkroad/testdata/t1/t11.ST7 -->
-<g id="edge32" class="edge">
-<title>github.com/peng225/silkroad/testdata/t1/t11.ST6&#45;&gt;github.com/peng225/silkroad/testdata/t1/t11.ST7</title>
-<path fill="none" stroke="black" d="M1681,-384.8C1681,-373.16 1681,-357.55 1681,-344.24"/>
-<polygon fill="black" stroke="black" points="1684.5,-344.18 1681,-334.18 1677.5,-344.18 1684.5,-344.18"/>
-<text text-anchor="middle" x="1695" y="-355.8" font-family="Times,serif" font-size="14.00">Has</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t1/t11.ST7&#45;&gt;github.com/peng225/silkroad/testdata/t1/t11.ST8 -->
-<g id="edge33" class="edge">
-<title>github.com/peng225/silkroad/testdata/t1/t11.ST7&#45;&gt;github.com/peng225/silkroad/testdata/t1/t11.ST8</title>
-<path fill="none" stroke="black" d="M1681,-297.97C1681,-281.38 1681,-255.88 1681,-236.43"/>
-<polygon fill="black" stroke="black" points="1684.5,-236.34 1681,-226.34 1677.5,-236.34 1684.5,-236.34"/>
-<text text-anchor="middle" x="1695" y="-268.8" font-family="Times,serif" font-size="14.00">Has</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t3.ST103 -->
-<g id="node10" class="node">
-<title>github.com/peng225/silkroad/testdata/t3.ST103</title>
-<polygon fill="#bbffff" stroke="black" points="1192,-529 1130,-529 1130,-493 1192,-493 1192,-529"/>
-<text text-anchor="middle" x="1161" y="-507.3" font-family="Times,serif" font-size="14.00">ST103</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t3.AliasForInt -->
-<g id="node27" class="node">
-<title>github.com/peng225/silkroad/testdata/t3.AliasForInt</title>
-<ellipse fill="whitesmoke" stroke="black" cx="1311" cy="-403" rx="61.99" ry="18"/>
-<text text-anchor="middle" x="1311" y="-399.3" font-family="Times,serif" font-size="14.00">AliasForInt</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t3.ST103&#45;&gt;github.com/peng225/silkroad/testdata/t3.AliasForInt -->
-<g id="edge6" class="edge">
-<title>github.com/peng225/silkroad/testdata/t3.ST103&#45;&gt;github.com/peng225/silkroad/testdata/t3.AliasForInt</title>
-<path fill="none" stroke="black" d="M1185.1,-492.97C1210.92,-474.72 1251.97,-445.71 1280.14,-425.81"/>
-<polygon fill="black" stroke="black" points="1282.29,-428.58 1288.43,-419.95 1278.25,-422.86 1282.29,-428.58"/>
-<text text-anchor="middle" x="1246" y="-463.8" font-family="Times,serif" font-size="14.00">Has</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t3.ST106 -->
-<g id="node11" class="node">
-<title>github.com/peng225/silkroad/testdata/t3.ST106</title>
-<polygon fill="#bbffff" stroke="black" points="1260,-616 1198,-616 1198,-580 1260,-580 1260,-616"/>
-<text text-anchor="middle" x="1229" y="-594.3" font-family="Times,serif" font-size="14.00">ST106</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t3.AliasForChanInt -->
-<g id="node26" class="node">
-<title>github.com/peng225/silkroad/testdata/t3.AliasForChanInt</title>
-<ellipse fill="whitesmoke" stroke="black" cx="1026" cy="-511" rx="85.59" ry="18"/>
-<text text-anchor="middle" x="1026" y="-507.3" font-family="Times,serif" font-size="14.00">AliasForChanInt</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t3.ST106&#45;&gt;github.com/peng225/silkroad/testdata/t3.AliasForChanInt -->
-<g id="edge31" class="edge">
-<title>github.com/peng225/silkroad/testdata/t3.ST106&#45;&gt;github.com/peng225/silkroad/testdata/t3.AliasForChanInt</title>
-<path fill="none" stroke="black" d="M1197.73,-583.91C1164.2,-569.87 1110.62,-547.43 1072.23,-531.36"/>
-<polygon fill="black" stroke="black" points="1073.39,-528.05 1062.81,-527.41 1070.69,-534.51 1073.39,-528.05"/>
-<text text-anchor="middle" x="1154" y="-550.8" font-family="Times,serif" font-size="14.00">Has</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t3.AliasForFunc -->
-<g id="node28" class="node">
-<title>github.com/peng225/silkroad/testdata/t3.AliasForFunc</title>
-<ellipse fill="whitesmoke" stroke="black" cx="1361" cy="-511" rx="71.49" ry="18"/>
-<text text-anchor="middle" x="1361" y="-507.3" font-family="Times,serif" font-size="14.00">AliasForFunc</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t3.ST106&#45;&gt;github.com/peng225/silkroad/testdata/t3.AliasForFunc -->
-<g id="edge30" class="edge">
-<title>github.com/peng225/silkroad/testdata/t3.ST106&#45;&gt;github.com/peng225/silkroad/testdata/t3.AliasForFunc</title>
-<path fill="none" stroke="black" d="M1255.71,-579.8C1276.46,-566.44 1305.36,-547.83 1327.63,-533.49"/>
-<polygon fill="black" stroke="black" points="1329.6,-536.38 1336.11,-528.03 1325.81,-530.5 1329.6,-536.38"/>
-<text text-anchor="middle" x="1317" y="-550.8" font-family="Times,serif" font-size="14.00">Has</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t3.ST100 -->
-<g id="node12" class="node">
-<title>github.com/peng225/silkroad/testdata/t3.ST100</title>
-<polygon fill="#bbffff" stroke="black" points="937,-334 875,-334 875,-298 937,-298 937,-334"/>
-<text text-anchor="middle" x="906" y="-312.3" font-family="Times,serif" font-size="14.00">ST100</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t3.ST102 -->
-<g id="node13" class="node">
-<title>github.com/peng225/silkroad/testdata/t3.ST102</title>
-<polygon fill="#bbffff" stroke="black" points="610,-529 548,-529 548,-493 610,-493 610,-529"/>
-<text text-anchor="middle" x="579" y="-507.3" font-family="Times,serif" font-size="14.00">ST102</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t3.AliasForEmptyStruct -->
-<g id="node18" class="node">
-<title>github.com/peng225/silkroad/testdata/t3.AliasForEmptyStruct</title>
-<polygon fill="#bbffff" stroke="black" points="182.5,-421 15.5,-421 15.5,-385 182.5,-385 182.5,-421"/>
-<text text-anchor="middle" x="99" y="-399.3" font-family="Times,serif" font-size="14.00">AliasForEmptyStruct</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t3.ST102&#45;&gt;github.com/peng225/silkroad/testdata/t3.AliasForEmptyStruct -->
-<g id="edge23" class="edge">
-<title>github.com/peng225/silkroad/testdata/t3.ST102&#45;&gt;github.com/peng225/silkroad/testdata/t3.AliasForEmptyStruct</title>
-<path fill="none" stroke="black" d="M547.77,-508.83C480.8,-505.58 319.07,-493.68 191,-452 171.63,-445.7 151.43,-435.6 134.9,-426.29"/>
-<polygon fill="black" stroke="black" points="136.54,-423.19 126.13,-421.22 133.04,-429.25 136.54,-423.19"/>
-<text text-anchor="middle" x="288" y="-463.8" font-family="Times,serif" font-size="14.00">Has</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t3.AliasForAny -->
-<g id="node22" class="node">
-<title>github.com/peng225/silkroad/testdata/t3.AliasForAny</title>
-<polygon fill="#ffbbff" stroke="black" points="353.6,-403 315.3,-421 238.7,-421 200.4,-403 238.7,-385 315.3,-385 353.6,-403"/>
-<text text-anchor="middle" x="277" y="-399.3" font-family="Times,serif" font-size="14.00">AliasForAny</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t3.ST102&#45;&gt;github.com/peng225/silkroad/testdata/t3.AliasForAny -->
-<g id="edge22" class="edge">
-<title>github.com/peng225/silkroad/testdata/t3.ST102&#45;&gt;github.com/peng225/silkroad/testdata/t3.AliasForAny</title>
-<path fill="none" stroke="black" d="M547.65,-504.22C504.73,-495.73 425.72,-478.02 362,-452 344.98,-445.05 327.12,-435.37 312.19,-426.52"/>
-<polygon fill="black" stroke="black" points="313.67,-423.33 303.3,-421.15 310.05,-429.32 313.67,-423.33"/>
-<text text-anchor="middle" x="440" y="-463.8" font-family="Times,serif" font-size="14.00">Has</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t3.AliasForArrayST100 -->
-<g id="node24" class="node">
-<title>github.com/peng225/silkroad/testdata/t3.AliasForArrayST100</title>
-<ellipse fill="whitesmoke" stroke="black" cx="1127" cy="-403" rx="104.78" ry="18"/>
-<text text-anchor="middle" x="1127" y="-399.3" font-family="Times,serif" font-size="14.00">AliasForArrayST100</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t3.ST102&#45;&gt;github.com/peng225/silkroad/testdata/t3.AliasForArrayST100 -->
-<g id="edge25" class="edge">
-<title>github.com/peng225/silkroad/testdata/t3.ST102&#45;&gt;github.com/peng225/silkroad/testdata/t3.AliasForArrayST100</title>
-<path fill="none" stroke="black" d="M610.15,-508.72C682.37,-505.12 866.29,-492.42 1014,-452 1038.6,-445.27 1064.9,-434.34 1085.93,-424.61"/>
-<polygon fill="black" stroke="black" points="1087.64,-427.67 1095.19,-420.24 1084.65,-421.34 1087.64,-427.67"/>
-<text text-anchor="middle" x="994" y="-463.8" font-family="Times,serif" font-size="14.00">Has</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t3.AliasForStarST100 -->
-<g id="node25" class="node">
-<title>github.com/peng225/silkroad/testdata/t3.AliasForStarST100</title>
-<ellipse fill="whitesmoke" stroke="black" cx="906" cy="-403" rx="98.58" ry="18"/>
-<text text-anchor="middle" x="906" y="-399.3" font-family="Times,serif" font-size="14.00">AliasForStarST100</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t3.ST102&#45;&gt;github.com/peng225/silkroad/testdata/t3.AliasForStarST100 -->
-<g id="edge24" class="edge">
-<title>github.com/peng225/silkroad/testdata/t3.ST102&#45;&gt;github.com/peng225/silkroad/testdata/t3.AliasForStarST100</title>
-<path fill="none" stroke="black" d="M610.3,-503.36C653.23,-493.89 732.52,-475.06 798,-452 820.39,-444.12 844.6,-433.56 864.41,-424.35"/>
-<polygon fill="black" stroke="black" points="865.9,-427.51 873.46,-420.09 862.92,-421.18 865.9,-427.51"/>
-<text text-anchor="middle" x="783" y="-463.8" font-family="Times,serif" font-size="14.00">Has</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t3.AliasForMapST100 -->
-<g id="node29" class="node">
-<title>github.com/peng225/silkroad/testdata/t3.AliasForMapST100</title>
-<ellipse fill="whitesmoke" stroke="black" cx="470" cy="-403" rx="98.58" ry="18"/>
-<text text-anchor="middle" x="470" y="-399.3" font-family="Times,serif" font-size="14.00">AliasForMapST100</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t3.ST102&#45;&gt;github.com/peng225/silkroad/testdata/t3.AliasForMapST100 -->
-<g id="edge21" class="edge">
-<title>github.com/peng225/silkroad/testdata/t3.ST102&#45;&gt;github.com/peng225/silkroad/testdata/t3.AliasForMapST100</title>
-<path fill="none" stroke="black" d="M561.49,-492.97C543.45,-475.43 515.18,-447.94 494.84,-428.16"/>
-<polygon fill="black" stroke="black" points="497.08,-425.45 487.47,-420.99 492.2,-430.47 497.08,-425.45"/>
-<text text-anchor="middle" x="555" y="-463.8" font-family="Times,serif" font-size="14.00">Has</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t3.AliasForSliceST100 -->
-<g id="node30" class="node">
-<title>github.com/peng225/silkroad/testdata/t3.AliasForSliceST100</title>
-<ellipse fill="whitesmoke" stroke="black" cx="688" cy="-403" rx="100.98" ry="18"/>
-<text text-anchor="middle" x="688" y="-399.3" font-family="Times,serif" font-size="14.00">AliasForSliceST100</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t3.ST102&#45;&gt;github.com/peng225/silkroad/testdata/t3.AliasForSliceST100 -->
-<g id="edge20" class="edge">
-<title>github.com/peng225/silkroad/testdata/t3.ST102&#45;&gt;github.com/peng225/silkroad/testdata/t3.AliasForSliceST100</title>
-<path fill="none" stroke="black" d="M596.51,-492.97C614.55,-475.43 642.82,-447.94 663.16,-428.16"/>
-<polygon fill="black" stroke="black" points="665.8,-430.47 670.53,-420.99 660.92,-425.45 665.8,-430.47"/>
-<text text-anchor="middle" x="645" y="-463.8" font-family="Times,serif" font-size="14.00">Has</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t3.ST101 -->
-<g id="node14" class="node">
-<title>github.com/peng225/silkroad/testdata/t3.ST101</title>
-<polygon fill="#bbffff" stroke="black" points="1272,-529 1210,-529 1210,-493 1272,-493 1272,-529"/>
-<text text-anchor="middle" x="1241" y="-507.3" font-family="Times,serif" font-size="14.00">ST101</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t3.AliasForST100 -->
-<g id="node17" class="node">
-<title>github.com/peng225/silkroad/testdata/t3.AliasForST100</title>
-<polygon fill="#bbffff" stroke="black" points="1511.5,-421 1390.5,-421 1390.5,-385 1511.5,-385 1511.5,-421"/>
-<text text-anchor="middle" x="1451" y="-399.3" font-family="Times,serif" font-size="14.00">AliasForST100</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t3.ST101&#45;&gt;github.com/peng225/silkroad/testdata/t3.AliasForST100 -->
-<g id="edge29" class="edge">
-<title>github.com/peng225/silkroad/testdata/t3.ST101&#45;&gt;github.com/peng225/silkroad/testdata/t3.AliasForST100</title>
-<path fill="none" stroke="black" d="M1272.42,-496.59C1275.32,-495.37 1278.21,-494.16 1281,-493 1325.74,-474.41 1339.41,-475.09 1382,-452 1395.32,-444.78 1409.18,-435.52 1420.96,-427.07"/>
-<polygon fill="black" stroke="black" points="1423.12,-429.82 1429.12,-421.1 1418.99,-424.17 1423.12,-429.82"/>
-<text text-anchor="middle" x="1380" y="-463.8" font-family="Times,serif" font-size="14.00">Has</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t3.ST101&#45;&gt;github.com/peng225/silkroad/testdata/t3.AliasForInt -->
-<g id="edge28" class="edge">
-<title>github.com/peng225/silkroad/testdata/t3.ST101&#45;&gt;github.com/peng225/silkroad/testdata/t3.AliasForInt</title>
-<path fill="none" stroke="black" d="M1252.25,-492.97C1263.57,-475.82 1281.19,-449.14 1294.18,-429.47"/>
-<polygon fill="black" stroke="black" points="1297.19,-431.26 1299.78,-420.99 1291.35,-427.4 1297.19,-431.26"/>
-<text text-anchor="middle" x="1288" y="-463.8" font-family="Times,serif" font-size="14.00">Has</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t3.ST104 -->
-<g id="node15" class="node">
-<title>github.com/peng225/silkroad/testdata/t3.ST104</title>
-<polygon fill="#bbffff" stroke="black" points="1512,-529 1450,-529 1450,-493 1512,-493 1512,-529"/>
-<text text-anchor="middle" x="1481" y="-507.3" font-family="Times,serif" font-size="14.00">ST104</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t3.ST105 -->
-<g id="node16" class="node">
-<title>github.com/peng225/silkroad/testdata/t3.ST105</title>
-<polygon fill="#bbffff" stroke="black" points="1512,-616 1450,-616 1450,-580 1512,-580 1512,-616"/>
-<text text-anchor="middle" x="1481" y="-594.3" font-family="Times,serif" font-size="14.00">ST105</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t3.ST105&#45;&gt;github.com/peng225/silkroad/testdata/t1/t11.ST1 -->
-<g id="edge9" class="edge">
-<title>github.com/peng225/silkroad/testdata/t3.ST105&#45;&gt;github.com/peng225/silkroad/testdata/t1/t11.ST1</title>
-<path fill="none" stroke="black" d="M1512.09,-597.52C1590.98,-596.86 1797.25,-582.35 1861,-452 1880.53,-412.07 1887.04,-386.49 1859,-352 1839.82,-328.41 1821.72,-343.97 1793,-334 1791.97,-333.64 1790.92,-333.27 1789.87,-332.88"/>
-<polygon fill="black" stroke="black" points="1790.94,-329.55 1780.35,-329.2 1788.41,-336.07 1790.94,-329.55"/>
-<text text-anchor="middle" x="1869" y="-463.8" font-family="Times,serif" font-size="14.00">Has</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t3.ST105&#45;&gt;github.com/peng225/silkroad/testdata/t1/t11.ST2 -->
-<g id="edge10" class="edge">
-<title>github.com/peng225/silkroad/testdata/t3.ST105&#45;&gt;github.com/peng225/silkroad/testdata/t1/t11.ST2</title>
-<path fill="none" stroke="black" d="M1512.17,-587.93C1571.09,-569.64 1700.8,-523.86 1789,-452 1796.71,-445.72 1803.68,-437.45 1809.38,-429.54"/>
-<polygon fill="black" stroke="black" points="1812.31,-431.46 1815.05,-421.22 1806.53,-427.51 1812.31,-431.46"/>
-<text text-anchor="middle" x="1744" y="-507.3" font-family="Times,serif" font-size="14.00">Has</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t3.ST105&#45;&gt;github.com/peng225/silkroad/testdata/t1/t11.ST3 -->
-<g id="edge11" class="edge">
-<title>github.com/peng225/silkroad/testdata/t3.ST105&#45;&gt;github.com/peng225/silkroad/testdata/t1/t11.ST3</title>
-<path fill="none" stroke="black" d="M1512.4,-596.28C1564.47,-594.38 1671.5,-587.43 1758,-562 1790.61,-552.41 1798.74,-547.9 1827,-529 1856.82,-509.06 1872.4,-507.77 1887,-475 1909.3,-424.93 1906.67,-398.72 1878,-352 1874.44,-346.19 1869.51,-341.07 1864.15,-336.67"/>
-<polygon fill="black" stroke="black" points="1866.21,-333.84 1856.09,-330.73 1862.06,-339.48 1866.21,-333.84"/>
-<text text-anchor="middle" x="1906" y="-463.8" font-family="Times,serif" font-size="14.00">Has</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t3.ST105&#45;&gt;github.com/peng225/silkroad/testdata/t3.ST101 -->
-<g id="edge7" class="edge">
-<title>github.com/peng225/silkroad/testdata/t3.ST105&#45;&gt;github.com/peng225/silkroad/testdata/t3.ST101</title>
-<path fill="none" stroke="black" d="M1449.98,-586.29C1420.44,-576.12 1374.72,-560.42 1335,-547 1313.56,-539.76 1306.2,-538.23 1281.76,-529.15"/>
-<polygon fill="black" stroke="black" points="1282.94,-525.86 1272.35,-525.6 1280.47,-532.41 1282.94,-525.86"/>
-<text text-anchor="middle" x="1390" y="-550.8" font-family="Times,serif" font-size="14.00">Has</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t3.ST105&#45;&gt;github.com/peng225/silkroad/testdata/t3.ST104 -->
-<g id="edge8" class="edge">
-<title>github.com/peng225/silkroad/testdata/t3.ST105&#45;&gt;github.com/peng225/silkroad/testdata/t3.ST104</title>
-<path fill="none" stroke="black" d="M1481,-579.8C1481,-568.16 1481,-552.55 1481,-539.24"/>
-<polygon fill="black" stroke="black" points="1484.5,-539.18 1481,-529.18 1477.5,-539.18 1484.5,-539.18"/>
-<text text-anchor="middle" x="1495" y="-550.8" font-family="Times,serif" font-size="14.00">Has</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t3.AliasForST100&#45;&gt;github.com/peng225/silkroad/testdata/t3.ST100 -->
-<g id="edge15" class="edge">
-<title>github.com/peng225/silkroad/testdata/t3.AliasForST100&#45;&gt;github.com/peng225/silkroad/testdata/t3.ST100</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M1390.49,-386.73C1387.63,-386.12 1384.79,-385.54 1382,-385 1222.27,-353.99 1029.83,-330.78 947.09,-321.47"/>
-<polygon fill="black" stroke="black" points="947.41,-317.99 937.09,-320.35 946.64,-324.94 947.41,-317.99"/>
-<text text-anchor="middle" x="1323" y="-355.8" font-family="Times,serif" font-size="14.00">UsesAsAlias</text>
-</g>
 <!-- github.com/peng225/silkroad/testdata/t2.IF1&#45;&gt;github.com/peng225/silkroad/testdata/t2.ST200 -->
-<g id="edge17" class="edge">
+<g id="edge18" class="edge">
 <title>github.com/peng225/silkroad/testdata/t2.IF1&#45;&gt;github.com/peng225/silkroad/testdata/t2.ST200</title>
 <path fill="none" stroke="black" d="M1585,-102.8C1585,-91.16 1585,-75.55 1585,-62.24"/>
 <polygon fill="black" stroke="black" points="1588.5,-62.18 1585,-52.18 1581.5,-62.18 1588.5,-62.18"/>
 <text text-anchor="middle" x="1599" y="-73.8" font-family="Times,serif" font-size="14.00">Has</text>
 </g>
+<!-- github.com/peng225/silkroad/testdata/t2.IF2 -->
+<g id="node3" class="node">
+<title>github.com/peng225/silkroad/testdata/t2.IF2</title>
+<polygon fill="#ffbbff" stroke="black" points="1607.54,-208 1592.27,-226 1561.73,-226 1546.46,-208 1561.73,-190 1592.27,-190 1607.54,-208"/>
+<text text-anchor="middle" x="1577" y="-204.3" font-family="Times,serif" font-size="14.00">IF2</text>
+</g>
 <!-- github.com/peng225/silkroad/testdata/t2.IF2&#45;&gt;github.com/peng225/silkroad/testdata/t2.IF1 -->
-<g id="edge18" class="edge">
+<g id="edge29" class="edge">
 <title>github.com/peng225/silkroad/testdata/t2.IF2&#45;&gt;github.com/peng225/silkroad/testdata/t2.IF1</title>
-<path fill="none" stroke="black" d="M1574.63,-189.8C1576.41,-178.16 1578.8,-162.55 1580.83,-149.24"/>
-<polygon fill="none" stroke="black" points="1584.32,-149.59 1582.37,-139.18 1577.4,-148.53 1584.32,-149.59"/>
-<text text-anchor="middle" x="1609" y="-160.8" font-family="Times,serif" font-size="14.00">Embeds</text>
+<path fill="none" stroke="black" d="M1578.62,-189.8C1579.71,-178.16 1581.18,-162.55 1582.44,-149.24"/>
+<polygon fill="none" stroke="black" points="1585.93,-149.46 1583.38,-139.18 1578.96,-148.8 1585.93,-149.46"/>
+<text text-anchor="middle" x="1611" y="-160.8" font-family="Times,serif" font-size="14.00">Embeds</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t1/t11.ST6 -->
+<g id="node4" class="node">
+<title>github.com/peng225/silkroad/testdata/t1/t11.ST6</title>
+<polygon fill="#bbffff" stroke="black" points="1780,-421 1726,-421 1726,-385 1780,-385 1780,-421"/>
+<text text-anchor="middle" x="1753" y="-399.3" font-family="Times,serif" font-size="14.00">ST6</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t1/t11.ST7 -->
+<g id="node5" class="node">
+<title>github.com/peng225/silkroad/testdata/t1/t11.ST7</title>
+<polygon fill="#bbffff" stroke="black" points="1780,-334 1726,-334 1726,-298 1780,-298 1780,-334"/>
+<text text-anchor="middle" x="1753" y="-312.3" font-family="Times,serif" font-size="14.00">ST7</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t1/t11.ST6&#45;&gt;github.com/peng225/silkroad/testdata/t1/t11.ST7 -->
+<g id="edge4" class="edge">
+<title>github.com/peng225/silkroad/testdata/t1/t11.ST6&#45;&gt;github.com/peng225/silkroad/testdata/t1/t11.ST7</title>
+<path fill="none" stroke="black" d="M1753,-384.8C1753,-373.16 1753,-357.55 1753,-344.24"/>
+<polygon fill="black" stroke="black" points="1756.5,-344.18 1753,-334.18 1749.5,-344.18 1756.5,-344.18"/>
+<text text-anchor="middle" x="1767" y="-355.8" font-family="Times,serif" font-size="14.00">Has</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t1/t11.ST8 -->
+<g id="node6" class="node">
+<title>github.com/peng225/silkroad/testdata/t1/t11.ST8</title>
+<polygon fill="#bbffff" stroke="black" points="1743,-226 1689,-226 1689,-190 1743,-190 1743,-226"/>
+<text text-anchor="middle" x="1716" y="-204.3" font-family="Times,serif" font-size="14.00">ST8</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t1/t11.ST7&#45;&gt;github.com/peng225/silkroad/testdata/t1/t11.ST8 -->
+<g id="edge5" class="edge">
+<title>github.com/peng225/silkroad/testdata/t1/t11.ST7&#45;&gt;github.com/peng225/silkroad/testdata/t1/t11.ST8</title>
+<path fill="none" stroke="black" d="M1747.06,-297.97C1741.21,-281.22 1732.2,-255.41 1725.39,-235.89"/>
+<polygon fill="black" stroke="black" points="1728.65,-234.63 1722.05,-226.34 1722.04,-236.94 1728.65,-234.63"/>
+<text text-anchor="middle" x="1754" y="-268.8" font-family="Times,serif" font-size="14.00">Has</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t1/t11.ST1 -->
+<g id="node7" class="node">
+<title>github.com/peng225/silkroad/testdata/t1/t11.ST1</title>
+<polygon fill="#bbffff" stroke="black" points="1708,-334 1654,-334 1654,-298 1708,-298 1708,-334"/>
+<text text-anchor="middle" x="1681" y="-312.3" font-family="Times,serif" font-size="14.00">ST1</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t1/t11.ST2 -->
+<g id="node8" class="node">
+<title>github.com/peng225/silkroad/testdata/t1/t11.ST2</title>
+<polygon fill="#bbffff" stroke="black" points="1852,-421 1798,-421 1798,-385 1852,-385 1852,-421"/>
+<text text-anchor="middle" x="1825" y="-399.3" font-family="Times,serif" font-size="14.00">ST2</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t1/t11.ST3 -->
+<g id="node9" class="node">
+<title>github.com/peng225/silkroad/testdata/t1/t11.ST3</title>
+<polygon fill="#bbffff" stroke="black" points="1852,-334 1798,-334 1798,-298 1852,-298 1852,-334"/>
+<text text-anchor="middle" x="1825" y="-312.3" font-family="Times,serif" font-size="14.00">ST3</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t1/t11.ST2&#45;&gt;github.com/peng225/silkroad/testdata/t1/t11.ST3 -->
+<g id="edge19" class="edge">
+<title>github.com/peng225/silkroad/testdata/t1/t11.ST2&#45;&gt;github.com/peng225/silkroad/testdata/t1/t11.ST3</title>
+<path fill="none" stroke="black" d="M1825,-384.8C1825,-373.16 1825,-357.55 1825,-344.24"/>
+<polygon fill="black" stroke="black" points="1828.5,-344.18 1825,-334.18 1821.5,-344.18 1828.5,-344.18"/>
+<text text-anchor="middle" x="1839" y="-355.8" font-family="Times,serif" font-size="14.00">Has</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t1/t11.ST3&#45;&gt;github.com/peng225/silkroad/testdata/t2.IF1 -->
+<g id="edge31" class="edge">
+<title>github.com/peng225/silkroad/testdata/t1/t11.ST3&#45;&gt;github.com/peng225/silkroad/testdata/t2.IF1</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M1832.14,-297.85C1834.13,-292.26 1836.01,-285.96 1837,-280 1842.64,-246.18 1837.21,-196.46 1824,-182 1797.12,-152.57 1682.78,-134.2 1622.51,-126.38"/>
+<polygon fill="none" stroke="black" points="1622.63,-122.86 1612.27,-125.08 1621.76,-129.81 1622.63,-122.86"/>
+<text text-anchor="middle" x="1881.5" y="-204.3" font-family="Times,serif" font-size="14.00">Implements</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t1/t11.ST3&#45;&gt;github.com/peng225/silkroad/testdata/t2.IF2 -->
+<g id="edge32" class="edge">
+<title>github.com/peng225/silkroad/testdata/t1/t11.ST3&#45;&gt;github.com/peng225/silkroad/testdata/t2.IF2</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M1804.34,-297.9C1799.56,-294.75 1794.31,-291.87 1789,-290 1729.33,-268.98 1704.47,-306.45 1647,-280 1625.44,-270.08 1606.9,-250.42 1594.32,-234.3"/>
+<polygon fill="none" stroke="black" points="1597.1,-232.17 1588.31,-226.26 1591.5,-236.36 1597.1,-232.17"/>
+<text text-anchor="middle" x="1689.5" y="-268.8" font-family="Times,serif" font-size="14.00">Implements</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t1/t11.ST4 -->
+<g id="node10" class="node">
+<title>github.com/peng225/silkroad/testdata/t1/t11.ST4</title>
+<polygon fill="#bbffff" stroke="black" points="1815,-226 1761,-226 1761,-190 1815,-190 1815,-226"/>
+<text text-anchor="middle" x="1788" y="-204.3" font-family="Times,serif" font-size="14.00">ST4</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t1/t11.ST3&#45;&gt;github.com/peng225/silkroad/testdata/t1/t11.ST4 -->
+<g id="edge33" class="edge">
+<title>github.com/peng225/silkroad/testdata/t1/t11.ST3&#45;&gt;github.com/peng225/silkroad/testdata/t1/t11.ST4</title>
+<path fill="none" stroke="black" d="M1816.53,-297.76C1813.94,-292.16 1811.2,-285.88 1809,-280 1803.67,-265.75 1798.78,-249.5 1795.06,-236.15"/>
+<polygon fill="black" stroke="black" points="1798.34,-234.88 1792.34,-226.15 1791.59,-236.72 1798.34,-234.88"/>
+<text text-anchor="middle" x="1823" y="-268.8" font-family="Times,serif" font-size="14.00">Has</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t1/t11.ST5 -->
+<g id="node11" class="node">
+<title>github.com/peng225/silkroad/testdata/t1/t11.ST5</title>
+<polygon fill="#bbffff" stroke="black" points="1708,-421 1654,-421 1654,-385 1708,-385 1708,-421"/>
+<text text-anchor="middle" x="1681" y="-399.3" font-family="Times,serif" font-size="14.00">ST5</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t1/t11.ST5&#45;&gt;github.com/peng225/silkroad/testdata/t1/t11.ST1 -->
+<g id="edge14" class="edge">
+<title>github.com/peng225/silkroad/testdata/t1/t11.ST5&#45;&gt;github.com/peng225/silkroad/testdata/t1/t11.ST1</title>
+<path fill="none" stroke="black" d="M1681,-384.8C1681,-373.16 1681,-357.55 1681,-344.24"/>
+<polygon fill="none" stroke="black" points="1684.5,-344.18 1681,-334.18 1677.5,-344.18 1684.5,-344.18"/>
+<text text-anchor="middle" x="1710" y="-355.8" font-family="Times,serif" font-size="14.00">Embeds</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t3.ST104 -->
+<g id="node12" class="node">
+<title>github.com/peng225/silkroad/testdata/t3.ST104</title>
+<polygon fill="#bbffff" stroke="black" points="1512,-529 1450,-529 1450,-493 1512,-493 1512,-529"/>
+<text text-anchor="middle" x="1481" y="-507.3" font-family="Times,serif" font-size="14.00">ST104</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t3.ST105 -->
+<g id="node13" class="node">
+<title>github.com/peng225/silkroad/testdata/t3.ST105</title>
+<polygon fill="#bbffff" stroke="black" points="1512,-616 1450,-616 1450,-580 1512,-580 1512,-616"/>
+<text text-anchor="middle" x="1481" y="-594.3" font-family="Times,serif" font-size="14.00">ST105</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t3.ST105&#45;&gt;github.com/peng225/silkroad/testdata/t1/t11.ST1 -->
+<g id="edge25" class="edge">
+<title>github.com/peng225/silkroad/testdata/t3.ST105&#45;&gt;github.com/peng225/silkroad/testdata/t1/t11.ST1</title>
+<path fill="none" stroke="black" d="M1512.02,-597.88C1592.18,-598.21 1803.98,-586.01 1861,-452 1878.41,-411.07 1888.34,-383.57 1857,-352 1836.63,-331.48 1760.42,-340.98 1718.14,-333.27"/>
+<polygon fill="black" stroke="black" points="1718.71,-329.81 1708.17,-330.91 1717.09,-336.62 1718.71,-329.81"/>
+<text text-anchor="middle" x="1869" y="-463.8" font-family="Times,serif" font-size="14.00">Has</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t3.ST105&#45;&gt;github.com/peng225/silkroad/testdata/t1/t11.ST2 -->
+<g id="edge26" class="edge">
+<title>github.com/peng225/silkroad/testdata/t3.ST105&#45;&gt;github.com/peng225/silkroad/testdata/t1/t11.ST2</title>
+<path fill="none" stroke="black" d="M1512.3,-590.16C1569.51,-576.42 1692.62,-540.98 1775,-475 1790.3,-462.75 1802.96,-444.63 1811.71,-429.76"/>
+<polygon fill="black" stroke="black" points="1814.78,-431.43 1816.64,-421 1808.68,-428 1814.78,-431.43"/>
+<text text-anchor="middle" x="1763" y="-507.3" font-family="Times,serif" font-size="14.00">Has</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t3.ST105&#45;&gt;github.com/peng225/silkroad/testdata/t1/t11.ST3 -->
+<g id="edge27" class="edge">
+<title>github.com/peng225/silkroad/testdata/t3.ST105&#45;&gt;github.com/peng225/silkroad/testdata/t1/t11.ST3</title>
+<path fill="none" stroke="black" d="M1512.09,-596.68C1565.27,-595.37 1676.59,-589.26 1766,-562 1796.99,-552.55 1804.6,-547.79 1831,-529 1859.17,-508.95 1873.48,-506.82 1887,-475 1891.1,-465.36 1897.82,-497.36 1883,-385 1881.04,-370.14 1884.33,-364.47 1876,-352 1871.9,-345.86 1866.32,-340.5 1860.36,-335.93"/>
+<polygon fill="black" stroke="black" points="1862.3,-333.02 1852.09,-330.2 1858.32,-338.77 1862.3,-333.02"/>
+<text text-anchor="middle" x="1906" y="-463.8" font-family="Times,serif" font-size="14.00">Has</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t3.ST105&#45;&gt;github.com/peng225/silkroad/testdata/t3.ST104 -->
+<g id="edge24" class="edge">
+<title>github.com/peng225/silkroad/testdata/t3.ST105&#45;&gt;github.com/peng225/silkroad/testdata/t3.ST104</title>
+<path fill="none" stroke="black" d="M1481,-579.8C1481,-568.16 1481,-552.55 1481,-539.24"/>
+<polygon fill="black" stroke="black" points="1484.5,-539.18 1481,-529.18 1477.5,-539.18 1484.5,-539.18"/>
+<text text-anchor="middle" x="1495" y="-550.8" font-family="Times,serif" font-size="14.00">Has</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t3.ST101 -->
+<g id="node19" class="node">
+<title>github.com/peng225/silkroad/testdata/t3.ST101</title>
+<polygon fill="#bbffff" stroke="black" points="454,-529 392,-529 392,-493 454,-493 454,-529"/>
+<text text-anchor="middle" x="423" y="-507.3" font-family="Times,serif" font-size="14.00">ST101</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t3.ST105&#45;&gt;github.com/peng225/silkroad/testdata/t3.ST101 -->
+<g id="edge28" class="edge">
+<title>github.com/peng225/silkroad/testdata/t3.ST105&#45;&gt;github.com/peng225/silkroad/testdata/t3.ST101</title>
+<path fill="none" stroke="black" d="M1449.91,-594.5C1298.29,-582.32 636.81,-529.18 464.28,-515.32"/>
+<polygon fill="black" stroke="black" points="464.34,-511.81 454.09,-514.5 463.78,-518.79 464.34,-511.81"/>
+<text text-anchor="middle" x="1030" y="-550.8" font-family="Times,serif" font-size="14.00">Has</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t3.AliasForST100 -->
+<g id="node14" class="node">
+<title>github.com/peng225/silkroad/testdata/t3.AliasForST100</title>
+<polygon fill="#bbffff" stroke="black" points="278.5,-421 157.5,-421 157.5,-385 278.5,-385 278.5,-421"/>
+<text text-anchor="middle" x="218" y="-399.3" font-family="Times,serif" font-size="14.00">AliasForST100</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t3.ST100 -->
+<g id="node15" class="node">
+<title>github.com/peng225/silkroad/testdata/t3.ST100</title>
+<polygon fill="#bbffff" stroke="black" points="644,-334 582,-334 582,-298 644,-298 644,-334"/>
+<text text-anchor="middle" x="613" y="-312.3" font-family="Times,serif" font-size="14.00">ST100</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t3.AliasForST100&#45;&gt;github.com/peng225/silkroad/testdata/t3.ST100 -->
+<g id="edge30" class="edge">
+<title>github.com/peng225/silkroad/testdata/t3.AliasForST100&#45;&gt;github.com/peng225/silkroad/testdata/t3.ST100</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M270.56,-384.95C304.62,-374.37 350.11,-361.1 391,-352 453.41,-338.12 526.88,-327.67 571.68,-321.94"/>
+<polygon fill="black" stroke="black" points="572.4,-325.38 581.88,-320.66 571.53,-318.44 572.4,-325.38"/>
+<text text-anchor="middle" x="435" y="-355.8" font-family="Times,serif" font-size="14.00">UsesAsAlias</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t3.ST102 -->
+<g id="node16" class="node">
+<title>github.com/peng225/silkroad/testdata/t3.ST102</title>
+<polygon fill="#bbffff" stroke="black" points="935,-529 873,-529 873,-493 935,-493 935,-529"/>
+<text text-anchor="middle" x="904" y="-507.3" font-family="Times,serif" font-size="14.00">ST102</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t3.AliasForEmptyStruct -->
+<g id="node18" class="node">
+<title>github.com/peng225/silkroad/testdata/t3.AliasForEmptyStruct</title>
+<polygon fill="#bbffff" stroke="black" points="1340.5,-421 1173.5,-421 1173.5,-385 1340.5,-385 1340.5,-421"/>
+<text text-anchor="middle" x="1257" y="-399.3" font-family="Times,serif" font-size="14.00">AliasForEmptyStruct</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t3.ST102&#45;&gt;github.com/peng225/silkroad/testdata/t3.AliasForEmptyStruct -->
+<g id="edge11" class="edge">
+<title>github.com/peng225/silkroad/testdata/t3.ST102&#45;&gt;github.com/peng225/silkroad/testdata/t3.AliasForEmptyStruct</title>
+<path fill="none" stroke="black" d="M935.28,-505.76C985.03,-498.43 1084.76,-481.27 1165,-452 1183.85,-445.12 1203.71,-435.15 1220.14,-426.07"/>
+<polygon fill="black" stroke="black" points="1221.89,-429.1 1228.88,-421.14 1218.45,-423 1221.89,-429.1"/>
+<text text-anchor="middle" x="1152" y="-463.8" font-family="Times,serif" font-size="14.00">Has</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t3.AliasForAny -->
+<g id="node22" class="node">
+<title>github.com/peng225/silkroad/testdata/t3.AliasForAny</title>
+<polygon fill="#ffbbff" stroke="black" points="1511.6,-403 1473.3,-421 1396.7,-421 1358.4,-403 1396.7,-385 1473.3,-385 1511.6,-403"/>
+<text text-anchor="middle" x="1435" y="-399.3" font-family="Times,serif" font-size="14.00">AliasForAny</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t3.ST102&#45;&gt;github.com/peng225/silkroad/testdata/t3.AliasForAny -->
+<g id="edge10" class="edge">
+<title>github.com/peng225/silkroad/testdata/t3.ST102&#45;&gt;github.com/peng225/silkroad/testdata/t3.AliasForAny</title>
+<path fill="none" stroke="black" d="M935.1,-509.94C1008.9,-508.96 1199.58,-501.41 1349,-452 1367.32,-445.94 1386.2,-435.9 1401.59,-426.56"/>
+<polygon fill="black" stroke="black" points="1403.58,-429.44 1410.21,-421.18 1399.88,-423.5 1403.58,-429.44"/>
+<text text-anchor="middle" x="1329" y="-463.8" font-family="Times,serif" font-size="14.00">Has</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t3.AliasForMapST100 -->
+<g id="node25" class="node">
+<title>github.com/peng225/silkroad/testdata/t3.AliasForMapST100</title>
+<ellipse fill="whitesmoke" stroke="black" cx="395" cy="-403" rx="98.58" ry="18"/>
+<text text-anchor="middle" x="395" y="-399.3" font-family="Times,serif" font-size="14.00">AliasForMapST100</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t3.ST102&#45;&gt;github.com/peng225/silkroad/testdata/t3.AliasForMapST100 -->
+<g id="edge9" class="edge">
+<title>github.com/peng225/silkroad/testdata/t3.ST102&#45;&gt;github.com/peng225/silkroad/testdata/t3.AliasForMapST100</title>
+<path fill="none" stroke="black" d="M872.96,-508.41C804.78,-504.3 637.32,-490.76 503,-452 479.51,-445.22 454.5,-434.36 434.46,-424.68"/>
+<polygon fill="black" stroke="black" points="435.86,-421.47 425.34,-420.19 432.77,-427.75 435.86,-421.47"/>
+<text text-anchor="middle" x="604" y="-463.8" font-family="Times,serif" font-size="14.00">Has</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t3.AliasForSliceST100 -->
+<g id="node26" class="node">
+<title>github.com/peng225/silkroad/testdata/t3.AliasForSliceST100</title>
+<ellipse fill="whitesmoke" stroke="black" cx="613" cy="-403" rx="100.98" ry="18"/>
+<text text-anchor="middle" x="613" y="-399.3" font-family="Times,serif" font-size="14.00">AliasForSliceST100</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t3.ST102&#45;&gt;github.com/peng225/silkroad/testdata/t3.AliasForSliceST100 -->
+<g id="edge8" class="edge">
+<title>github.com/peng225/silkroad/testdata/t3.ST102&#45;&gt;github.com/peng225/silkroad/testdata/t3.AliasForSliceST100</title>
+<path fill="none" stroke="black" d="M872.74,-501.14C836.21,-490.53 774.11,-471.71 722,-452 699.96,-443.66 675.95,-433.24 656.08,-424.23"/>
+<polygon fill="black" stroke="black" points="657.53,-421.05 646.98,-420.08 654.62,-427.42 657.53,-421.05"/>
+<text text-anchor="middle" x="801" y="-463.8" font-family="Times,serif" font-size="14.00">Has</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t3.AliasForArrayST100 -->
+<g id="node27" class="node">
+<title>github.com/peng225/silkroad/testdata/t3.AliasForArrayST100</title>
+<ellipse fill="whitesmoke" stroke="black" cx="836" cy="-403" rx="104.78" ry="18"/>
+<text text-anchor="middle" x="836" y="-399.3" font-family="Times,serif" font-size="14.00">AliasForArrayST100</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t3.ST102&#45;&gt;github.com/peng225/silkroad/testdata/t3.AliasForArrayST100 -->
+<g id="edge13" class="edge">
+<title>github.com/peng225/silkroad/testdata/t3.ST102&#45;&gt;github.com/peng225/silkroad/testdata/t3.AliasForArrayST100</title>
+<path fill="none" stroke="black" d="M893.07,-492.97C882.07,-475.82 864.96,-449.14 852.34,-429.47"/>
+<polygon fill="black" stroke="black" points="855.24,-427.52 846.9,-420.99 849.35,-431.3 855.24,-427.52"/>
+<text text-anchor="middle" x="895" y="-463.8" font-family="Times,serif" font-size="14.00">Has</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t3.AliasForStarST100 -->
+<g id="node28" class="node">
+<title>github.com/peng225/silkroad/testdata/t3.AliasForStarST100</title>
+<ellipse fill="whitesmoke" stroke="black" cx="1057" cy="-403" rx="98.58" ry="18"/>
+<text text-anchor="middle" x="1057" y="-399.3" font-family="Times,serif" font-size="14.00">AliasForStarST100</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t3.ST102&#45;&gt;github.com/peng225/silkroad/testdata/t3.AliasForStarST100 -->
+<g id="edge12" class="edge">
+<title>github.com/peng225/silkroad/testdata/t3.ST102&#45;&gt;github.com/peng225/silkroad/testdata/t3.AliasForStarST100</title>
+<path fill="none" stroke="black" d="M928.58,-492.97C954.61,-474.94 995.82,-446.39 1024.51,-426.51"/>
+<polygon fill="black" stroke="black" points="1026.76,-429.21 1032.98,-420.64 1022.77,-423.46 1026.76,-429.21"/>
+<text text-anchor="middle" x="990" y="-463.8" font-family="Times,serif" font-size="14.00">Has</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t3.ST106 -->
+<g id="node17" class="node">
+<title>github.com/peng225/silkroad/testdata/t3.ST106</title>
+<polygon fill="#bbffff" stroke="black" points="312,-616 250,-616 250,-580 312,-580 312,-616"/>
+<text text-anchor="middle" x="281" y="-594.3" font-family="Times,serif" font-size="14.00">ST106</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t3.AliasForFunc -->
+<g id="node24" class="node">
+<title>github.com/peng225/silkroad/testdata/t3.AliasForFunc</title>
+<ellipse fill="whitesmoke" stroke="black" cx="1361" cy="-511" rx="71.49" ry="18"/>
+<text text-anchor="middle" x="1361" y="-507.3" font-family="Times,serif" font-size="14.00">AliasForFunc</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t3.ST106&#45;&gt;github.com/peng225/silkroad/testdata/t3.AliasForFunc -->
+<g id="edge21" class="edge">
+<title>github.com/peng225/silkroad/testdata/t3.ST106&#45;&gt;github.com/peng225/silkroad/testdata/t3.AliasForFunc</title>
+<path fill="none" stroke="black" d="M312.2,-594.1C398.69,-586.11 648.85,-563.26 857,-547 1007.33,-535.26 1183.04,-523.5 1282.25,-517.05"/>
+<polygon fill="black" stroke="black" points="1282.74,-520.52 1292.5,-516.38 1282.29,-513.54 1282.74,-520.52"/>
+<text text-anchor="middle" x="871" y="-550.8" font-family="Times,serif" font-size="14.00">Has</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t3.AliasForChanInt -->
+<g id="node29" class="node">
+<title>github.com/peng225/silkroad/testdata/t3.AliasForChanInt</title>
+<ellipse fill="whitesmoke" stroke="black" cx="208" cy="-511" rx="85.59" ry="18"/>
+<text text-anchor="middle" x="208" y="-507.3" font-family="Times,serif" font-size="14.00">AliasForChanInt</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t3.ST106&#45;&gt;github.com/peng225/silkroad/testdata/t3.AliasForChanInt -->
+<g id="edge22" class="edge">
+<title>github.com/peng225/silkroad/testdata/t3.ST106&#45;&gt;github.com/peng225/silkroad/testdata/t3.AliasForChanInt</title>
+<path fill="none" stroke="black" d="M266.23,-579.8C255.57,-567.39 241.03,-550.46 229.14,-536.62"/>
+<polygon fill="black" stroke="black" points="231.67,-534.19 222.5,-528.89 226.36,-538.75 231.67,-534.19"/>
+<text text-anchor="middle" x="263" y="-550.8" font-family="Times,serif" font-size="14.00">Has</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t3.ST101&#45;&gt;github.com/peng225/silkroad/testdata/t3.AliasForST100 -->
+<g id="edge6" class="edge">
+<title>github.com/peng225/silkroad/testdata/t3.ST101&#45;&gt;github.com/peng225/silkroad/testdata/t3.AliasForST100</title>
+<path fill="none" stroke="black" d="M391.82,-496.75C352.05,-479.84 288.24,-452.68 287,-452 273.85,-444.72 260.11,-435.53 248.39,-427.14"/>
+<polygon fill="black" stroke="black" points="250.39,-424.27 240.24,-421.22 246.27,-429.93 250.39,-424.27"/>
+<text text-anchor="middle" x="354" y="-463.8" font-family="Times,serif" font-size="14.00">Has</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t3.AliasForInt -->
+<g id="node30" class="node">
+<title>github.com/peng225/silkroad/testdata/t3.AliasForInt</title>
+<ellipse fill="whitesmoke" stroke="black" cx="78" cy="-403" rx="61.99" ry="18"/>
+<text text-anchor="middle" x="78" y="-399.3" font-family="Times,serif" font-size="14.00">AliasForInt</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t3.ST101&#45;&gt;github.com/peng225/silkroad/testdata/t3.AliasForInt -->
+<g id="edge7" class="edge">
+<title>github.com/peng225/silkroad/testdata/t3.ST101&#45;&gt;github.com/peng225/silkroad/testdata/t3.AliasForInt</title>
+<path fill="none" stroke="black" d="M391.81,-495.92C388.87,-494.84 385.9,-493.85 383,-493 336.71,-479.48 321.24,-491.7 276,-475 263.84,-470.51 263.34,-463.94 251,-460 207.26,-446.04 191.3,-467.28 148,-452 132.19,-446.42 116.61,-436.32 104.18,-426.82"/>
+<polygon fill="black" stroke="black" points="106.11,-423.89 96.11,-420.41 101.76,-429.37 106.11,-423.89"/>
+<text text-anchor="middle" x="290" y="-463.8" font-family="Times,serif" font-size="14.00">Has</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t3.ST103 -->
+<g id="node20" class="node">
+<title>github.com/peng225/silkroad/testdata/t3.ST103</title>
+<polygon fill="#bbffff" stroke="black" points="374,-529 312,-529 312,-493 374,-493 374,-529"/>
+<text text-anchor="middle" x="343" y="-507.3" font-family="Times,serif" font-size="14.00">ST103</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t3.ST103&#45;&gt;github.com/peng225/silkroad/testdata/t3.AliasForInt -->
+<g id="edge17" class="edge">
+<title>github.com/peng225/silkroad/testdata/t3.ST103&#45;&gt;github.com/peng225/silkroad/testdata/t3.AliasForInt</title>
+<path fill="none" stroke="black" d="M311.76,-496.09C308.82,-494.98 305.87,-493.93 303,-493 268.31,-481.83 257.88,-485.57 223,-475 205.23,-469.61 201.78,-465.36 184,-460 168.31,-455.27 163.03,-458.53 148,-452 132.96,-445.46 117.76,-435.54 105.39,-426.4"/>
+<polygon fill="black" stroke="black" points="107.39,-423.53 97.31,-420.26 103.15,-429.1 107.39,-423.53"/>
+<text text-anchor="middle" x="237" y="-463.8" font-family="Times,serif" font-size="14.00">Has</text>
 </g>
 <!-- github.com/peng225/silkroad/testdata/t3.AliasForIF100 -->
 <g id="node21" class="node">
 <title>github.com/peng225/silkroad/testdata/t3.AliasForIF100</title>
-<polygon fill="#ffbbff" stroke="black" points="328.61,-598 284.81,-616 197.19,-616 153.39,-598 197.19,-580 284.81,-580 328.61,-598"/>
-<text text-anchor="middle" x="241" y="-594.3" font-family="Times,serif" font-size="14.00">AliasForIF100</text>
+<polygon fill="#ffbbff" stroke="black" points="191.61,-598 147.81,-616 60.19,-616 16.39,-598 60.19,-580 147.81,-580 191.61,-598"/>
+<text text-anchor="middle" x="104" y="-594.3" font-family="Times,serif" font-size="14.00">AliasForIF100</text>
 </g>
 <!-- github.com/peng225/silkroad/testdata/t3.IF100 -->
 <g id="node23" class="node">
 <title>github.com/peng225/silkroad/testdata/t3.IF100</title>
-<polygon fill="#ffbbff" stroke="black" points="285.06,-511 263.03,-529 218.97,-529 196.94,-511 218.97,-493 263.03,-493 285.06,-511"/>
-<text text-anchor="middle" x="241" y="-507.3" font-family="Times,serif" font-size="14.00">IF100</text>
+<polygon fill="#ffbbff" stroke="black" points="104.06,-511 82.03,-529 37.97,-529 15.94,-511 37.97,-493 82.03,-493 104.06,-511"/>
+<text text-anchor="middle" x="60" y="-507.3" font-family="Times,serif" font-size="14.00">IF100</text>
 </g>
 <!-- github.com/peng225/silkroad/testdata/t3.AliasForIF100&#45;&gt;github.com/peng225/silkroad/testdata/t3.IF100 -->
-<g id="edge26" class="edge">
+<g id="edge20" class="edge">
 <title>github.com/peng225/silkroad/testdata/t3.AliasForIF100&#45;&gt;github.com/peng225/silkroad/testdata/t3.IF100</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M241,-579.8C241,-568.16 241,-552.55 241,-539.24"/>
-<polygon fill="black" stroke="black" points="244.5,-539.18 241,-529.18 237.5,-539.18 244.5,-539.18"/>
-<text text-anchor="middle" x="285" y="-550.8" font-family="Times,serif" font-size="14.00">UsesAsAlias</text>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M95.1,-579.8C88.89,-567.82 80.51,-551.62 73.49,-538.06"/>
+<polygon fill="black" stroke="black" points="76.6,-536.45 68.89,-529.18 70.38,-539.67 76.6,-536.45"/>
+<text text-anchor="middle" x="129" y="-550.8" font-family="Times,serif" font-size="14.00">UsesAsAlias</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t3.AliasForFunc&#45;&gt;github.com/peng225/silkroad/testdata/t1/t11.ST1 -->
+<g id="edge2" class="edge">
+<title>github.com/peng225/silkroad/testdata/t3.AliasForFunc&#45;&gt;github.com/peng225/silkroad/testdata/t1/t11.ST1</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M1407.58,-497.15C1448.32,-485.19 1503.62,-467.02 1521,-452 1546.57,-429.89 1533.2,-409.01 1557,-385 1581.79,-360 1617.71,-341.67 1644.52,-330.38"/>
+<polygon fill="black" stroke="black" points="1646,-333.56 1653.94,-326.55 1643.36,-327.08 1646,-333.56"/>
+<text text-anchor="middle" x="1601" y="-399.3" font-family="Times,serif" font-size="14.00">UsesAsAlias</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t3.AliasForFunc&#45;&gt;github.com/peng225/silkroad/testdata/t1/t11.ST2 -->
+<g id="edge3" class="edge">
+<title>github.com/peng225/silkroad/testdata/t3.AliasForFunc&#45;&gt;github.com/peng225/silkroad/testdata/t1/t11.ST2</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M1412.53,-498.45C1421.98,-496.5 1431.77,-494.6 1441,-493 1495.35,-483.59 1632.15,-465.83 1687,-460 1709.61,-457.6 1769.08,-462.96 1789,-452 1798.21,-446.93 1805.76,-438.4 1811.52,-429.92"/>
+<polygon fill="black" stroke="black" points="1814.59,-431.6 1816.87,-421.25 1808.64,-427.92 1814.59,-431.6"/>
+<text text-anchor="middle" x="1731" y="-463.8" font-family="Times,serif" font-size="14.00">UsesAsAlias</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t3.AliasForMapST100&#45;&gt;github.com/peng225/silkroad/testdata/t3.ST100 -->
+<g id="edge1" class="edge">
+<title>github.com/peng225/silkroad/testdata/t3.AliasForMapST100&#45;&gt;github.com/peng225/silkroad/testdata/t3.ST100</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M433.83,-386.43C458.71,-376.49 491.72,-363.38 521,-352 537.75,-345.49 556.27,-338.42 572.27,-332.35"/>
+<polygon fill="black" stroke="black" points="573.76,-335.53 581.87,-328.72 571.28,-328.99 573.76,-335.53"/>
+<text text-anchor="middle" x="565" y="-355.8" font-family="Times,serif" font-size="14.00">UsesAsAlias</text>
+</g>
+<!-- github.com/peng225/silkroad/testdata/t3.AliasForSliceST100&#45;&gt;github.com/peng225/silkroad/testdata/t3.ST100 -->
+<g id="edge15" class="edge">
+<title>github.com/peng225/silkroad/testdata/t3.AliasForSliceST100&#45;&gt;github.com/peng225/silkroad/testdata/t3.ST100</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M613,-384.8C613,-373.16 613,-357.55 613,-344.24"/>
+<polygon fill="black" stroke="black" points="616.5,-344.18 613,-334.18 609.5,-344.18 616.5,-344.18"/>
+<text text-anchor="middle" x="657" y="-355.8" font-family="Times,serif" font-size="14.00">UsesAsAlias</text>
 </g>
 <!-- github.com/peng225/silkroad/testdata/t3.AliasForArrayST100&#45;&gt;github.com/peng225/silkroad/testdata/t3.ST100 -->
-<g id="edge34" class="edge">
+<g id="edge23" class="edge">
 <title>github.com/peng225/silkroad/testdata/t3.AliasForArrayST100&#45;&gt;github.com/peng225/silkroad/testdata/t3.ST100</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M1086.64,-386.28C1061.22,-376.4 1027.71,-363.41 998,-352 981.22,-345.56 962.7,-338.5 946.7,-332.42"/>
-<polygon fill="black" stroke="black" points="947.7,-329.06 937.11,-328.78 945.21,-335.6 947.7,-329.06"/>
-<text text-anchor="middle" x="1078" y="-355.8" font-family="Times,serif" font-size="14.00">UsesAsAlias</text>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M795,-386.34C769.17,-376.48 735.14,-363.49 705,-352 688.21,-345.6 669.68,-338.55 653.69,-332.47"/>
+<polygon fill="black" stroke="black" points="654.68,-329.1 644.09,-328.82 652.19,-335.64 654.68,-329.1"/>
+<text text-anchor="middle" x="785" y="-355.8" font-family="Times,serif" font-size="14.00">UsesAsAlias</text>
 </g>
 <!-- github.com/peng225/silkroad/testdata/t3.AliasForStarST100&#45;&gt;github.com/peng225/silkroad/testdata/t3.ST100 -->
 <g id="edge16" class="edge">
 <title>github.com/peng225/silkroad/testdata/t3.AliasForStarST100&#45;&gt;github.com/peng225/silkroad/testdata/t3.ST100</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M906,-384.8C906,-373.16 906,-357.55 906,-344.24"/>
-<polygon fill="black" stroke="black" points="909.5,-344.18 906,-334.18 902.5,-344.18 909.5,-344.18"/>
-<text text-anchor="middle" x="950" y="-355.8" font-family="Times,serif" font-size="14.00">UsesAsAlias</text>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M1000.12,-388.28C954.96,-377.64 890.14,-362.91 833,-352 770.93,-340.15 698.47,-329.17 654.17,-322.77"/>
+<polygon fill="black" stroke="black" points="654.47,-319.28 644.07,-321.33 653.48,-326.21 654.47,-319.28"/>
+<text text-anchor="middle" x="945" y="-355.8" font-family="Times,serif" font-size="14.00">UsesAsAlias</text>
 </g>
 <!-- github.com/peng225/silkroad/testdata/t3.AliasForChanInt&#45;&gt;github.com/peng225/silkroad/testdata/t3.AliasForInt -->
-<g id="edge19" class="edge">
+<g id="edge34" class="edge">
 <title>github.com/peng225/silkroad/testdata/t3.AliasForChanInt&#45;&gt;github.com/peng225/silkroad/testdata/t3.AliasForInt</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M1050.48,-493.62C1069.21,-482.01 1096.13,-467.26 1122,-460 1173.04,-445.67 1190.92,-469.38 1241,-452 1256.83,-446.5 1272.42,-436.41 1284.85,-426.9"/>
-<polygon fill="black" stroke="black" points="1287.28,-429.44 1292.91,-420.47 1282.91,-423.97 1287.28,-429.44"/>
-<text text-anchor="middle" x="1166" y="-463.8" font-family="Times,serif" font-size="14.00">UsesAsAlias</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t3.AliasForFunc&#45;&gt;github.com/peng225/silkroad/testdata/t1/t11.ST1 -->
-<g id="edge13" class="edge">
-<title>github.com/peng225/silkroad/testdata/t3.AliasForFunc&#45;&gt;github.com/peng225/silkroad/testdata/t1/t11.ST1</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M1406.86,-497.19C1447.36,-485.18 1502.59,-466.9 1520,-452 1545.84,-429.88 1530.71,-406.58 1557,-385 1612.32,-339.58 1644.81,-359.5 1716.26,-333.92"/>
-<polygon fill="black" stroke="black" points="1717.53,-337.18 1725.65,-330.38 1715.06,-330.63 1717.53,-337.18"/>
-<text text-anchor="middle" x="1601" y="-399.3" font-family="Times,serif" font-size="14.00">UsesAsAlias</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t3.AliasForFunc&#45;&gt;github.com/peng225/silkroad/testdata/t1/t11.ST2 -->
-<g id="edge14" class="edge">
-<title>github.com/peng225/silkroad/testdata/t3.AliasForFunc&#45;&gt;github.com/peng225/silkroad/testdata/t1/t11.ST2</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M1412.98,-498.47C1422.29,-496.54 1431.92,-494.64 1441,-493 1494.51,-483.34 1508.29,-483.47 1562,-475 1602.06,-468.68 1611.7,-464.52 1652,-460 1667.15,-458.3 1775.57,-459.21 1789,-452 1798.26,-447.03 1805.82,-438.51 1811.57,-430.02"/>
-<polygon fill="black" stroke="black" points="1814.66,-431.69 1816.91,-421.33 1808.69,-428.02 1814.66,-431.69"/>
-<text text-anchor="middle" x="1696" y="-463.8" font-family="Times,serif" font-size="14.00">UsesAsAlias</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t3.AliasForMapST100&#45;&gt;github.com/peng225/silkroad/testdata/t3.ST100 -->
-<g id="edge12" class="edge">
-<title>github.com/peng225/silkroad/testdata/t3.AliasForMapST100&#45;&gt;github.com/peng225/silkroad/testdata/t3.ST100</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M525.19,-387.93C568.26,-377.24 629.7,-362.61 684,-352 746.75,-339.74 820.13,-328.84 864.81,-322.57"/>
-<polygon fill="black" stroke="black" points="865.57,-326 874.99,-321.16 864.6,-319.07 865.57,-326"/>
-<text text-anchor="middle" x="728" y="-355.8" font-family="Times,serif" font-size="14.00">UsesAsAlias</text>
-</g>
-<!-- github.com/peng225/silkroad/testdata/t3.AliasForSliceST100&#45;&gt;github.com/peng225/silkroad/testdata/t3.ST100 -->
-<g id="edge1" class="edge">
-<title>github.com/peng225/silkroad/testdata/t3.AliasForSliceST100&#45;&gt;github.com/peng225/silkroad/testdata/t3.ST100</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M727.11,-386.32C751.96,-376.39 784.82,-363.34 814,-352 830.75,-345.49 849.27,-338.42 865.27,-332.35"/>
-<polygon fill="black" stroke="black" points="866.76,-335.53 874.87,-328.72 864.28,-328.99 866.76,-335.53"/>
-<text text-anchor="middle" x="858" y="-355.8" font-family="Times,serif" font-size="14.00">UsesAsAlias</text>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M139.03,-500.28C123.1,-495.08 107.49,-487.13 96,-475 84.95,-463.33 80.43,-445.89 78.67,-431.21"/>
+<polygon fill="black" stroke="black" points="82.15,-430.81 77.84,-421.14 75.18,-431.39 82.15,-430.81"/>
+<text text-anchor="middle" x="140" y="-463.8" font-family="Times,serif" font-size="14.00">UsesAsAlias</text>
 </g>
 </g>
 </svg>

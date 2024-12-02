@@ -1,0 +1,82 @@
+digraph G {
+node[style="filled" fillcolor="whitesmoke"]
+subgraph cluster_github_com_peng225_silkroad_testdata_t2 {
+  label = "github.com/peng225/silkroad/testdata/t2";
+  style = "solid";
+  bgcolor = "cornsilk";
+  "github.com/peng225/silkroad/testdata/t2.ST200" [label="ST200" shape="rect" fillcolor="paleturquoise1"];
+  "github.com/peng225/silkroad/testdata/t2.IF1" [label="IF1" shape="hexagon" fillcolor="plum1"];
+  "github.com/peng225/silkroad/testdata/t2.IF2" [label="IF2" shape="hexagon" fillcolor="plum1"];
+}
+subgraph cluster_github_com_peng225_silkroad_testdata_t1_t11 {
+  label = "github.com/peng225/silkroad/testdata/t1/t11";
+  style = "solid";
+  bgcolor = "cornsilk";
+  "github.com/peng225/silkroad/testdata/t1/t11.ST6" [label="ST6" shape="rect" fillcolor="paleturquoise1"];
+  "github.com/peng225/silkroad/testdata/t1/t11.ST7" [label="ST7" shape="rect" fillcolor="paleturquoise1"];
+  "github.com/peng225/silkroad/testdata/t1/t11.ST8" [label="ST8" shape="rect" fillcolor="paleturquoise1"];
+  "github.com/peng225/silkroad/testdata/t1/t11.ST1" [label="ST1" shape="rect" fillcolor="paleturquoise1"];
+  "github.com/peng225/silkroad/testdata/t1/t11.ST2" [label="ST2" shape="rect" fillcolor="paleturquoise1"];
+  "github.com/peng225/silkroad/testdata/t1/t11.ST3" [label="ST3" shape="rect" fillcolor="paleturquoise1"];
+  "github.com/peng225/silkroad/testdata/t1/t11.ST4" [label="ST4" shape="rect" fillcolor="paleturquoise1"];
+  "github.com/peng225/silkroad/testdata/t1/t11.ST5" [label="ST5" shape="rect" fillcolor="paleturquoise1"];
+}
+subgraph cluster_github_com_peng225_silkroad_testdata_t3 {
+  label = "github.com/peng225/silkroad/testdata/t3";
+  style = "solid";
+  bgcolor = "cornsilk";
+  "github.com/peng225/silkroad/testdata/t3.ST104" [label="ST104" shape="rect" fillcolor="paleturquoise1"];
+  "github.com/peng225/silkroad/testdata/t3.ST105" [label="ST105" shape="rect" fillcolor="paleturquoise1"];
+  "github.com/peng225/silkroad/testdata/t3.AliasForST100" [label="AliasForST100" shape="rect" fillcolor="paleturquoise1"];
+  "github.com/peng225/silkroad/testdata/t3.ST100" [label="ST100" shape="rect" fillcolor="paleturquoise1"];
+  "github.com/peng225/silkroad/testdata/t3.ST102" [label="ST102" shape="rect" fillcolor="paleturquoise1"];
+  "github.com/peng225/silkroad/testdata/t3.ST106" [label="ST106" shape="rect" fillcolor="paleturquoise1"];
+  "github.com/peng225/silkroad/testdata/t3.AliasForEmptyStruct" [label="AliasForEmptyStruct" shape="rect" fillcolor="paleturquoise1"];
+  "github.com/peng225/silkroad/testdata/t3.ST101" [label="ST101" shape="rect" fillcolor="paleturquoise1"];
+  "github.com/peng225/silkroad/testdata/t3.ST103" [label="ST103" shape="rect" fillcolor="paleturquoise1"];
+  "github.com/peng225/silkroad/testdata/t3.AliasForIF100" [label="AliasForIF100" shape="hexagon" fillcolor="plum1"];
+  "github.com/peng225/silkroad/testdata/t3.AliasForAny" [label="AliasForAny" shape="hexagon" fillcolor="plum1"];
+  "github.com/peng225/silkroad/testdata/t3.IF100" [label="IF100" shape="hexagon" fillcolor="plum1"];
+  "github.com/peng225/silkroad/testdata/t3.AliasForFunc" [label="AliasForFunc" shape="ellipse" fillcolor="whitesmoke"];
+  "github.com/peng225/silkroad/testdata/t3.AliasForMapST100" [label="AliasForMapST100" shape="ellipse" fillcolor="whitesmoke"];
+  "github.com/peng225/silkroad/testdata/t3.AliasForSliceST100" [label="AliasForSliceST100" shape="ellipse" fillcolor="whitesmoke"];
+  "github.com/peng225/silkroad/testdata/t3.AliasForArrayST100" [label="AliasForArrayST100" shape="ellipse" fillcolor="whitesmoke"];
+  "github.com/peng225/silkroad/testdata/t3.AliasForStarST100" [label="AliasForStarST100" shape="ellipse" fillcolor="whitesmoke"];
+  "github.com/peng225/silkroad/testdata/t3.AliasForChanInt" [label="AliasForChanInt" shape="ellipse" fillcolor="whitesmoke"];
+  "github.com/peng225/silkroad/testdata/t3.AliasForInt" [label="AliasForInt" shape="ellipse" fillcolor="whitesmoke"];
+}
+"github.com/peng225/silkroad/testdata/t3.AliasForMapST100" -> "github.com/peng225/silkroad/testdata/t3.ST100" [label="UsesAsAlias" arrowhead="normal" style="dashed"];
+"github.com/peng225/silkroad/testdata/t3.AliasForFunc" -> "github.com/peng225/silkroad/testdata/t1/t11.ST1" [label="UsesAsAlias" arrowhead="normal" style="dashed"];
+"github.com/peng225/silkroad/testdata/t3.AliasForFunc" -> "github.com/peng225/silkroad/testdata/t1/t11.ST2" [label="UsesAsAlias" arrowhead="normal" style="dashed"];
+"github.com/peng225/silkroad/testdata/t1/t11.ST6" -> "github.com/peng225/silkroad/testdata/t1/t11.ST7" [label="Has" arrowhead="normal" style="solid"];
+"github.com/peng225/silkroad/testdata/t1/t11.ST7" -> "github.com/peng225/silkroad/testdata/t1/t11.ST8" [label="Has" arrowhead="normal" style="solid"];
+"github.com/peng225/silkroad/testdata/t3.ST101" -> "github.com/peng225/silkroad/testdata/t3.AliasForST100" [label="Has" arrowhead="normal" style="solid"];
+"github.com/peng225/silkroad/testdata/t3.ST101" -> "github.com/peng225/silkroad/testdata/t3.AliasForInt" [label="Has" arrowhead="normal" style="solid"];
+"github.com/peng225/silkroad/testdata/t3.ST102" -> "github.com/peng225/silkroad/testdata/t3.AliasForSliceST100" [label="Has" arrowhead="normal" style="solid"];
+"github.com/peng225/silkroad/testdata/t3.ST102" -> "github.com/peng225/silkroad/testdata/t3.AliasForMapST100" [label="Has" arrowhead="normal" style="solid"];
+"github.com/peng225/silkroad/testdata/t3.ST102" -> "github.com/peng225/silkroad/testdata/t3.AliasForAny" [label="Has" arrowhead="normal" style="solid"];
+"github.com/peng225/silkroad/testdata/t3.ST102" -> "github.com/peng225/silkroad/testdata/t3.AliasForEmptyStruct" [label="Has" arrowhead="normal" style="solid"];
+"github.com/peng225/silkroad/testdata/t3.ST102" -> "github.com/peng225/silkroad/testdata/t3.AliasForStarST100" [label="Has" arrowhead="normal" style="solid"];
+"github.com/peng225/silkroad/testdata/t3.ST102" -> "github.com/peng225/silkroad/testdata/t3.AliasForArrayST100" [label="Has" arrowhead="normal" style="solid"];
+"github.com/peng225/silkroad/testdata/t1/t11.ST5" -> "github.com/peng225/silkroad/testdata/t1/t11.ST1" [label="Embeds" arrowhead="empty" style="solid"];
+"github.com/peng225/silkroad/testdata/t3.AliasForSliceST100" -> "github.com/peng225/silkroad/testdata/t3.ST100" [label="UsesAsAlias" arrowhead="normal" style="dashed"];
+"github.com/peng225/silkroad/testdata/t3.AliasForStarST100" -> "github.com/peng225/silkroad/testdata/t3.ST100" [label="UsesAsAlias" arrowhead="normal" style="dashed"];
+"github.com/peng225/silkroad/testdata/t3.ST103" -> "github.com/peng225/silkroad/testdata/t3.AliasForInt" [label="Has" arrowhead="normal" style="solid"];
+"github.com/peng225/silkroad/testdata/t2.IF1" -> "github.com/peng225/silkroad/testdata/t2.ST200" [label="Has" arrowhead="normal" style="solid"];
+"github.com/peng225/silkroad/testdata/t1/t11.ST2" -> "github.com/peng225/silkroad/testdata/t1/t11.ST3" [label="Has" arrowhead="normal" style="solid"];
+"github.com/peng225/silkroad/testdata/t3.AliasForIF100" -> "github.com/peng225/silkroad/testdata/t3.IF100" [label="UsesAsAlias" arrowhead="normal" style="dashed"];
+"github.com/peng225/silkroad/testdata/t3.ST106" -> "github.com/peng225/silkroad/testdata/t3.AliasForFunc" [label="Has" arrowhead="normal" style="solid"];
+"github.com/peng225/silkroad/testdata/t3.ST106" -> "github.com/peng225/silkroad/testdata/t3.AliasForChanInt" [label="Has" arrowhead="normal" style="solid"];
+"github.com/peng225/silkroad/testdata/t3.AliasForArrayST100" -> "github.com/peng225/silkroad/testdata/t3.ST100" [label="UsesAsAlias" arrowhead="normal" style="dashed"];
+"github.com/peng225/silkroad/testdata/t3.ST105" -> "github.com/peng225/silkroad/testdata/t3.ST104" [label="Has" arrowhead="normal" style="solid"];
+"github.com/peng225/silkroad/testdata/t3.ST105" -> "github.com/peng225/silkroad/testdata/t1/t11.ST1" [label="Has" arrowhead="normal" style="solid"];
+"github.com/peng225/silkroad/testdata/t3.ST105" -> "github.com/peng225/silkroad/testdata/t1/t11.ST2" [label="Has" arrowhead="normal" style="solid"];
+"github.com/peng225/silkroad/testdata/t3.ST105" -> "github.com/peng225/silkroad/testdata/t1/t11.ST3" [label="Has" arrowhead="normal" style="solid"];
+"github.com/peng225/silkroad/testdata/t3.ST105" -> "github.com/peng225/silkroad/testdata/t3.ST101" [label="Has" arrowhead="normal" style="solid"];
+"github.com/peng225/silkroad/testdata/t2.IF2" -> "github.com/peng225/silkroad/testdata/t2.IF1" [label="Embeds" arrowhead="empty" style="solid"];
+"github.com/peng225/silkroad/testdata/t3.AliasForST100" -> "github.com/peng225/silkroad/testdata/t3.ST100" [label="UsesAsAlias" arrowhead="normal" style="dashed"];
+"github.com/peng225/silkroad/testdata/t1/t11.ST3" -> "github.com/peng225/silkroad/testdata/t2.IF1" [label="Implements" arrowhead="empty" style="dashed"];
+"github.com/peng225/silkroad/testdata/t1/t11.ST3" -> "github.com/peng225/silkroad/testdata/t2.IF2" [label="Implements" arrowhead="empty" style="dashed"];
+"github.com/peng225/silkroad/testdata/t1/t11.ST3" -> "github.com/peng225/silkroad/testdata/t1/t11.ST4" [label="Has" arrowhead="normal" style="solid"];
+"github.com/peng225/silkroad/testdata/t3.AliasForChanInt" -> "github.com/peng225/silkroad/testdata/t3.AliasForInt" [label="UsesAsAlias" arrowhead="normal" style="dashed"];
+}
