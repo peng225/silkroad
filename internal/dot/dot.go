@@ -10,34 +10,70 @@ import (
 	"github.com/peng225/silkroad/internal/graph"
 )
 
+type nodeStyle struct {
+	shape     string
+	fillColor string
+}
+
+type nodesWithStyle struct {
+	nodes []string
+	ns    nodeStyle
+}
+
 func WriteToFile(tg *graph.TypeGraph, fileName string) error {
 	data := "digraph G {\n"
 	data += "node[style=\"filled\" fillcolor=\"whitesmoke\"]\n"
 
-	writeNodes := func(shape, fillColor string, nodes map[string]([]string)) {
-		for pkg, objs := range nodes {
-			sanitizedPkg := strings.Replace(
-				strings.Replace(
-					strings.Replace(pkg, ".", "_", -1),
-					"/", "_", -1),
-				"-", "_", -1)
-			data += fmt.Sprintf("subgraph cluster_%s {\n", sanitizedPkg)
-			data += fmt.Sprintf("label = \"%s\";\n", pkg)
-			data += "style = \"solid\";\n"
-			data += "bgcolor = \"cornsilk\";\n"
-			for _, obj := range objs {
-				data += fmt.Sprintf("\"%s.%s\" [label=\"%s\" shape=\"%s\" fillcolor=\"%s\"];\n",
-					pkg, obj, obj, shape, fillColor)
-			}
-			data += "}\n"
+	pkgToNodesWithStyleList := make(map[string]([]nodesWithStyle))
+	for pkg, nodes := range tg.StructNodes() {
+		pkgToNodesWithStyleList[pkg] = []nodesWithStyle{
+			{
+				nodes: nodes,
+				ns: nodeStyle{
+					shape:     "rect",
+					fillColor: "paleturquoise1",
+				},
+			},
 		}
 	}
-	nodes := tg.StructNodes()
-	writeNodes("rect", "paleturquoise1", nodes)
-	nodes = tg.InterfaceNodes()
-	writeNodes("hexagon", "plum1", nodes)
-	nodes = tg.OtherNodes()
-	writeNodes("ellipse", "whitesmoke", nodes)
+	for pkg, nodes := range tg.InterfaceNodes() {
+		pkgToNodesWithStyleList[pkg] = append(pkgToNodesWithStyleList[pkg],
+			nodesWithStyle{
+				nodes: nodes,
+				ns: nodeStyle{
+					shape:     "hexagon",
+					fillColor: "plum1",
+				},
+			})
+	}
+	for pkg, nodes := range tg.OtherNodes() {
+		pkgToNodesWithStyleList[pkg] = append(pkgToNodesWithStyleList[pkg],
+			nodesWithStyle{
+				nodes: nodes,
+				ns: nodeStyle{
+					shape:     "ellipse",
+					fillColor: "whitesmoke",
+				},
+			})
+	}
+	for pkg, nwsList := range pkgToNodesWithStyleList {
+		sanitizedPkg := strings.Replace(
+			strings.Replace(
+				strings.Replace(pkg, ".", "_", -1),
+				"/", "_", -1),
+			"-", "_", -1)
+		data += fmt.Sprintf("subgraph cluster_%s {\n", sanitizedPkg)
+		data += fmt.Sprintf("label = \"%s\";\n", pkg)
+		data += "style = \"solid\";\n"
+		data += "bgcolor = \"cornsilk\";\n"
+		for _, nws := range nwsList {
+			for _, obj := range nws.nodes {
+				data += fmt.Sprintf("\"%s.%s\" [label=\"%s\" shape=\"%s\" fillcolor=\"%s\"];\n",
+					pkg, obj, obj, nws.ns.shape, nws.ns.fillColor)
+			}
+		}
+		data += "}\n"
+	}
 
 	for from, edges := range tg.Edges() {
 		for edge, _ := range edges {
