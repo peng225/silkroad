@@ -63,12 +63,12 @@ func WriteToFile(tg *graph.TypeGraph, fileName string) error {
 				"/", "_", -1),
 			"-", "_", -1)
 		data += fmt.Sprintf("subgraph cluster_%s {\n", sanitizedPkg)
-		data += fmt.Sprintf("label = \"%s\";\n", pkg)
-		data += "style = \"solid\";\n"
-		data += "bgcolor = \"cornsilk\";\n"
+		data += fmt.Sprintf("  label = \"%s\";\n", pkg)
+		data += "  style = \"solid\";\n"
+		data += "  bgcolor = \"cornsilk\";\n"
 		for _, nws := range nwsList {
 			for _, obj := range nws.nodes {
-				data += fmt.Sprintf("\"%s.%s\" [label=\"%s\" shape=\"%s\" fillcolor=\"%s\"];\n",
+				data += fmt.Sprintf("  \"%s.%s\" [label=\"%s\" shape=\"%s\" fillcolor=\"%s\"];\n",
 					pkg, obj, obj, nws.ns.shape, nws.ns.fillColor)
 			}
 		}
