@@ -315,7 +315,6 @@ func (tg *TypeGraph) buildEdge(x *ast.TypeSpec, info *types.Info,
 }
 
 func addToNodesHelper(dest map[string](map[string]types.Object), obj types.Object) {
-
 	if dest[obj.Pkg().Path()] == nil {
 		dest[obj.Pkg().Path()] = map[string]types.Object{}
 	}
@@ -364,7 +363,10 @@ func (tg *TypeGraph) Build(path string) error {
 	if err != nil {
 		return err
 	}
-	packages.PrintErrors(pkgs)
+	n := packages.PrintErrors(pkgs)
+	if n != 0 {
+		return fmt.Errorf("error count is not 0: %d", n)
+	}
 
 	for _, pkg := range pkgs {
 		for _, syntax := range pkg.Syntax {
