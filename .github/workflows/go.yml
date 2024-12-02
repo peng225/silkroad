@@ -22,7 +22,13 @@ jobs:
         go-version-file: 'go.mod'
 
     - name: Build
-      run: go build -v ./...
-
+      run: go build -v -o ${RUNNER_TEMP}/silkroad
     - name: Test
       run: go test -v ./...
+
+    - name: Output check
+      run: |
+        ${RUNNER_TEMP}/silkroad -p testdata -o tmptest.dot
+        diff <(sort test.dot) <(sort tmptest.dot)
+        ${RUNNER_TEMP}/silkroad -p testdata -o tmptest2.dot --ignore-external --go-mod-path .
+        diff <(sort test2.dot) <(sort tmptest2.dot)
