@@ -1,6 +1,7 @@
 package graph
 
 import (
+	"errors"
 	"fmt"
 	"go/ast"
 	"go/types"
@@ -17,6 +18,7 @@ type TypeGraph struct {
 	edges           map[string](map[Edge]struct{})
 	ignoreExternal  bool
 	moduleName      string
+	packagePatterns []string
 }
 
 type EdgeKind int
@@ -38,7 +40,7 @@ type importInfo struct {
 	path  string
 }
 
-func NewTypeGraph(ignoreExternal bool, moduleName string) *TypeGraph {
+func NewTypeGraph(ignoreExternal bool, moduleName string, pp []string) *TypeGraph {
 	return &TypeGraph{
 		pkgToStructs:    map[string](map[string]types.Object){},
 		pkgToInterfaces: map[string](map[string]types.Object){},
@@ -46,6 +48,7 @@ func NewTypeGraph(ignoreExternal bool, moduleName string) *TypeGraph {
 		edges:           map[string](map[Edge]struct{}){},
 		ignoreExternal:  ignoreExternal,
 		moduleName:      moduleName,
+		packagePatterns: pp,
 	}
 }
 
@@ -359,13 +362,12 @@ func (tg *TypeGraph) Build(path string) error {
 		Mode: packages.NeedSyntax | packages.NeedTypesInfo,
 		Dir:  path,
 	}
-	pkgs, err := packages.Load(cfg, "./...")
+	pkgs, err := packages.Load(cfg, tg.packagePatterns...)
 	if err != nil {
 		return err
 	}
-	n := packages.PrintErrors(pkgs)
-	if n != 0 {
-		return fmt.Errorf("error count is not 0: %d", n)
+	if packages.PrintErrors(pkgs) > 0 {
+		return errors.New("error count is not 0")
 	}
 
 	for _, pkg := range pkgs {

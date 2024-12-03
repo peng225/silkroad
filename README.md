@@ -20,7 +20,6 @@ There are test files in `testdata` directory. You can run Silkroad for the direc
 Here is an example graph.
 ![test.svg](./test.svg)
 
-
 You can eliminate the objects from external packages as follows.
 
 ```sh
@@ -30,3 +29,13 @@ You can eliminate the objects from external packages as follows.
 Here is the resulting graph. You can see that `time.Duration` and `io.Reader` do not exist.
 
 ![test2.svg](./test2.svg)
+
+You can select packages as follows.
+
+```sh
+./silkroad -p testdata --package-pattern ./t1/...,./t2 -o test3.dot
+```
+
+Here is the resulting graph. You can see that `t3` does not exist.
+
+![test3.svg](./test3.svg)

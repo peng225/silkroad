@@ -13,11 +13,12 @@ import (
 )
 
 var (
-	rootPath       string
-	outputFileName string
-	ignoreExternal bool
-	goModPath      string
-	verbose        bool
+	rootPath        string
+	outputFileName  string
+	ignoreExternal  bool
+	goModPath       string
+	packagePatterns []string
+	verbose         bool
 )
 
 // rootCmd represents the base command when called without any subcommands
@@ -35,13 +36,11 @@ to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		moduleName := ""
 		var err error
-		if ignoreExternal {
-			moduleName, err = getModuleName(path.Join(goModPath, "go.mod"))
-			if err != nil {
-				panic(err)
-			}
+		moduleName, err = getModuleName(path.Join(goModPath, "go.mod"))
+		if err != nil {
+			panic(err)
 		}
-		tg := graph.NewTypeGraph(ignoreExternal, moduleName)
+		tg := graph.NewTypeGraph(ignoreExternal, moduleName, packagePatterns)
 		err = tg.Build(rootPath)
 		if err != nil {
 			panic(err)
@@ -59,7 +58,7 @@ to quickly create a Cobra application.`,
 func getModuleName(goModFilePath string) (string, error) {
 	f, err := os.Open(goModFilePath)
 	if err != nil {
-		panic(err)
+		return "", err
 	}
 	defer f.Close()
 
@@ -98,6 +97,7 @@ func init() {
 	rootCmd.Flags().BoolVar(&ignoreExternal, "ignore-external", false, "Ignore types imported from the external modules.")
 	rootCmd.Flags().StringVar(&goModPath, "go-mod-path", "", "The path to the directory where go.mod file exists.")
 	rootCmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "Enable verbose mode.")
+	rootCmd.Flags().StringSliceVar(&packagePatterns, "package-pattern", []string{"./..."}, "Package patterns. e.g. 'bytes,unicode...'")
 
 	rootCmd.MarkFlagsRequiredTogether("ignore-external", "go-mod-path")
 }

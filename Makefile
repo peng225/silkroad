@@ -11,3 +11,5 @@ update-artifacts: $(SILKROAD)
 	dot -Tsvg test.dot > test.svg
 	./silkroad -p testdata -o test2.dot --ignore-external --go-mod-path .
 	dot -Tsvg test2.dot > test2.svg
+	./silkroad -p testdata --package-pattern ./t1/...,./t2 -o test3.dot
+	dot -Tsvg test3.dot > test3.svg
