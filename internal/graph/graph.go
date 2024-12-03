@@ -1,6 +1,7 @@
 package graph
 
 import (
+	"errors"
 	"fmt"
 	"go/ast"
 	"go/types"
@@ -365,9 +366,8 @@ func (tg *TypeGraph) Build(path string) error {
 	if err != nil {
 		return err
 	}
-	n := packages.PrintErrors(pkgs)
-	if n != 0 {
-		return fmt.Errorf("error count is not 0: %d", n)
+	if packages.PrintErrors(pkgs) > 0 {
+		return errors.New("error count is not 0")
 	}
 
 	for _, pkg := range pkgs {

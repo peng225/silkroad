@@ -36,13 +36,11 @@ to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		moduleName := ""
 		var err error
-		if ignoreExternal {
-			moduleName, err = getModuleName(path.Join(goModPath, "go.mod"))
-			if err != nil {
-				panic(err)
-			}
+		moduleName, err = getModuleName(path.Join(goModPath, "go.mod"))
+		if err != nil {
+			panic(err)
 		}
-		tg := graph.NewTypeGraph(ignoreExternal, moduleName)
+		tg := graph.NewTypeGraph(ignoreExternal, moduleName, packagePatterns)
 		err = tg.Build(rootPath)
 		if err != nil {
 			panic(err)
@@ -60,7 +58,7 @@ to quickly create a Cobra application.`,
 func getModuleName(goModFilePath string) (string, error) {
 	f, err := os.Open(goModFilePath)
 	if err != nil {
-		panic(err)
+		return "", err
 	}
 	defer f.Close()
 
