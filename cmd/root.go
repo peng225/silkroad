@@ -13,11 +13,12 @@ import (
 )
 
 var (
-	rootPath       string
-	outputFileName string
-	ignoreExternal bool
-	goModPath      string
-	verbose        bool
+	rootPath        string
+	outputFileName  string
+	ignoreExternal  bool
+	goModPath       string
+	packagePatterns []string
+	verbose         bool
 )
 
 // rootCmd represents the base command when called without any subcommands
@@ -98,6 +99,7 @@ func init() {
 	rootCmd.Flags().BoolVar(&ignoreExternal, "ignore-external", false, "Ignore types imported from the external modules.")
 	rootCmd.Flags().StringVar(&goModPath, "go-mod-path", "", "The path to the directory where go.mod file exists.")
 	rootCmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "Enable verbose mode.")
+	rootCmd.Flags().StringSliceVar(&packagePatterns, "package-pattern", []string{"./..."}, "Package patterns. e.g. 'bytes,unicode...'")
 
 	rootCmd.MarkFlagsRequiredTogether("ignore-external", "go-mod-path")
 }

@@ -1,0 +1,35 @@
+digraph G {
+node[style="filled" fillcolor="whitesmoke"]
+subgraph cluster_github_com_peng225_silkroad_testdata_t2 {
+  label = "github.com/peng225/silkroad/testdata/t2";
+  style = "solid";
+  bgcolor = "cornsilk";
+  "github.com/peng225/silkroad/testdata/t2.ST200" [label="ST200" shape="rect" fillcolor="paleturquoise1"];
+  "github.com/peng225/silkroad/testdata/t2.IF1" [label="IF1" shape="hexagon" fillcolor="plum1"];
+  "github.com/peng225/silkroad/testdata/t2.IF2" [label="IF2" shape="hexagon" fillcolor="plum1"];
+}
+subgraph cluster_github_com_peng225_silkroad_testdata_t1_t11 {
+  label = "github.com/peng225/silkroad/testdata/t1/t11";
+  style = "solid";
+  bgcolor = "cornsilk";
+  "github.com/peng225/silkroad/testdata/t1/t11.ST7" [label="ST7" shape="rect" fillcolor="paleturquoise1"];
+  "github.com/peng225/silkroad/testdata/t1/t11.ST8" [label="ST8" shape="rect" fillcolor="paleturquoise1"];
+  "github.com/peng225/silkroad/testdata/t1/t11.ST1" [label="ST1" shape="rect" fillcolor="paleturquoise1"];
+  "github.com/peng225/silkroad/testdata/t1/t11.ST2" [label="ST2" shape="rect" fillcolor="paleturquoise1"];
+  "github.com/peng225/silkroad/testdata/t1/t11.ST3" [label="ST3" shape="rect" fillcolor="paleturquoise1"];
+  "github.com/peng225/silkroad/testdata/t1/t11.ST4" [label="ST4" shape="rect" fillcolor="paleturquoise1"];
+  "github.com/peng225/silkroad/testdata/t1/t11.ST5" [label="ST5" shape="rect" fillcolor="paleturquoise1"];
+  "github.com/peng225/silkroad/testdata/t1/t11.ST6" [label="ST6" shape="rect" fillcolor="paleturquoise1"];
+}
+"github.com/peng225/silkroad/testdata/t1/t11.ST8" -> "io.Reader" [label="Has" arrowhead="normal" style="solid"];
+"github.com/peng225/silkroad/testdata/t2.IF1" -> "github.com/peng225/silkroad/testdata/t2.ST200" [label="Has" arrowhead="normal" style="solid"];
+"github.com/peng225/silkroad/testdata/t2.IF2" -> "github.com/peng225/silkroad/testdata/t2.IF1" [label="Embeds" arrowhead="empty" style="solid"];
+"github.com/peng225/silkroad/testdata/t1/t11.ST2" -> "time.Duration" [label="Has" arrowhead="normal" style="solid"];
+"github.com/peng225/silkroad/testdata/t1/t11.ST2" -> "github.com/peng225/silkroad/testdata/t1/t11.ST3" [label="Has" arrowhead="normal" style="solid"];
+"github.com/peng225/silkroad/testdata/t1/t11.ST3" -> "github.com/peng225/silkroad/testdata/t2.IF1" [label="Implements" arrowhead="empty" style="dashed"];
+"github.com/peng225/silkroad/testdata/t1/t11.ST3" -> "github.com/peng225/silkroad/testdata/t2.IF2" [label="Implements" arrowhead="empty" style="dashed"];
+"github.com/peng225/silkroad/testdata/t1/t11.ST3" -> "github.com/peng225/silkroad/testdata/t1/t11.ST4" [label="Has" arrowhead="normal" style="solid"];
+"github.com/peng225/silkroad/testdata/t1/t11.ST5" -> "github.com/peng225/silkroad/testdata/t1/t11.ST1" [label="Embeds" arrowhead="empty" style="solid"];
+"github.com/peng225/silkroad/testdata/t1/t11.ST6" -> "github.com/peng225/silkroad/testdata/t1/t11.ST7" [label="Has" arrowhead="normal" style="solid"];
+"github.com/peng225/silkroad/testdata/t1/t11.ST7" -> "github.com/peng225/silkroad/testdata/t1/t11.ST8" [label="Has" arrowhead="normal" style="solid"];
+}
