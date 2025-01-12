@@ -32,3 +32,5 @@ jobs:
         diff <(sort test.dot) <(sort tmptest.dot)
         ${RUNNER_TEMP}/silkroad -p testdata -o tmptest2.dot --ignore-external --go-mod-path .
         diff <(sort test2.dot) <(sort tmptest2.dot)
+        ${RUNNER_TEMP}/silkroad -p testdata --package-pattern ./t1/...,./t2 -o tmptest3.dot
+        diff <(sort test3.dot) <(sort tmptest3.dot)
