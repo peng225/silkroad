@@ -37,15 +37,17 @@ type ST6 struct {
 	st7 map[string]*ST7
 }
 
-type ST7 struct {
-	a   uint8
-	st8 *ST8
-}
+type (
+	ST7 struct {
+		a   uint8
+		st8 *ST8
+	}
 
-type ST8 struct {
-	v uint8
-	w ioalias.Reader
-}
+	ST8 struct {
+		v uint8
+		w ioalias.Reader
+	}
+)
 
 func (s *ST3) Op1(a, b int) int {
 	return a + b
