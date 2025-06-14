@@ -139,6 +139,8 @@ func (tg *TypeGraph) findTypeStringsFromExpr(expr ast.Expr, info *types.Info, tp
 		ret = append(ret, tg.findTypeStringsFromExpr(v.X, info, tps)...)
 	case *ast.Ellipsis:
 		ret = append(ret, tg.findTypeStringsFromExpr(v.Elt, info, tps)...)
+	case *ast.ParenExpr:
+		ret = append(ret, tg.findTypeStringsFromExpr(v.X, info, tps)...)
 	case *ast.StructType:
 		// Ignore.
 		// e.g. struct{}
